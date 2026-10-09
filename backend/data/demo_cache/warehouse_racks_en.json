@@ -1,0 +1,31 @@
+{
+  "id": "warehouse_racks_en",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "steel shelving unit for a warehouse"
+  },
+  "match_keywords": [
+    "warehouse rack",
+    "storage rack",
+    "metal shelving",
+    "steel shelf",
+    "pallet rack",
+    "shelving unit"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Steel shelving unit",
+    "product_name_ar": "وحدة رفوف معدنية",
+    "description": "A knock-down steel shelving unit for storage.",
+    "category_id": "warehouse_racks",
+    "confidence": 0.92,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

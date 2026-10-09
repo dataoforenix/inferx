@@ -1,0 +1,31 @@
+{
+  "id": "toilet_paper",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "ورق تواليت رولات"
+  },
+  "match_keywords": [
+    "toilet paper",
+    "tissue roll",
+    "kitchen roll",
+    "ورق تواليت",
+    "محارم",
+    "مناديل"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Toilet paper rolls",
+    "product_name_ar": "رولات ورق تواليت",
+    "description": "Household toilet tissue sold in rolls.",
+    "category_id": "toilet_tissue",
+    "confidence": 0.95,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

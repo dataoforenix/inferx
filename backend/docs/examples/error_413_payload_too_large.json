@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "payload_too_large",
+    "message": "Request body is too large.",
+    "request_id": "0123456789abcdef0123456789abcdef"
+  }
+}

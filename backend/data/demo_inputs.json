@@ -1,0 +1,295 @@
+[
+  {
+    "id": "metal_chair_en",
+    "text": "metal office chair",
+    "match_keywords": [
+      "metal chair",
+      "office chair",
+      "restaurant chair",
+      "cafe chair",
+      "stacking chair",
+      "steel chair",
+      "upholstered chair"
+    ],
+    "expected_category_id": "metal_chair",
+    "placeholder": {
+      "name_en": "Metal office chair",
+      "name_ar": "كرسي مكتب معدني",
+      "description": "An office chair with a steel frame and a padded seat and back.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "metal_chair_ar",
+    "text": "كرسي مكتب معدني منجد",
+    "match_keywords": [
+      "كرسي معدني",
+      "كرسي مكتب",
+      "كرسي مطعم",
+      "كرسي كافيه",
+      "كرسي حديد",
+      "كرسي منجد"
+    ],
+    "expected_category_id": "metal_chair",
+    "placeholder": {
+      "name_en": "Upholstered metal office chair",
+      "name_ar": "كرسي مكتب معدني منجّد",
+      "description": "An upholstered chair with a metal frame.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "warehouse_racks_en",
+    "text": "steel shelving unit for a warehouse",
+    "match_keywords": [
+      "warehouse rack",
+      "storage rack",
+      "metal shelving",
+      "steel shelf",
+      "pallet rack",
+      "shelving unit"
+    ],
+    "expected_category_id": "warehouse_racks",
+    "placeholder": {
+      "name_en": "Steel shelving unit",
+      "name_ar": "وحدة رفوف معدنية",
+      "description": "A knock-down steel shelving unit for storage.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "warehouse_racks_ar",
+    "text": "رفوف مستودعات",
+    "match_keywords": [
+      "رفوف مستودعات",
+      "رفوف معدنية",
+      "رفوف تخزين",
+      "رف حديد",
+      "ستاند حديد",
+      "رفوف"
+    ],
+    "expected_category_id": "warehouse_racks",
+    "placeholder": {
+      "name_en": "Warehouse racks",
+      "name_ar": "رفوف مستودعات",
+      "description": "Metal storage racks for a warehouse.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "plastic_tableware_en",
+    "text": "plastic plates and cups",
+    "match_keywords": [
+      "plastic plates",
+      "plastic cups",
+      "plastic spoons",
+      "plastic bowls",
+      "food container",
+      "kitchenware",
+      "tableware"
+    ],
+    "expected_category_id": "plastic_tableware",
+    "placeholder": {
+      "name_en": "Plastic plates and cups",
+      "name_ar": "صحون وكاسات بلاستيك",
+      "description": "Reusable plastic plates and cups for the kitchen.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "plastic_tableware_ar",
+    "text": "صحون بلاستيك للمطبخ",
+    "match_keywords": [
+      "صحون بلاستيك",
+      "كاسات بلاستيك",
+      "ملاعق بلاستيك",
+      "أواني بلاستيك",
+      "علب أكل",
+      "أدوات مطبخ"
+    ],
+    "expected_category_id": "plastic_tableware",
+    "placeholder": {
+      "name_en": "Plastic plates",
+      "name_ar": "صحون بلاستيك",
+      "description": "Plastic plates for household kitchen use.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "ceiling_fan_en",
+    "text": "ceiling fan with three blades",
+    "match_keywords": [
+      "ceiling fan",
+      "wall fan",
+      "stand fan",
+      "table fan",
+      "electric fan"
+    ],
+    "expected_category_id": "ceiling_fan",
+    "placeholder": {
+      "name_en": "Ceiling fan",
+      "name_ar": "مروحة سقف",
+      "description": "An electric ceiling fan with three blades.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "ceiling_fan_ar",
+    "text": "مروحة سقف",
+    "match_keywords": [
+      "مروحة سقف",
+      "مروحة جدار",
+      "مروحة عمود",
+      "مروحة طاولة",
+      "مروحة"
+    ],
+    "expected_category_id": "ceiling_fan",
+    "placeholder": {
+      "name_en": "Ceiling fan",
+      "name_ar": "مروحة سقف",
+      "description": "An electric ceiling fan.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "frozen_fries_en",
+    "text": "frozen french fries",
+    "match_keywords": [
+      "french fries",
+      "frozen fries",
+      "frozen potatoes",
+      "potato wedges"
+    ],
+    "expected_category_id": "frozen_fries",
+    "placeholder": {
+      "name_en": "Frozen French fries",
+      "name_ar": "بطاطا مقلية مجمّدة",
+      "description": "Par-fried frozen potato strips.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "frozen_fries_ar",
+    "text": "بطاطا مجمدة فرنش فرايز",
+    "match_keywords": [
+      "بطاطا مجمدة",
+      "فرنش فرايز",
+      "بطاطا مقلية",
+      "بطاطا فريز",
+      "أصابع بطاطا"
+    ],
+    "expected_category_id": "frozen_fries",
+    "placeholder": {
+      "name_en": "Frozen French fries",
+      "name_ar": "بطاطا مجمّدة (فرنش فرايز)",
+      "description": "Frozen potato strips for frying.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "tomato_paste_en",
+    "text": "canned tomato paste",
+    "match_keywords": [
+      "tomato paste",
+      "tomato puree",
+      "tomato concentrate",
+      "passata"
+    ],
+    "expected_category_id": "tomato_paste",
+    "placeholder": {
+      "name_en": "Tomato paste",
+      "name_ar": "معجون بندورة",
+      "description": "Concentrated tomato paste in a can.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "tomato_paste_ar",
+    "text": "معجون بندورة",
+    "match_keywords": [
+      "معجون بندورة",
+      "رب البندورة",
+      "صلصة بندورة",
+      "معجون طماطم"
+    ],
+    "expected_category_id": "tomato_paste",
+    "placeholder": {
+      "name_en": "Tomato paste",
+      "name_ar": "معجون بندورة",
+      "description": "Concentrated tomato paste.",
+      "confidence": 0.92,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "plastic_folding_chair_uncertain",
+    "text": "plastic folding chair",
+    "match_keywords": [
+      "plastic folding chair",
+      "folding chair",
+      "كرسي بلاستيك"
+    ],
+    "expected_category_id": "metal_chair",
+    "placeholder": {
+      "name_en": "Plastic folding chair",
+      "name_ar": "كرسي بلاستيك قابل للطي",
+      "description": "A folding chair made mostly of moulded plastic.",
+      "confidence": 0.45,
+      "alternatives": [
+        {
+          "category_id": "plastic_tableware",
+          "confidence": 0.3
+        }
+      ]
+    }
+  },
+  {
+    "id": "software_unsupported",
+    "text": "accounting software for small shops",
+    "match_keywords": [
+      "software",
+      "mobile app",
+      "app",
+      "برنامج",
+      "تطبيق"
+    ],
+    "expected_category_id": "unsupported",
+    "placeholder": {
+      "name_en": "Accounting software",
+      "name_ar": "برنامج محاسبة",
+      "description": "A software product, not a physical good.",
+      "confidence": 0.97,
+      "alternatives": []
+    }
+  },
+  {
+    "id": "solar_panel_out_of_catalog",
+    "text": "rooftop solar panel",
+    "match_keywords": [
+      "solar panel",
+      "لوح شمسي",
+      "ألواح شمسية",
+      "طاقة شمسية"
+    ],
+    "expected_category_id": "unsupported",
+    "placeholder": {
+      "name_en": "Solar panel",
+      "name_ar": "لوح طاقة شمسية",
+      "description": "A photovoltaic panel: a physical product outside the six supported categories.",
+      "confidence": 0.95,
+      "alternatives": [],
+      "is_physical_product": true
+    }
+  }
+]

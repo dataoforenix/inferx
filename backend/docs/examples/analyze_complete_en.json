@@ -1,0 +1,162 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "status": "complete",
+  "language": "en",
+  "source": "live",
+  "product": {
+    "name_en": "Metal office chair",
+    "name_ar": "كرسي مكتب معدني",
+    "description": "An office chair with a steel frame and a padded seat.",
+    "category_id": "metal_chair",
+    "confidence": 0.93,
+    "alternatives": [],
+    "hs6_guess": null
+  },
+  "needs_confirmation": false,
+  "candidates": [],
+  "report": {
+    "category_id": "metal_chair",
+    "name_en": "Upholstered metal-frame chair",
+    "name_ar": "كرسي معدني منجّد",
+    "hs6": "940171",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 7.0,
+    "verdict": "MANUFACTURE",
+    "verdict_forced_maybe": false,
+    "verdict_capped_by": null,
+    "data_completeness": 1.0,
+    "flags": [],
+    "missing_fields": [],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 4.56,
+      "volume_score": 2.54,
+      "trend_score": 7.58,
+      "cagr": 0.0517,
+      "latest_import_usd": 2231506.0
+    },
+    "cost": {
+      "score": 10.0,
+      "import_price_per_kg_usd": 4.404,
+      "shipping_pct": 0.265,
+      "customs_pct": 0.25,
+      "landed_cost_per_kg_usd": 5.505,
+      "local_cost_per_kg_est_usd": 3.713,
+      "margin": 0.3255,
+      "raw_material_price_usd_per_kg": 1.49,
+      "material_kg_per_kg_product": 1.15,
+      "conversion_cost_per_kg_usd": 2.0
+    },
+    "feasibility": {
+      "score": 7.33,
+      "machinery_availability": 4.0,
+      "raw_material_local": 3.0,
+      "skills_availability": 4.0
+    },
+    "competition": {
+      "score": 6.0,
+      "local_factories": 8,
+      "factories_saturation": 20
+    },
+    "imports_usd": {
+      "2020": 1824151.0,
+      "2021": 3229140.0,
+      "2022": 3014871.0,
+      "2023": 1942667.0,
+      "2024": 2231506.0
+    },
+    "overrides_applied": {},
+    "notes": [],
+    "trend_label": "growing",
+    "machinery": [
+      "Tube cutting saw",
+      "CNC/hydraulic tube bender",
+      "MIG welders",
+      "Powder-coating booth and oven",
+      "Industrial sewing machines",
+      "Upholstery table"
+    ],
+    "raw_materials": [
+      "Steel tube",
+      "Foam",
+      "Fabric or PU leather",
+      "Fasteners"
+    ],
+    "risk_notes": "أنابيب الحديد مستوردة جزئياً؛ منافسة سعرية قوية من المنتج الصيني؛ السوق صغير (2.2 مليون دولار سنة 2024)",
+    "competition_note": "ورش ومصانع أثاث معدني قائمة، بس أغلبها بتشتغل على طلبيات صغيرة",
+    "source_notes": "Imports & weight: UN Comtrade (Jordan=400, partner World, flow M, CIF USD), pulled 2026-10-09. Customs: WITS/TRAINS MFN simple average 2023. Freight: China->Aqaba 40ft USD 7575 (Goodhope Freight, Sep 2026 quotes 7,300-7,850); payload 6500 kg per container is an estimate. shipping_pct = (freight/payload)/import_price_per_kg_usd; CIF price already includes freight - do not add on top. Raw material: WITS: Jordan imports 730630 welded steel tube 2023 = 4,766.65k USD / 3,199,080 kg. Material ratio (scrap allowance) is an estimate. Conversion cost (labour, energy, overheads) is an estimate. Raw-material availability evidence: estimate. Machinery cost: see machine_source. FX: 1 JOD = 1.4104 USD (CBJ peg 0.709).",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=400&partnerCode=0&flowCode=M&period=2024&cmdCode=940171",
+      "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/400/partner/000/product/940171/year/2023/datatype/reported",
+      "https://baoruimachinery.en.made-in-china.com/product/MOnGBwQLHcfu/",
+      "https://beyongmachine.en.made-in-china.com/product/hCFQkZWUQvcX/",
+      "https://jingzhongjing.en.made-in-china.com/product/VUZpYsLvHQka/"
+    ],
+    "estimated_fields": [
+      "local_cost_per_kg_est_usd",
+      "conversion_cost_per_kg_usd",
+      "machinery_availability",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation",
+      "shipping_pct",
+      "protection_pct",
+      "material_kg_per_kg_product",
+      "raw_material_local"
+    ],
+    "machine_cost_range_jod": {
+      "min": 6523.0,
+      "max": 21837.0
+    },
+    "capex_usd_range": {
+      "min": 9200.0,
+      "max": 30800.0
+    },
+    "machine_source": "Made-in-China supplier listings, Oct 2026: Tube bender USD 4,000-4,200 (baoruimachinery DW50NC) to 8,000-24,800 (beyongmachine) + powder-coating line USD 5,200-6,000 (jingzhongjing)",
+    "import_weight_kg_2024": 506656.0,
+    "break_even": {
+      "capex_mid_usd": 20000.0,
+      "unit_saving_usd_per_kg": 1.792,
+      "break_even_tons": 11.2,
+      "share_of_2024_imports": 0.022
+    }
+  },
+  "explanation": {
+    "language": "en",
+    "summary": "Upholstered metal-frame chair scored 7 out of 10, so local manufacturing looks worth exploring. Indicative break-even: selling about 11 tonnes (2.2% of 2024 imports) at the import-parity price would pay back about 20,000 USD of equipment (equipment only; excludes buildings and working capital).",
+    "reasons_for": [
+      "Imports cost about 5.5 USD/kg including customs (freight is already in the import price), against an estimated local cost of 3.71 USD/kg.",
+      "Local capability is reasonable: machinery 4/5, raw materials 3/5, skills 4/5.",
+      "Competition is limited: 8 local factories against a saturation level of 20."
+    ],
+    "concerns": [
+      "أنابيب الحديد مستوردة جزئياً؛ منافسة سعرية قوية من المنتج الصيني؛ السوق صغير (2.2 مليون دولار سنة 2024)",
+      "The import market is modest: about 2.2 million USD in 2024, changing by 5.2% per year.",
+      "Cost figures are estimates and must be checked against real supplier quotes."
+    ],
+    "next_steps": [
+      "Get written quotes from machinery and raw-material suppliers.",
+      "Talk to local wholesalers and retailers to confirm demand and target prices.",
+      "Check licensing, standards and incentives with the Jordan Investment Commission and the Chamber of Industry."
+    ],
+    "caveats": [
+      "The figures for these items are estimates, not measured values: local production cost, conversion_cost_per_kg_usd, machinery availability, skills availability, number of local factories, market saturation level, shipping cost, protection_pct, material_kg_per_kg_product, local raw materials.",
+      "This is a quick screening estimate, not a business plan or financial advice."
+    ]
+  },
+  "explanation_source": "llm",
+  "warnings": [],
+  "timings_ms": {
+    "normalize": 0.0,
+    "score": 0.1,
+    "explain": 0.7,
+    "market_data": null,
+    "total": 1.0
+  }
+}

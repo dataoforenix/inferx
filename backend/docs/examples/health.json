@@ -1,0 +1,13 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "status": "ok",
+  "version": "0.1.0",
+  "demo_mode": false,
+  "llm_configured": true,
+  "categories_loaded": 6,
+  "data_warnings": [
+    "demo cache: 15 of 15 entries are hand-written placeholders (run scripts/record_demo_cache.py to record real outputs)"
+  ],
+  "demo_cache_entries": 15,
+  "demo_cache_placeholder_entries": 15
+}

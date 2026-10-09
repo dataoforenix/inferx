@@ -1,0 +1,30 @@
+{
+  "id": "ceiling_fan_ar",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "مروحة سقف"
+  },
+  "match_keywords": [
+    "مروحة سقف",
+    "مروحة جدار",
+    "مروحة عمود",
+    "مروحة طاولة",
+    "مروحة"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Ceiling fan",
+    "product_name_ar": "مروحة سقف",
+    "description": "An electric ceiling fan.",
+    "category_id": "ceiling_fan",
+    "confidence": 0.92,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

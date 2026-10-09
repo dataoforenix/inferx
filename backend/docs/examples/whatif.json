@@ -1,0 +1,222 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "baseline": {
+    "category_id": "tomato_paste",
+    "name_en": "Tomato paste",
+    "name_ar": "معجون بندورة",
+    "hs6": "200290",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 3.9,
+    "verdict": "DONT",
+    "verdict_forced_maybe": false,
+    "verdict_capped_by": "cost_gate",
+    "data_completeness": 1.0,
+    "flags": [
+      "high_capital_requirement"
+    ],
+    "missing_fields": [],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 8.05,
+      "volume_score": 6.74,
+      "trend_score": 10.0,
+      "cagr": 0.1252,
+      "latest_import_usd": 21465982.0
+    },
+    "cost": {
+      "score": 0.0,
+      "import_price_per_kg_usd": 1.308,
+      "shipping_pct": 0.215,
+      "customs_pct": 0.1,
+      "landed_cost_per_kg_usd": 1.439,
+      "local_cost_per_kg_est_usd": 4.01,
+      "margin": -1.787,
+      "raw_material_price_usd_per_kg": 0.564,
+      "material_kg_per_kg_product": 6.4,
+      "conversion_cost_per_kg_usd": 0.4
+    },
+    "feasibility": {
+      "score": 6.67,
+      "machinery_availability": 2.0,
+      "raw_material_local": 5.0,
+      "skills_availability": 3.0
+    },
+    "competition": {
+      "score": 4.0,
+      "local_factories": 3,
+      "factories_saturation": 5
+    },
+    "imports_usd": {
+      "2020": 13390341.0,
+      "2021": 16258928.0,
+      "2022": 17657523.0,
+      "2023": 21695286.0,
+      "2024": 21465982.0
+    },
+    "overrides_applied": {},
+    "notes": [
+      "verdict limited by the cost gate: producing locally (4.01 USD/kg) costs more than importing (1.44 USD/kg landed), so the verdict is DONT (score capped at 3.9)",
+      "high capital requirement: equipment alone is listed at up to 500,000 USD (equipment only, partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings)"
+    ],
+    "trend_label": "growing",
+    "machinery": [
+      "Washer and sorter",
+      "Hot-break unit",
+      "Pulper/finisher",
+      "Vacuum evaporator",
+      "Aseptic or can filler"
+    ],
+    "raw_materials": [
+      "Fresh tomatoes (grown in Jordan)",
+      "Cans or jars",
+      "Salt"
+    ],
+    "risk_notes": "بنحتاج حوالي 6 كيلو بندورة لكيلو معجون، فكلفة الإنتاج المحلي أعلى بكثير من المستورد؛ بيع البندورة طازجة (تصدير 2.06$/كغ) بيجيب أكثر؛ الموردين قريبين والحماية قليلة",
+    "competition_note": "عدد قليل من مصانع الأغذية بتعبّي معجون",
+    "source_notes": "Imports & weight: UN Comtrade (Jordan=400, partner World, flow M, CIF USD), pulled 2026-10-09. Customs: WITS/TRAINS MFN simple average 2023. Freight: China->Aqaba 20GP USD 5,275, Jul 2026 (Goodhope Freight); payload 18,800 kg = 80 aseptic drums x 235 kg per 20ft (tomatopaste.webnode.cn). China is the #2 supplier; Egypt (#1) is closer, so this is an upper bound. shipping_pct = (freight/payload)/import_price_per_kg_usd; CIF price already includes freight - do not add on top. Raw material: Ministry of Agriculture bulletin, Amman Central Market, 29 Mar 2026: tomatoes 30/40/50 piasters per kg; used 40 piasters = 0.40 JOD/kg. Ratio = paste Brix / fresh Brix = 29 / 4.5 (paste traded at 28-30 Bx, fresh tomatoes 3.5-5.5 Bx; Tridge tomato paste supply-chain note) = 6.4. Conversion cost (labour, energy, overheads) is an estimate. Raw-material availability evidence: Jordan is a large fresh-tomato exporter (WITS 070200 exports 2023: USD 107.2M, 52,020 t). Machinery cost: see machine_source. FX: 1 JOD = 1.4104 USD (CBJ peg 0.709).",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=400&partnerCode=0&flowCode=M&period=2024&cmdCode=200290",
+      "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/400/partner/000/product/200290/year/2023/datatype/reported",
+      "https://methena.en.made-in-china.com/product/LUnrIYRKIbha/",
+      "https://sinojump.en.made-in-china.com/product/GesnqoylLjtK/"
+    ],
+    "estimated_fields": [
+      "local_cost_per_kg_est_usd",
+      "conversion_cost_per_kg_usd",
+      "machinery_availability",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation"
+    ],
+    "machine_cost_range_jod": {
+      "min": 35450.0,
+      "max": 354500.0
+    },
+    "capex_usd_range": {
+      "min": 50000.0,
+      "max": 500000.0
+    },
+    "machine_source": "Made-in-China supplier listings, Oct 2026: Small tomato paste line USD 50,000 (methena) to high-concentrate line USD 490,000-500,000 (sinojump)",
+    "import_weight_kg_2024": 16409923.0,
+    "break_even": null
+  },
+  "scenario": {
+    "category_id": "tomato_paste",
+    "name_en": "Tomato paste",
+    "name_ar": "معجون بندورة",
+    "hs6": "200290",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 7.7,
+    "verdict": "MANUFACTURE",
+    "verdict_forced_maybe": false,
+    "verdict_capped_by": null,
+    "data_completeness": 1.0,
+    "flags": [
+      "high_capital_requirement"
+    ],
+    "missing_fields": [],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 8.05,
+      "volume_score": 6.74,
+      "trend_score": 10.0,
+      "cagr": 0.1252,
+      "latest_import_usd": 21465982.0
+    },
+    "cost": {
+      "score": 10.0,
+      "import_price_per_kg_usd": 1.308,
+      "shipping_pct": 0.215,
+      "customs_pct": 0.1,
+      "landed_cost_per_kg_usd": 1.439,
+      "local_cost_per_kg_est_usd": 1.0,
+      "margin": 0.305,
+      "raw_material_price_usd_per_kg": 0.564,
+      "material_kg_per_kg_product": 6.4,
+      "conversion_cost_per_kg_usd": 0.4
+    },
+    "feasibility": {
+      "score": 6.67,
+      "machinery_availability": 2.0,
+      "raw_material_local": 5.0,
+      "skills_availability": 3.0
+    },
+    "competition": {
+      "score": 4.0,
+      "local_factories": 3,
+      "factories_saturation": 5
+    },
+    "imports_usd": {
+      "2020": 13390341.0,
+      "2021": 16258928.0,
+      "2022": 17657523.0,
+      "2023": 21695286.0,
+      "2024": 21465982.0
+    },
+    "overrides_applied": {
+      "local_cost_per_kg_est_usd": 1.0
+    },
+    "notes": [
+      "high capital requirement: equipment alone is listed at up to 500,000 USD (equipment only, partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings)"
+    ],
+    "trend_label": "growing",
+    "machinery": [
+      "Washer and sorter",
+      "Hot-break unit",
+      "Pulper/finisher",
+      "Vacuum evaporator",
+      "Aseptic or can filler"
+    ],
+    "raw_materials": [
+      "Fresh tomatoes (grown in Jordan)",
+      "Cans or jars",
+      "Salt"
+    ],
+    "risk_notes": "بنحتاج حوالي 6 كيلو بندورة لكيلو معجون، فكلفة الإنتاج المحلي أعلى بكثير من المستورد؛ بيع البندورة طازجة (تصدير 2.06$/كغ) بيجيب أكثر؛ الموردين قريبين والحماية قليلة",
+    "competition_note": "عدد قليل من مصانع الأغذية بتعبّي معجون",
+    "source_notes": "Imports & weight: UN Comtrade (Jordan=400, partner World, flow M, CIF USD), pulled 2026-10-09. Customs: WITS/TRAINS MFN simple average 2023. Freight: China->Aqaba 20GP USD 5,275, Jul 2026 (Goodhope Freight); payload 18,800 kg = 80 aseptic drums x 235 kg per 20ft (tomatopaste.webnode.cn). China is the #2 supplier; Egypt (#1) is closer, so this is an upper bound. shipping_pct = (freight/payload)/import_price_per_kg_usd; CIF price already includes freight - do not add on top. Raw material: Ministry of Agriculture bulletin, Amman Central Market, 29 Mar 2026: tomatoes 30/40/50 piasters per kg; used 40 piasters = 0.40 JOD/kg. Ratio = paste Brix / fresh Brix = 29 / 4.5 (paste traded at 28-30 Bx, fresh tomatoes 3.5-5.5 Bx; Tridge tomato paste supply-chain note) = 6.4. Conversion cost (labour, energy, overheads) is an estimate. Raw-material availability evidence: Jordan is a large fresh-tomato exporter (WITS 070200 exports 2023: USD 107.2M, 52,020 t). Machinery cost: see machine_source. FX: 1 JOD = 1.4104 USD (CBJ peg 0.709).",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=400&partnerCode=0&flowCode=M&period=2024&cmdCode=200290",
+      "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/400/partner/000/product/200290/year/2023/datatype/reported",
+      "https://methena.en.made-in-china.com/product/LUnrIYRKIbha/",
+      "https://sinojump.en.made-in-china.com/product/GesnqoylLjtK/"
+    ],
+    "estimated_fields": [
+      "local_cost_per_kg_est_usd",
+      "conversion_cost_per_kg_usd",
+      "machinery_availability",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation"
+    ],
+    "machine_cost_range_jod": {
+      "min": 35450.0,
+      "max": 354500.0
+    },
+    "capex_usd_range": {
+      "min": 50000.0,
+      "max": 500000.0
+    },
+    "machine_source": "Made-in-China supplier listings, Oct 2026: Small tomato paste line USD 50,000 (methena) to high-concentrate line USD 490,000-500,000 (sinojump)",
+    "import_weight_kg_2024": 16409923.0,
+    "break_even": {
+      "capex_mid_usd": 275000.0,
+      "unit_saving_usd_per_kg": 0.4388,
+      "break_even_tons": 626.7,
+      "share_of_2024_imports": 0.0382
+    }
+  },
+  "score_delta": 3.8
+}

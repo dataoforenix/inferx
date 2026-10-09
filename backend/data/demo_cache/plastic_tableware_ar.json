@@ -1,0 +1,31 @@
+{
+  "id": "plastic_tableware_ar",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "صحون بلاستيك للمطبخ"
+  },
+  "match_keywords": [
+    "صحون بلاستيك",
+    "كاسات بلاستيك",
+    "ملاعق بلاستيك",
+    "أواني بلاستيك",
+    "علب أكل",
+    "أدوات مطبخ"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Plastic plates",
+    "product_name_ar": "صحون بلاستيك",
+    "description": "Plastic plates for household kitchen use.",
+    "category_id": "plastic_tableware",
+    "confidence": 0.92,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

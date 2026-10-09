@@ -1,0 +1,17 @@
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Request validation failed.",
+    "request_id": "0123456789abcdef0123456789abcdef",
+    "details": [
+      {
+        "loc": [
+          "body",
+          "language"
+        ],
+        "msg": "Input should be 'ar' or 'en'",
+        "type": "literal_error"
+      }
+    ]
+  }
+}

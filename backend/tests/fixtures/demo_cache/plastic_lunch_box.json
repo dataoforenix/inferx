@@ -1,0 +1,32 @@
+{
+  "id": "plastic_lunch_box",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "Plastic lunch box with a snap-on lid"
+  },
+  "match_keywords": [
+    "lunch box",
+    "food container",
+    "plastic plate",
+    "plastic cup",
+    "علبة طعام",
+    "صحون بلاستيك",
+    "أكواب بلاستيك"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Plastic lunch box",
+    "product_name_ar": "علبة طعام بلاستيكية",
+    "description": "A reusable plastic food container with a lid.",
+    "category_id": "plastic_kitchenware",
+    "confidence": 0.93,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

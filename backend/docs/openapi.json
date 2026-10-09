@@ -1,0 +1,1797 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sanna'ha API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Categories",
+        "operationId": "categories_api_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/whatif": {
+      "post": {
+        "tags": [
+          "whatif"
+        ],
+        "summary": "Whatif",
+        "description": "Recalculate a category's report with overrides. Pure Python, no LLM call.",
+        "operationId": "whatif_api_whatif_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhatIfRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhatIfResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analyze": {
+      "post": {
+        "tags": [
+          "analyze"
+        ],
+        "summary": "Analyze",
+        "operationId": "analyze_api_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_api_analyze_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Length Required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported Media Type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analyze/confirm": {
+      "post": {
+        "tags": [
+          "analyze"
+        ],
+        "summary": "Confirm",
+        "description": "Analyse the category the user confirmed after a needs_confirmation response.",
+        "operationId": "confirm_api_analyze_confirm_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Length Required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported Media Type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalyzeResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "needs_confirmation",
+              "unsupported",
+              "market_preview"
+            ],
+            "title": "Status"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "ar",
+              "en"
+            ],
+            "title": "Language"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "live",
+              "demo_cache"
+            ],
+            "title": "Source",
+            "default": "live"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NormalizedProduct"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "needs_confirmation": {
+            "type": "boolean",
+            "title": "Needs Confirmation"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryCandidate"
+            },
+            "type": "array",
+            "title": "Candidates",
+            "description": "Categories the user can confirm via /api/analyze/confirm when needs_confirmation is true."
+          },
+          "report": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeasibilityReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "explanation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Explanation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "explanation_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "llm",
+                  "fallback",
+                  "template"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Explanation Source",
+            "description": "llm: AI-written and grounding-checked; fallback: template used because the AI text was unavailable or ungrounded; template: deterministic text by design (market_preview)."
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "timings_ms": {
+            "$ref": "#/components/schemas/Timings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "status",
+          "language",
+          "product",
+          "needs_confirmation",
+          "candidates",
+          "report",
+          "explanation",
+          "explanation_source",
+          "warnings"
+        ],
+        "title": "AnalyzeResponse"
+      },
+      "Body_analyze_api_analyze_post": {
+        "properties": {
+          "image": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image",
+            "description": "JPEG, PNG or WebP, max 8 MB"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "Product description in Arabic or English"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "ar",
+              "en"
+            ],
+            "title": "Language",
+            "default": "en"
+          }
+        },
+        "type": "object",
+        "title": "Body_analyze_api_analyze_post"
+      },
+      "BreakEven": {
+        "properties": {
+          "capex_mid_usd": {
+            "type": "number",
+            "title": "Capex Mid Usd",
+            "description": "(capex_usd_range.min + max) / 2, USD"
+          },
+          "unit_saving_usd_per_kg": {
+            "type": "number",
+            "title": "Unit Saving Usd Per Kg",
+            "description": "landed import cost - local cost, USD/kg"
+          },
+          "break_even_tons": {
+            "type": "number",
+            "title": "Break Even Tons",
+            "description": "capex_mid_usd / unit_saving_usd_per_kg, in tonnes"
+          },
+          "share_of_2024_imports": {
+            "type": "number",
+            "title": "Share Of 2024 Imports",
+            "description": "break-even weight / import_weight_kg_2024, as a fraction"
+          }
+        },
+        "type": "object",
+        "required": [
+          "capex_mid_usd",
+          "unit_saving_usd_per_kg",
+          "break_even_tons",
+          "share_of_2024_imports"
+        ],
+        "title": "BreakEven",
+        "description": "How much must be sold at import-parity price before the equipment pays for itself."
+      },
+      "CapexRange": {
+        "properties": {
+          "min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min",
+            "description": "Equipment only: supplier listing prices ex-works, excluding shipping, customs, installation, moulds and buildings (USD)."
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max",
+            "description": "Equipment only: supplier listing prices ex-works, excluding shipping, customs, installation, moulds and buildings (USD)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "min",
+          "max"
+        ],
+        "title": "CapexRange"
+      },
+      "CategoriesResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/CategorySummary"
+            },
+            "type": "array",
+            "title": "Categories"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "categories"
+        ],
+        "title": "CategoriesResponse"
+      },
+      "CategoryCandidate": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "title": "Category Id"
+          },
+          "name_en": {
+            "type": "string",
+            "title": "Name En"
+          },
+          "name_ar": {
+            "type": "string",
+            "title": "Name Ar"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category_id",
+          "name_en",
+          "name_ar"
+        ],
+        "title": "CategoryCandidate"
+      },
+      "CategorySummary": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "title": "Category Id"
+          },
+          "name_en": {
+            "type": "string",
+            "title": "Name En"
+          },
+          "name_ar": {
+            "type": "string",
+            "title": "Name Ar"
+          },
+          "description_en": {
+            "type": "string",
+            "title": "Description En"
+          },
+          "hs6": {
+            "type": "string",
+            "title": "Hs6"
+          },
+          "data_status": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "ESTIMATE",
+              "TODO_REAL_DATA"
+            ],
+            "title": "Data Status"
+          },
+          "is_placeholder_data": {
+            "type": "boolean",
+            "title": "Is Placeholder Data",
+            "description": "True when values are TODO_REAL_DATA placeholders."
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category_id",
+          "name_en",
+          "name_ar",
+          "description_en",
+          "hs6",
+          "data_status",
+          "is_placeholder_data",
+          "missing_fields"
+        ],
+        "title": "CategorySummary"
+      },
+      "CompetitionBreakdown": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "local_factories": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Factories"
+          },
+          "factories_saturation": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Factories Saturation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "local_factories",
+          "factories_saturation"
+        ],
+        "title": "CompetitionBreakdown"
+      },
+      "ConfirmRequest": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Category Id"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "ar",
+              "en"
+            ],
+            "title": "Language",
+            "default": "en"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProductInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "category_id"
+        ],
+        "title": "ConfirmRequest"
+      },
+      "CostBreakdown": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "import_price_per_kg_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Import Price Per Kg Usd"
+          },
+          "shipping_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shipping Pct"
+          },
+          "customs_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customs Pct"
+          },
+          "landed_cost_per_kg_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Landed Cost Per Kg Usd"
+          },
+          "local_cost_per_kg_est_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Cost Per Kg Est Usd"
+          },
+          "margin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Margin",
+            "description": "(landed - local) / landed, as a fraction"
+          },
+          "raw_material_price_usd_per_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Material Price Usd Per Kg"
+          },
+          "material_kg_per_kg_product": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Material Kg Per Kg Product"
+          },
+          "conversion_cost_per_kg_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversion Cost Per Kg Usd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "import_price_per_kg_usd",
+          "shipping_pct",
+          "customs_pct",
+          "landed_cost_per_kg_usd",
+          "local_cost_per_kg_est_usd",
+          "margin"
+        ],
+        "title": "CostBreakdown"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
+        "title": "ErrorBody"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "Explanation": {
+        "properties": {
+          "language": {
+            "type": "string",
+            "enum": [
+              "ar",
+              "en"
+            ],
+            "title": "Language"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "reasons_for": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons For"
+          },
+          "concerns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Concerns"
+          },
+          "next_steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Next Steps"
+          },
+          "caveats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Caveats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "language",
+          "summary",
+          "reasons_for",
+          "concerns",
+          "next_steps",
+          "caveats"
+        ],
+        "title": "Explanation"
+      },
+      "FeasibilityBreakdown": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "machinery_availability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Machinery Availability"
+          },
+          "raw_material_local": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Material Local"
+          },
+          "skills_availability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skills Availability"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "machinery_availability",
+          "raw_material_local",
+          "skills_availability"
+        ],
+        "title": "FeasibilityBreakdown"
+      },
+      "FeasibilityReport": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "title": "Category Id"
+          },
+          "name_en": {
+            "type": "string",
+            "title": "Name En"
+          },
+          "name_ar": {
+            "type": "string",
+            "title": "Name Ar"
+          },
+          "hs6": {
+            "type": "string",
+            "title": "Hs6"
+          },
+          "data_status": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "ESTIMATE",
+              "TODO_REAL_DATA"
+            ],
+            "title": "Data Status"
+          },
+          "is_placeholder_data": {
+            "type": "boolean",
+            "title": "Is Placeholder Data"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "0-10, one decimal. None only when no component is computable."
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "MANUFACTURE",
+              "MAYBE",
+              "DONT"
+            ],
+            "title": "Verdict"
+          },
+          "verdict_forced_maybe": {
+            "type": "boolean",
+            "title": "Verdict Forced Maybe",
+            "description": "True when data completeness was too low to trust the score."
+          },
+          "verdict_capped_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "cost_gate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verdict Capped By",
+            "description": "cost_gate: producing locally costs more than importing (margin < 0), so the score/verdict was capped (at most MAYBE / 5.9; DONT / 3.9 when margin < -0.25). Null when nothing was capped."
+          },
+          "data_completeness": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Data Completeness"
+          },
+          "flags": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "high_capital_requirement",
+                "market_preview_only"
+              ]
+            },
+            "type": "array",
+            "title": "Flags",
+            "description": "Information flags that never change the score. high_capital_requirement: machine_cost_usd_max >= 250,000 USD (equipment only). market_preview_only: a preliminary scan built from UN Comtrade imports alone for a product outside the categories."
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          },
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Weights"
+          },
+          "market": {
+            "$ref": "#/components/schemas/MarketBreakdown"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/CostBreakdown"
+          },
+          "feasibility": {
+            "$ref": "#/components/schemas/FeasibilityBreakdown"
+          },
+          "competition": {
+            "$ref": "#/components/schemas/CompetitionBreakdown"
+          },
+          "imports_usd": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Imports Usd"
+          },
+          "overrides_applied": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Overrides Applied"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes"
+          },
+          "trend_label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "growing",
+                  "stable",
+                  "declining"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trend Label",
+            "description": "growing if CAGR > 3%, declining if < -3%, else stable"
+          },
+          "machinery": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Machinery"
+          },
+          "raw_materials": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Raw Materials"
+          },
+          "risk_notes": {
+            "type": "string",
+            "title": "Risk Notes"
+          },
+          "competition_note": {
+            "type": "string",
+            "title": "Competition Note"
+          },
+          "source_notes": {
+            "type": "string",
+            "title": "Source Notes"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources",
+            "description": "Non-empty source_url, tariff_source_url and machine_source_urls"
+          },
+          "estimated_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Estimated Fields",
+            "description": "CSV columns whose values are estimates"
+          },
+          "machine_cost_range_jod": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MachineCostRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "capex_usd_range": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CapexRange"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Equipment only: supplier listing prices ex-works, excluding shipping, customs, installation, moulds and buildings (USD)."
+          },
+          "machine_source": {
+            "type": "string",
+            "title": "Machine Source",
+            "description": "Where the equipment prices come from",
+            "default": ""
+          },
+          "import_weight_kg_2024": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Import Weight Kg 2024",
+            "description": "Weight of 2024 imports, kg"
+          },
+          "break_even": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BreakEven"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Indicative: equipment only, excludes buildings and working capital, assumes selling at import-parity price. Null unless capex_usd_range (min and max), import_weight_kg_2024 and a cost advantage (landed > local) all exist."
+          }
+        },
+        "type": "object",
+        "required": [
+          "category_id",
+          "name_en",
+          "name_ar",
+          "hs6",
+          "data_status",
+          "is_placeholder_data",
+          "score",
+          "verdict",
+          "verdict_forced_maybe",
+          "data_completeness",
+          "missing_fields",
+          "weights",
+          "market",
+          "cost",
+          "feasibility",
+          "competition",
+          "imports_usd",
+          "overrides_applied",
+          "notes",
+          "trend_label",
+          "machinery",
+          "raw_materials",
+          "risk_notes",
+          "competition_note",
+          "source_notes",
+          "sources",
+          "estimated_fields",
+          "machine_cost_range_jod"
+        ],
+        "title": "FeasibilityReport",
+        "description": "Everything here is computed by Python (app/scoring.py) or copied from the CSV. LLMs only explain it."
+      },
+      "HealthResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ],
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "demo_mode": {
+            "type": "boolean",
+            "title": "Demo Mode"
+          },
+          "llm_configured": {
+            "type": "boolean",
+            "title": "Llm Configured"
+          },
+          "categories_loaded": {
+            "type": "integer",
+            "title": "Categories Loaded"
+          },
+          "data_warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Data Warnings"
+          },
+          "demo_cache_entries": {
+            "type": "integer",
+            "title": "Demo Cache Entries"
+          },
+          "demo_cache_placeholder_entries": {
+            "type": "integer",
+            "title": "Demo Cache Placeholder Entries",
+            "description": "Hand-written entries, not recorded from the AI."
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "status",
+          "version",
+          "demo_mode",
+          "llm_configured",
+          "categories_loaded",
+          "data_warnings",
+          "demo_cache_entries",
+          "demo_cache_placeholder_entries"
+        ],
+        "title": "HealthResponse"
+      },
+      "MachineCostRange": {
+        "properties": {
+          "min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min",
+            "description": "JOD"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max",
+            "description": "JOD"
+          }
+        },
+        "type": "object",
+        "required": [
+          "min",
+          "max"
+        ],
+        "title": "MachineCostRange"
+      },
+      "MarketBreakdown": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "volume_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume Score"
+          },
+          "trend_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trend Score"
+          },
+          "cagr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cagr",
+            "description": "Compound annual growth 2020-2024, as a fraction"
+          },
+          "latest_import_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Import Usd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "volume_score",
+          "trend_score",
+          "cagr",
+          "latest_import_usd"
+        ],
+        "title": "MarketBreakdown"
+      },
+      "NormalizedProduct": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Name En",
+            "default": ""
+          },
+          "name_ar": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Name Ar",
+            "default": ""
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 600,
+            "title": "Description",
+            "default": ""
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Id"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "alternatives": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryCandidate"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          },
+          "hs6_guess": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hs6 Guess",
+            "description": "AI-guessed 6-digit HS code (market_preview only); show it so the user can check it."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "category_id",
+          "confidence",
+          "alternatives"
+        ],
+        "title": "NormalizedProduct"
+      },
+      "ProductInfo": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Name En",
+            "default": ""
+          },
+          "name_ar": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Name Ar",
+            "default": ""
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 600,
+            "title": "Description",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ProductInfo",
+        "description": "Normalised product. In /confirm requests it comes from the client, so it is length-limited."
+      },
+      "Timings": {
+        "properties": {
+          "normalize": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalize",
+            "description": "Product recognition (LLM or demo cache)"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "Deterministic scoring"
+          },
+          "explain": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Explain",
+            "description": "Explanation incl. grounding retry"
+          },
+          "market_data": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Market Data",
+            "description": "UN Comtrade lookup (market preview only)"
+          },
+          "total": {
+            "type": "number",
+            "title": "Total",
+            "description": "Whole request handler, incl. image processing",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "Timings",
+        "description": "Server-side milliseconds per step; null when the step did not run."
+      },
+      "WhatIfOverrides": {
+        "properties": {
+          "customs_pct": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customs Pct",
+            "description": "Fraction, e.g. 0.2 = 20%"
+          },
+          "shipping_pct": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shipping Pct",
+            "description": "Fraction, e.g. 0.08 = 8%"
+          },
+          "local_cost_per_kg_est_usd": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Cost Per Kg Est Usd"
+          },
+          "import_price_per_kg_usd": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Import Price Per Kg Usd"
+          },
+          "local_factories": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Factories"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "WhatIfOverrides",
+        "description": "Optional what-if inputs. Ranges mirror the CSV validation rules."
+      },
+      "WhatIfRequest": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Category Id"
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/WhatIfOverrides"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "category_id"
+        ],
+        "title": "WhatIfRequest"
+      },
+      "WhatIfResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/FeasibilityReport"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/FeasibilityReport"
+          },
+          "score_delta": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Delta",
+            "description": "scenario.score - baseline.score, one decimal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "baseline",
+          "scenario",
+          "score_delta"
+        ],
+        "title": "WhatIfResponse"
+      }
+    }
+  }
+}

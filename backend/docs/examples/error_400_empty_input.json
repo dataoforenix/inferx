@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "empty_input",
+    "message": "Provide a product photo, a description, or both.",
+    "request_id": "0123456789abcdef0123456789abcdef"
+  }
+}

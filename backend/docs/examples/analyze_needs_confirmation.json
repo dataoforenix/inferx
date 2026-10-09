@@ -1,0 +1,50 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "status": "needs_confirmation",
+  "language": "en",
+  "source": "live",
+  "product": {
+    "name_en": "Plastic folding chair",
+    "name_ar": "كرسي بلاستيك قابل للطي",
+    "description": "A folding chair made mostly of moulded plastic.",
+    "category_id": "metal_chair",
+    "confidence": 0.45,
+    "alternatives": [
+      {
+        "category_id": "plastic_tableware",
+        "name_en": "Plastic tableware and kitchenware",
+        "name_ar": "أواني ومستلزمات مطبخ بلاستيك",
+        "confidence": 0.3
+      }
+    ],
+    "hs6_guess": null
+  },
+  "needs_confirmation": true,
+  "candidates": [
+    {
+      "category_id": "metal_chair",
+      "name_en": "Upholstered metal-frame chair",
+      "name_ar": "كرسي معدني منجّد",
+      "confidence": 0.45
+    },
+    {
+      "category_id": "plastic_tableware",
+      "name_en": "Plastic tableware and kitchenware",
+      "name_ar": "أواني ومستلزمات مطبخ بلاستيك",
+      "confidence": 0.3
+    }
+  ],
+  "report": null,
+  "explanation": null,
+  "explanation_source": null,
+  "warnings": [
+    "The product category is uncertain. Please confirm it."
+  ],
+  "timings_ms": {
+    "normalize": 0.0,
+    "score": null,
+    "explain": null,
+    "market_data": null,
+    "total": 0.1
+  }
+}

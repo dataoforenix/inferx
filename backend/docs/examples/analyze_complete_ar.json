@@ -1,0 +1,161 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "status": "complete",
+  "language": "ar",
+  "source": "live",
+  "product": {
+    "name_en": "Warehouse racks",
+    "name_ar": "رفوف مستودعات",
+    "description": "Metal storage racks for a warehouse.",
+    "category_id": "warehouse_racks",
+    "confidence": 0.94,
+    "alternatives": [],
+    "hs6_guess": null
+  },
+  "needs_confirmation": false,
+  "candidates": [],
+  "report": {
+    "category_id": "warehouse_racks",
+    "name_en": "Metal shelving and storage racks",
+    "name_ar": "رفوف مستودعات معدنية",
+    "hs6": "940320",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 7.2,
+    "verdict": "MANUFACTURE",
+    "verdict_forced_maybe": false,
+    "verdict_capped_by": null,
+    "data_completeness": 1.0,
+    "flags": [],
+    "missing_fields": [],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 6.86,
+      "volume_score": 6.16,
+      "trend_score": 7.91,
+      "cagr": 0.0583,
+      "latest_import_usd": 16199589.0
+    },
+    "cost": {
+      "score": 10.0,
+      "import_price_per_kg_usd": 2.571,
+      "shipping_pct": 0.184,
+      "customs_pct": 0.25,
+      "landed_cost_per_kg_usd": 3.214,
+      "local_cost_per_kg_est_usd": 2.088,
+      "margin": 0.3503,
+      "raw_material_price_usd_per_kg": 1.08,
+      "material_kg_per_kg_product": 1.1,
+      "conversion_cost_per_kg_usd": 0.9
+    },
+    "feasibility": {
+      "score": 5.33,
+      "machinery_availability": 3.0,
+      "raw_material_local": 1.0,
+      "skills_availability": 4.0
+    },
+    "competition": {
+      "score": 5.0,
+      "local_factories": 5,
+      "factories_saturation": 10
+    },
+    "imports_usd": {
+      "2020": 12916104.0,
+      "2021": 16880622.0,
+      "2022": 16937245.0,
+      "2023": 18651281.0,
+      "2024": 16199589.0
+    },
+    "overrides_applied": {},
+    "notes": [],
+    "trend_label": "growing",
+    "machinery": [
+      "Sheet shear",
+      "Press brake",
+      "Punching press",
+      "Roll-forming line (uprights)",
+      "Spot/MIG welding",
+      "Powder-coating line"
+    ],
+    "raw_materials": [
+      "Galvanised steel sheet",
+      "Cold-rolled steel coil",
+      "Powder paint",
+      "Bolts"
+    ],
+    "risk_notes": "الصاج المغلفن مستورد بالكامل؛ الرفوف الإنشائية الثقيلة ممكن تتصنّف تحت 730890 بجمرك أقل؛ مشاريع المستودعات الكبيرة بتطلب شهادات تحميل",
+    "competition_note": "عدد محدود من المصنّعين المحليين، ومشاريع اللوجستيات الكبيرة بتستورد جاهز",
+    "source_notes": "Imports & weight: UN Comtrade (Jordan=400, partner World, flow M, CIF USD), pulled 2026-10-09. Customs: WITS/TRAINS MFN simple average 2023. Freight: China->Aqaba 40ft USD 7575 (Goodhope Freight, Sep 2026 quotes 7,300-7,850); payload 16000 kg per container is an estimate. shipping_pct = (freight/payload)/import_price_per_kg_usd; CIF price already includes freight - do not add on top. Raw material: WITS: Jordan imports 721049 coated flat-rolled steel 2023 = 31,647.65k USD / 29,182,000 kg. Material ratio (scrap allowance) is an estimate. Conversion cost (labour, energy, overheads) is an estimate. Raw-material availability evidence: estimate. Machinery cost: see machine_source. FX: 1 JOD = 1.4104 USD (CBJ peg 0.709).",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=400&partnerCode=0&flowCode=M&period=2024&cmdCode=940320",
+      "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/400/partner/000/product/940320/year/2023/datatype/reported",
+      "https://putaitechnology.en.made-in-china.com/product/CtFYNHWXZRrT/",
+      "https://zyjxzz.en.made-in-china.com/product/lEWYKUOCfXhi/"
+    ],
+    "estimated_fields": [
+      "local_cost_per_kg_est_usd",
+      "conversion_cost_per_kg_usd",
+      "machinery_availability",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation",
+      "shipping_pct",
+      "protection_pct",
+      "material_kg_per_kg_product",
+      "raw_material_local"
+    ],
+    "machine_cost_range_jod": {
+      "min": 17725.0,
+      "max": 90965.0
+    },
+    "capex_usd_range": {
+      "min": 25000.0,
+      "max": 128300.0
+    },
+    "machine_source": "Made-in-China supplier listings, Oct 2026: Rack upright roll-forming machine USD 25,000-38,000 (putaitechnology) to 128,300 (zyjxzz)",
+    "import_weight_kg_2024": 6300316.0,
+    "break_even": {
+      "capex_mid_usd": 76650.0,
+      "unit_saving_usd_per_kg": 1.1258,
+      "break_even_tons": 68.1,
+      "share_of_2024_imports": 0.0108
+    }
+  },
+  "explanation": {
+    "language": "ar",
+    "summary": "حصل منتج رفوف مستودعات معدنية على 7.2 من 10، لذلك التصنيع المحلي يبدو فكرة تستحق الدراسة. نقطة التعادل (تقديرية): بيع حوالي 68 طن (1.1% من واردات 2024) بسعر يعادل سعر المستورد يسترد حوالي 76,650 دولار من ثمن المعدات (المعدات فقط، بدون المباني ورأس المال العامل).",
+    "reasons_for": [
+      "تبلغ تكلفة المستورد حوالي 3.21 دولار للكيلوغرام شاملة الجمارك (الشحن مشمول أصلاً في سعر الاستيراد)، مقابل تكلفة محلية تقديرية 2.09 دولار للكيلوغرام.",
+      "حجم الاستيراد جيد: حوالي 16.2 مليون دولار في 2024، بتغير سنوي قدره 5.8%.",
+      "القدرات المحلية معقولة: الآلات 3/5، المواد الخام 1/5، المهارات 4/5."
+    ],
+    "concerns": [
+      "الصاج المغلفن مستورد بالكامل؛ الرفوف الإنشائية الثقيلة ممكن تتصنّف تحت 730890 بجمرك أقل؛ مشاريع المستودعات الكبيرة بتطلب شهادات تحميل",
+      "أرقام التكلفة تقديرية ويجب التحقق منها بعروض أسعار حقيقية من الموردين.",
+      "بيانات التجارة قد لا تشمل التجارة غير الرسمية أو إعادة التصدير."
+    ],
+    "next_steps": [
+      "اطلب عروض أسعار مكتوبة من موردي الآلات والمواد الخام.",
+      "تحدث مع تجار الجملة والتجزئة المحليين لتأكيد الطلب والأسعار المستهدفة.",
+      "تحقق من التراخيص والمواصفات والحوافز لدى هيئة الاستثمار وغرفة صناعة الأردن."
+    ],
+    "caveats": [
+      "أرقام هذه البنود تقديرية وليست قيماً مقاسة: تكلفة الإنتاج المحلي، conversion_cost_per_kg_usd، توفر الآلات، توفر المهارات، عدد المصانع المحلية، حد تشبع السوق، تكلفة الشحن، protection_pct، material_kg_per_kg_product، المواد الخام المحلية.",
+      "هذا تقدير أولي سريع وليس خطة عمل أو نصيحة مالية."
+    ]
+  },
+  "explanation_source": "llm",
+  "warnings": [],
+  "timings_ms": {
+    "normalize": 0.0,
+    "score": 0.1,
+    "explain": 0.7,
+    "market_data": null,
+    "total": 1.5
+  }
+}

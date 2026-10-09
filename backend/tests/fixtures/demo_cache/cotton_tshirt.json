@@ -1,0 +1,31 @@
+{
+  "id": "cotton_tshirt",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "Plain white cotton t-shirt"
+  },
+  "match_keywords": [
+    "t-shirt",
+    "tshirt",
+    "t shirt",
+    "تيشيرت",
+    "فانيلة",
+    "قميص قطني"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Cotton T-shirt",
+    "product_name_ar": "تيشيرت قطني",
+    "description": "A knitted short-sleeve T-shirt made of cotton.",
+    "category_id": "cotton_tshirts",
+    "confidence": 0.9,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

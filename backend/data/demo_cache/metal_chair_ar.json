@@ -1,0 +1,31 @@
+{
+  "id": "metal_chair_ar",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "كرسي مكتب معدني منجد"
+  },
+  "match_keywords": [
+    "كرسي معدني",
+    "كرسي مكتب",
+    "كرسي مطعم",
+    "كرسي كافيه",
+    "كرسي حديد",
+    "كرسي منجد"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Upholstered metal office chair",
+    "product_name_ar": "كرسي مكتب معدني منجّد",
+    "description": "An upholstered chair with a metal frame.",
+    "category_id": "metal_chair",
+    "confidence": 0.92,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

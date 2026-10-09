@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "llm_unavailable",
+    "message": "The AI service is temporarily unavailable. Please try again.",
+    "request_id": "0123456789abcdef0123456789abcdef"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "status": "unsupported",
+  "language": "en",
+  "source": "live",
+  "product": {
+    "name_en": "Accounting software",
+    "name_ar": "برنامج محاسبة",
+    "description": "A software product, not a physical good.",
+    "category_id": null,
+    "confidence": 0.97,
+    "alternatives": [],
+    "hs6_guess": null
+  },
+  "needs_confirmation": false,
+  "candidates": [],
+  "report": null,
+  "explanation": null,
+  "explanation_source": null,
+  "warnings": [
+    "This product does not match any of the supported categories."
+  ],
+  "timings_ms": {
+    "normalize": 0.0,
+    "score": null,
+    "explain": null,
+    "market_data": null,
+    "total": 0.1
+  }
+}

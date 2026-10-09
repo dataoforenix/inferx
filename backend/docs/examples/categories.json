@@ -1,0 +1,65 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "categories": [
+    {
+      "category_id": "metal_chair",
+      "name_en": "Upholstered metal-frame chair",
+      "name_ar": "كرسي معدني منجّد",
+      "description_en": "Chairs and seats with a metal frame and padded seat/back: office, restaurant, cafe, waiting-room chairs.",
+      "hs6": "940171",
+      "data_status": "ESTIMATE",
+      "is_placeholder_data": false,
+      "missing_fields": []
+    },
+    {
+      "category_id": "warehouse_racks",
+      "name_en": "Metal shelving and storage racks",
+      "name_ar": "رفوف مستودعات معدنية",
+      "description_en": "Knock-down metal shelving units and light-to-medium storage racks for warehouses, shops and archives (HS 940320 metal furniture).",
+      "hs6": "940320",
+      "data_status": "ESTIMATE",
+      "is_placeholder_data": false,
+      "missing_fields": []
+    },
+    {
+      "category_id": "plastic_tableware",
+      "name_en": "Plastic tableware and kitchenware",
+      "name_ar": "أواني ومستلزمات مطبخ بلاستيك",
+      "description_en": "Plastic plates, cups, bowls, cutlery, food containers and kitchen utensils (HS 392410).",
+      "hs6": "392410",
+      "data_status": "ESTIMATE",
+      "is_placeholder_data": false,
+      "missing_fields": []
+    },
+    {
+      "category_id": "ceiling_fan",
+      "name_en": "Ceiling and small electric fans",
+      "name_ar": "مراوح سقف وجدار",
+      "description_en": "Ceiling, wall, table and floor fans with self-contained motor up to 125 W (HS 841451).",
+      "hs6": "841451",
+      "data_status": "ESTIMATE",
+      "is_placeholder_data": false,
+      "missing_fields": []
+    },
+    {
+      "category_id": "frozen_fries",
+      "name_en": "Frozen French fries",
+      "name_ar": "بطاطا مقلية مجمّدة (فرنش فرايز)",
+      "description_en": "Par-fried frozen potato strips, wedges and similar frozen potato products (HS 200410).",
+      "hs6": "200410",
+      "data_status": "ESTIMATE",
+      "is_placeholder_data": false,
+      "missing_fields": []
+    },
+    {
+      "category_id": "tomato_paste",
+      "name_en": "Tomato paste",
+      "name_ar": "معجون بندورة",
+      "description_en": "Tomato paste, concentrate and passata in cans, jars or sachets (HS 200290).",
+      "hs6": "200290",
+      "data_status": "ESTIMATE",
+      "is_placeholder_data": false,
+      "missing_fields": []
+    }
+  ]
+}

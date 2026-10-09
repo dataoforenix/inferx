@@ -1,0 +1,30 @@
+{
+  "id": "mobile_app_unsupported",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "A mobile app for food delivery"
+  },
+  "match_keywords": [
+    "mobile app",
+    "app",
+    "software",
+    "تطبيق",
+    "برنامج"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": false,
+    "product_name_en": "Food delivery app",
+    "product_name_ar": "تطبيق توصيل طعام",
+    "description": "A software service, not a physical product.",
+    "category_id": "unsupported",
+    "confidence": 0.97,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

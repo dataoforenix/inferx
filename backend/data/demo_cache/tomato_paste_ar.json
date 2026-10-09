@@ -1,0 +1,29 @@
+{
+  "id": "tomato_paste_ar",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "معجون بندورة"
+  },
+  "match_keywords": [
+    "معجون بندورة",
+    "رب البندورة",
+    "صلصة بندورة",
+    "معجون طماطم"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": true,
+    "product_name_en": "Tomato paste",
+    "product_name_ar": "معجون بندورة",
+    "description": "Concentrated tomato paste.",
+    "category_id": "tomato_paste",
+    "confidence": 0.92,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

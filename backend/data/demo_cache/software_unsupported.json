@@ -1,0 +1,30 @@
+{
+  "id": "software_unsupported",
+  "generated_by": "PLACEHOLDER_HANDWRITTEN",
+  "generated_at": null,
+  "model": null,
+  "example_input": {
+    "text": "accounting software for small shops"
+  },
+  "match_keywords": [
+    "software",
+    "mobile app",
+    "app",
+    "برنامج",
+    "تطبيق"
+  ],
+  "image_sha256": null,
+  "normalization": {
+    "is_physical_product": false,
+    "product_name_en": "Accounting software",
+    "product_name_ar": "برنامج محاسبة",
+    "description": "A software product, not a physical good.",
+    "category_id": "unsupported",
+    "confidence": 0.97,
+    "alternatives": []
+  },
+  "explanations": {
+    "en": null,
+    "ar": null
+  }
+}

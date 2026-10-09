@@ -1,0 +1,237 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "baseline": {
+    "category_id": "frozen_fries",
+    "name_en": "Frozen French fries",
+    "name_ar": "بطاطا مقلية مجمّدة (فرنش فرايز)",
+    "hs6": "200410",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 8.6,
+    "verdict": "MANUFACTURE",
+    "verdict_forced_maybe": false,
+    "verdict_capped_by": null,
+    "data_completeness": 1.0,
+    "flags": [
+      "high_capital_requirement"
+    ],
+    "missing_fields": [],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 9.9,
+      "volume_score": 9.84,
+      "trend_score": 10.0,
+      "cagr": 0.1939,
+      "latest_import_usd": 92813747.0
+    },
+    "cost": {
+      "score": 8.07,
+      "import_price_per_kg_usd": 1.13,
+      "shipping_pct": 0.185,
+      "customs_pct": 0.15,
+      "landed_cost_per_kg_usd": 1.299,
+      "local_cost_per_kg_est_usd": 1.14,
+      "margin": 0.1227,
+      "raw_material_price_usd_per_kg": 0.494,
+      "material_kg_per_kg_product": 1.6,
+      "conversion_cost_per_kg_usd": 0.35
+    },
+    "feasibility": {
+      "score": 6.0,
+      "machinery_availability": 2.0,
+      "raw_material_local": 4.0,
+      "skills_availability": 3.0
+    },
+    "competition": {
+      "score": 10.0,
+      "local_factories": 0,
+      "factories_saturation": 3
+    },
+    "imports_usd": {
+      "2020": 45686796.0,
+      "2021": 61666388.0,
+      "2022": 85279423.0,
+      "2023": 98218613.0,
+      "2024": 92813747.0
+    },
+    "overrides_applied": {},
+    "notes": [
+      "high capital requirement: equipment alone is listed at up to 420,000 USD (equipment only, partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings)"
+    ],
+    "trend_label": "growing",
+    "machinery": [
+      "Washer and peeler",
+      "Strip cutter",
+      "Blancher",
+      "Par-fryer",
+      "IQF tunnel freezer",
+      "Cold store",
+      "Packing machine"
+    ],
+    "raw_materials": [
+      "Potatoes (grown in Jordan",
+      "seed potatoes imported)",
+      "Frying oil",
+      "Packaging film"
+    ],
+    "risk_notes": "أعلى كلفة مكنة بين الفئات؛ سلسلة تبريد وترخيص من مؤسسة الغذاء والدواء؛ سعر البطاطا موسمي؛ مذكرة تفاهم 2024 (وفرة × الضامن للاستثمار) لمصنع كبير ممكن يدخل السوق",
+    "competition_note": "ما في مصنع شغّال؛ في مذكرة تفاهم غير ملزمة من 2024 لمصنع كبير",
+    "source_notes": "Imports & weight: UN Comtrade (Jordan=400, partner World, flow M, CIF USD), pulled 2026-10-09. Customs: WITS/TRAINS MFN simple average 2023. Reefer freight USD 4,500/40ft (no published lane rate found); payload 21,500 kg = midpoint of 18-25 t per 40ft reefer (supplier listing freshdi.com/product/Straight-Cut-Frozen-French-Fries). shipping_pct = (freight/payload)/import_price_per_kg_usd; CIF price already includes freight - do not add on top. Raw material: Ministry of Agriculture bulletin, Amman Central Market, 29 Mar 2026: potatoes 25/35/50 piasters per kg (min/most common/max); used 35 piasters = 0.35 JOD/kg. Yield: 1.5-1.6 kg raw potatoes per kg frozen fries at factory gate (indianpotato.com/how-many-potatoes-for-1-kg-french-fries). Conversion cost (labour, energy, overheads) is an estimate. Raw-material availability evidence: Jordan grows and exports potatoes (WITS 070190 exports 2023: 3,992 t); seed potatoes imported (>JD 7M/yr, Al Mamlaka 2026). Machinery cost: see machine_source. FX: 1 JOD = 1.4104 USD (CBJ peg 0.709).",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=400&partnerCode=0&flowCode=M&period=2024&cmdCode=200410",
+      "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/400/partner/000/product/200410/year/2023/datatype/reported",
+      "https://wellymachinery.en.made-in-china.com/product/zFTtOrDPaAUq/",
+      "https://zhuchengtianshun.en.made-in-china.com/product/vwrTaZiGaJph/"
+    ],
+    "estimated_fields": [
+      "local_cost_per_kg_est_usd",
+      "conversion_cost_per_kg_usd",
+      "machinery_availability",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation",
+      "shipping_pct",
+      "protection_pct"
+    ],
+    "machine_cost_range_jod": {
+      "min": 31905.0,
+      "max": 297780.0
+    },
+    "capex_usd_range": {
+      "min": 45000.0,
+      "max": 420000.0
+    },
+    "machine_source": "Made-in-China supplier listings, Oct 2026: Frozen fries line USD 45,000-150,000 (wellymachinery) to semi-automatic 100-300 kg/h line USD 390,000-420,000 (zhuchengtianshun)",
+    "import_weight_kg_2024": 82143912.0,
+    "break_even": {
+      "capex_mid_usd": 232500.0,
+      "unit_saving_usd_per_kg": 0.1595,
+      "break_even_tons": 1457.7,
+      "share_of_2024_imports": 0.0177
+    }
+  },
+  "scenario": {
+    "category_id": "frozen_fries",
+    "name_en": "Frozen French fries",
+    "name_ar": "بطاطا مقلية مجمّدة (فرنش فرايز)",
+    "hs6": "200410",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 8.6,
+    "verdict": "MANUFACTURE",
+    "verdict_forced_maybe": false,
+    "verdict_capped_by": null,
+    "data_completeness": 1.0,
+    "flags": [
+      "high_capital_requirement"
+    ],
+    "missing_fields": [],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 9.9,
+      "volume_score": 9.84,
+      "trend_score": 10.0,
+      "cagr": 0.1939,
+      "latest_import_usd": 92813747.0
+    },
+    "cost": {
+      "score": 8.07,
+      "import_price_per_kg_usd": 1.13,
+      "shipping_pct": 0.5,
+      "customs_pct": 0.15,
+      "landed_cost_per_kg_usd": 1.299,
+      "local_cost_per_kg_est_usd": 1.14,
+      "margin": 0.1227,
+      "raw_material_price_usd_per_kg": 0.494,
+      "material_kg_per_kg_product": 1.6,
+      "conversion_cost_per_kg_usd": 0.35
+    },
+    "feasibility": {
+      "score": 6.0,
+      "machinery_availability": 2.0,
+      "raw_material_local": 4.0,
+      "skills_availability": 3.0
+    },
+    "competition": {
+      "score": 10.0,
+      "local_factories": 0,
+      "factories_saturation": 3
+    },
+    "imports_usd": {
+      "2020": 45686796.0,
+      "2021": 61666388.0,
+      "2022": 85279423.0,
+      "2023": 98218613.0,
+      "2024": 92813747.0
+    },
+    "overrides_applied": {
+      "shipping_pct": 0.5
+    },
+    "notes": [
+      "shipping_pct is information only: freight is already included in the CIF import price, so changing it does not change the score",
+      "high capital requirement: equipment alone is listed at up to 420,000 USD (equipment only, partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings)"
+    ],
+    "trend_label": "growing",
+    "machinery": [
+      "Washer and peeler",
+      "Strip cutter",
+      "Blancher",
+      "Par-fryer",
+      "IQF tunnel freezer",
+      "Cold store",
+      "Packing machine"
+    ],
+    "raw_materials": [
+      "Potatoes (grown in Jordan",
+      "seed potatoes imported)",
+      "Frying oil",
+      "Packaging film"
+    ],
+    "risk_notes": "أعلى كلفة مكنة بين الفئات؛ سلسلة تبريد وترخيص من مؤسسة الغذاء والدواء؛ سعر البطاطا موسمي؛ مذكرة تفاهم 2024 (وفرة × الضامن للاستثمار) لمصنع كبير ممكن يدخل السوق",
+    "competition_note": "ما في مصنع شغّال؛ في مذكرة تفاهم غير ملزمة من 2024 لمصنع كبير",
+    "source_notes": "Imports & weight: UN Comtrade (Jordan=400, partner World, flow M, CIF USD), pulled 2026-10-09. Customs: WITS/TRAINS MFN simple average 2023. Reefer freight USD 4,500/40ft (no published lane rate found); payload 21,500 kg = midpoint of 18-25 t per 40ft reefer (supplier listing freshdi.com/product/Straight-Cut-Frozen-French-Fries). shipping_pct = (freight/payload)/import_price_per_kg_usd; CIF price already includes freight - do not add on top. Raw material: Ministry of Agriculture bulletin, Amman Central Market, 29 Mar 2026: potatoes 25/35/50 piasters per kg (min/most common/max); used 35 piasters = 0.35 JOD/kg. Yield: 1.5-1.6 kg raw potatoes per kg frozen fries at factory gate (indianpotato.com/how-many-potatoes-for-1-kg-french-fries). Conversion cost (labour, energy, overheads) is an estimate. Raw-material availability evidence: Jordan grows and exports potatoes (WITS 070190 exports 2023: 3,992 t); seed potatoes imported (>JD 7M/yr, Al Mamlaka 2026). Machinery cost: see machine_source. FX: 1 JOD = 1.4104 USD (CBJ peg 0.709).",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=400&partnerCode=0&flowCode=M&period=2024&cmdCode=200410",
+      "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/400/partner/000/product/200410/year/2023/datatype/reported",
+      "https://wellymachinery.en.made-in-china.com/product/zFTtOrDPaAUq/",
+      "https://zhuchengtianshun.en.made-in-china.com/product/vwrTaZiGaJph/"
+    ],
+    "estimated_fields": [
+      "local_cost_per_kg_est_usd",
+      "conversion_cost_per_kg_usd",
+      "machinery_availability",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation",
+      "shipping_pct",
+      "protection_pct"
+    ],
+    "machine_cost_range_jod": {
+      "min": 31905.0,
+      "max": 297780.0
+    },
+    "capex_usd_range": {
+      "min": 45000.0,
+      "max": 420000.0
+    },
+    "machine_source": "Made-in-China supplier listings, Oct 2026: Frozen fries line USD 45,000-150,000 (wellymachinery) to semi-automatic 100-300 kg/h line USD 390,000-420,000 (zhuchengtianshun)",
+    "import_weight_kg_2024": 82143912.0,
+    "break_even": {
+      "capex_mid_usd": 232500.0,
+      "unit_saving_usd_per_kg": 0.1595,
+      "break_even_tons": 1457.7,
+      "share_of_2024_imports": 0.0177
+    }
+  },
+  "score_delta": 0.0
+}

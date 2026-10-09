@@ -1,0 +1,146 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "status": "market_preview",
+  "language": "en",
+  "source": "live",
+  "product": {
+    "name_en": "Rooftop solar panel",
+    "name_ar": "لوح طاقة شمسية",
+    "description": "A photovoltaic module for rooftops.",
+    "category_id": null,
+    "confidence": 0.95,
+    "alternatives": [],
+    "hs6_guess": "854143"
+  },
+  "needs_confirmation": false,
+  "candidates": [],
+  "report": {
+    "category_id": "market_preview",
+    "name_en": "Rooftop solar panel",
+    "name_ar": "لوح طاقة شمسية",
+    "hs6": "854143",
+    "data_status": "ESTIMATE",
+    "is_placeholder_data": false,
+    "score": 9.2,
+    "verdict": "MAYBE",
+    "verdict_forced_maybe": true,
+    "verdict_capped_by": null,
+    "data_completeness": 0.21,
+    "flags": [
+      "market_preview_only"
+    ],
+    "missing_fields": [
+      "imports_2020_usd",
+      "import_price_per_kg_usd",
+      "customs_pct",
+      "local_cost_per_kg_est_usd",
+      "machinery_availability",
+      "raw_material_local",
+      "skills_availability",
+      "local_factories",
+      "factories_saturation"
+    ],
+    "weights": {
+      "market": 0.35,
+      "cost": 0.3,
+      "feasibility": 0.2,
+      "competition": 0.15
+    },
+    "market": {
+      "score": 9.16,
+      "volume_score": 9.16,
+      "trend_score": null,
+      "cagr": null,
+      "latest_import_usd": 67533519.488
+    },
+    "cost": {
+      "score": null,
+      "import_price_per_kg_usd": null,
+      "shipping_pct": null,
+      "customs_pct": null,
+      "landed_cost_per_kg_usd": null,
+      "local_cost_per_kg_est_usd": null,
+      "margin": null,
+      "raw_material_price_usd_per_kg": null,
+      "material_kg_per_kg_product": null,
+      "conversion_cost_per_kg_usd": null
+    },
+    "feasibility": {
+      "score": null,
+      "machinery_availability": null,
+      "raw_material_local": null,
+      "skills_availability": null
+    },
+    "competition": {
+      "score": null,
+      "local_factories": null,
+      "factories_saturation": null
+    },
+    "imports_usd": {
+      "2020": null,
+      "2021": null,
+      "2022": 58675722.148,
+      "2023": 41114161.694,
+      "2024": 67533519.488
+    },
+    "overrides_applied": {},
+    "notes": [
+      "market score uses import volume only; growth trend could not be computed",
+      "cost score unavailable: import price, customs or local cost data is missing",
+      "feasibility score unavailable: machinery, raw material or skills rating is missing",
+      "competition score unavailable: factory count or saturation level is missing",
+      "verdict set to MAYBE because data completeness (21%) is below 80%",
+      "market preview only: built from UN Comtrade imports for HS 854143, a code guessed by the AI (please check it); cost, feasibility and competition data are missing, so this is not a feasibility verdict"
+    ],
+    "trend_label": null,
+    "machinery": [],
+    "raw_materials": [],
+    "risk_notes": "",
+    "competition_note": "",
+    "source_notes": "Imports: UN Comtrade public preview API (Jordan=400, partner World, flow M, CIF USD), HS 854143 guessed by the AI.",
+    "sources": [
+      "https://comtradeapi.un.org/public/v1/preview/C/A/HS"
+    ],
+    "estimated_fields": [],
+    "machine_cost_range_jod": null,
+    "capex_usd_range": null,
+    "machine_source": "",
+    "import_weight_kg_2024": 19579573.5,
+    "break_even": null
+  },
+  "explanation": {
+    "language": "en",
+    "summary": "This is a preliminary market scan for Rooftop solar panel, not a full assessment: the product is outside the supported categories, so only UN Comtrade import data for HS 854143 was used (the code was guessed by the AI; please check it). Jordan imported about 67.5 million USD in 2024. Without cost, manufacturing and competition data there is no real verdict yet, so the result is held at MAYBE.",
+    "reasons_for": [
+      "Jordan imported about 67.5 million USD under HS 854143 in 2024.",
+      "That is about 19,580 tonnes of imports in 2024.",
+      "The import figures are official UN Comtrade statistics reported by Jordan."
+    ],
+    "concerns": [
+      "No cost data: the import price per kg, the customs duty and an estimated local production cost are needed to compare local production with imports.",
+      "No manufacturing data: machinery, raw-material and skills availability in Jordan are unknown.",
+      "No competition data: the number of local factories already making this product is unknown."
+    ],
+    "next_steps": [
+      "Check that HS 854143 really matches your product (Jordan Customs tariff or WITS); the import figures belong to that code.",
+      "Get supplier quotes for machines and raw materials to estimate the local production cost per kg.",
+      "Ask the Jordan Chamber of Industry how many local factories make this product."
+    ],
+    "caveats": [
+      "Preliminary market scan only: cost, manufacturing and competition were not assessed.",
+      "The HS code was guessed by the AI and may be wrong.",
+      "This is a quick screening estimate, not a business plan or financial advice."
+    ]
+  },
+  "explanation_source": "template",
+  "warnings": [
+    "Market preview only: this product is outside the supported categories. The figures are UN Comtrade imports for HS 854143, a code guessed by the AI; please check it."
+  ],
+  "timings_ms": {
+    "normalize": 0.0,
+    "score": 0.2,
+    "explain": 0.0,
+    "market_data": 0.0,
+    "total": 0.4
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "health.json": "HealthResponse",
+  "categories.json": "CategoriesResponse",
+  "analyze_complete_en.json": "AnalyzeResponse",
+  "analyze_complete_ar.json": "AnalyzeResponse",
+  "analyze_needs_confirmation.json": "AnalyzeResponse",
+  "analyze_unsupported.json": "AnalyzeResponse",
+  "analyze_market_preview.json": "AnalyzeResponse",
+  "confirm_complete.json": "AnalyzeResponse",
+  "confirm_complete_ar.json": "AnalyzeResponse",
+  "confirm_complete_all_fields.json": "AnalyzeResponse",
+  "whatif.json": "WhatIfResponse",
+  "whatif_shipping_info_only.json": "WhatIfResponse",
+  "error_400_empty_input.json": "ErrorResponse",
+  "error_413_payload_too_large.json": "ErrorResponse",
+  "error_415_unsupported_image_type.json": "ErrorResponse",
+  "error_422_validation_error.json": "ErrorResponse",
+  "error_503_llm_unavailable.json": "ErrorResponse",
+  "error_404_demo_no_match.json": "ErrorResponse"
+}
