@@ -74,8 +74,9 @@ Interactive API docs: http://localhost:8000/docs
 |---|---|---|
 | `OPENAI_API_KEY` | — | The **Gemini** API key (name kept for the OpenAI SDK). Required for live analysis. Never logged or returned. |
 | `OPENAI_BASE_URL` | `https://generativelanguage.googleapis.com/v1beta/openai/` | Gemini's OpenAI-compatible endpoint; any OpenAI-compatible URL works |
-| `NORMALIZE_MODEL` / `EXPLAIN_MODEL` | `gemini-3.8-flash` | Must support vision and JSON structured outputs on that endpoint |
-| `LLM_TIMEOUT_SECONDS` / `LLM_MAX_RETRIES` | `60` / `2` | SDK retries 408/409/429/5xx/connection errors |
+| `NORMALIZE_MODEL` / `EXPLAIN_MODEL` | `gemini-3.5-flash-lite` | Must support vision and JSON structured outputs on that endpoint (see [Speed and cost](#speed-and-cost)) |
+| `LLM_REASONING_EFFORT` | `low` | Sent as `reasoning_effort` on both calls; `default` = don't send it (for models that reject it) |
+| `LLM_TIMEOUT_SECONDS` / `LLM_MAX_RETRIES` | `15` / `1` | Per call; the SDK retries timeouts, 408/409/429/5xx and connection errors |
 | `DEMO_MODE` | `false` | Serve prepared examples, no LLM calls |
 | `CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Comma-separated, or `*` |
 | `MAX_UPLOAD_MB` / `MAX_TEXT_CHARS` | `8` / `1000` | Input limits |
@@ -286,13 +287,26 @@ In live mode, if the LLM is unavailable and the input matches a cached example, 
 
 ## Speed and cost
 
-The default is `gemini-3.8-flash` for both calls, via `OPENAI_BASE_URL`. To use another model or any other
-OpenAI-compatible provider, change `.env`:
+The defaults were picked by measurement on 2026-10-10. The same text request ("plastic plates and cups") and
+image request (a tomato-paste can) were sent through the full `/api/analyze` pipeline. The first row is the earlier
+smoke test (old defaults: 60 s timeout, 2 SDK retries); the other rows ran with a 120 s timeout and SDK retries off:
+
+| Model | `reasoning_effort` | Text request | Image request |
+|---|---|---|---|
+| `gemini-3.8-flash` | (not sent) | 237.6 s, explanation timed out → template | 239.6 s, `llm`, correct (incl. SDK timeout retries) |
+| `gemini-3.8-flash` | `minimal` | rejected immediately (`502 llm_error`, < 1 s) | rejected immediately (`502 llm_error`, < 1 s) |
+| `gemini-3.8-flash` | `low` | 55.9 s, `llm`, correct | recognition call > 120 s → `503` |
+| **`gemini-3.5-flash-lite`** | **`low`** | **3.6 s, `llm`, correct** | **2.8 s, `llm`, correct** |
+
+So the default is `gemini-3.5-flash-lite` at `low`, with a 15 s per-call timeout and one SDK retry. A stuck call
+can't turn a request into minutes: worst case one recognition call plus up to two explanation calls (grounding
+retry), each at most 2 × 15 s, and a failed explanation falls back to the template. To change model or provider, edit `.env`:
 
 ```
 OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
-NORMALIZE_MODEL=gemini-3.8-flash
-EXPLAIN_MODEL=gemini-3.8-flash
+NORMALIZE_MODEL=gemini-3.5-flash-lite
+EXPLAIN_MODEL=gemini-3.5-flash-lite
+LLM_REASONING_EFFORT=low
 ```
 
 The model must accept images and `response_format` JSON-schema structured outputs. Any reply the SDK can't

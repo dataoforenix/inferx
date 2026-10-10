@@ -176,14 +176,40 @@ def test_sdk_client_uses_configured_base_url(make_settings):
     assert str(llm.client.base_url) == "https://llm.example/v1/"
 
 
+@pytest.mark.parametrize("effort", ["minimal", "low"])
+def test_reasoning_effort_is_sent_on_both_calls(make_settings, effort):
+    llm, sdk = make_llm(make_settings, reply(GOOD_NORM), reply(GOOD_EXPLAIN), llm_reasoning_effort=effort)
+    llm.normalize(None, "cup", CATEGORIES)
+    llm.explain({}, llm_facts(compute_report(CATEGORIES[0])), "en")
+    assert [c["reasoning_effort"] for c in sdk.calls] == [effort, effort]
+
+
+def test_no_reasoning_effort_param_when_unset(make_settings):
+    llm, sdk = make_llm(make_settings, reply(GOOD_NORM), llm_reasoning_effort=None)
+    llm.normalize(None, "cup", CATEGORIES)
+    assert "reasoning_effort" not in sdk.calls[0]
+
+
+@pytest.mark.parametrize(("raw", "expected"), [(" Medium ", "medium"), ("", "low"), ("default", None)])
+def test_reasoning_effort_setting_is_read_from_env(monkeypatch, raw, expected):
+    from app.config import load_settings
+
+    monkeypatch.setenv("LLM_REASONING_EFFORT", raw)
+    assert load_settings().llm_reasoning_effort == expected
+
+
 def test_default_settings_point_at_gemini(monkeypatch):
     from app.config import DEFAULT_BASE_URL, DEFAULT_MODEL, load_settings
 
-    for name in ("OPENAI_BASE_URL", "NORMALIZE_MODEL", "EXPLAIN_MODEL"):
+    for name in ("OPENAI_BASE_URL", "NORMALIZE_MODEL", "EXPLAIN_MODEL", "LLM_REASONING_EFFORT",
+                 "LLM_TIMEOUT_SECONDS", "LLM_MAX_RETRIES"):
         monkeypatch.setenv(name, "")
     settings = load_settings()
     assert settings.openai_base_url == DEFAULT_BASE_URL == "https://generativelanguage.googleapis.com/v1beta/openai/"
-    assert settings.normalize_model == settings.explain_model == DEFAULT_MODEL == "gemini-3.8-flash"
+    assert settings.normalize_model == settings.explain_model == DEFAULT_MODEL == "gemini-3.5-flash-lite"
+    assert settings.llm_reasoning_effort == "low"
+    # One stuck call can't turn into a multi-minute request: 15 s timeout, one SDK retry.
+    assert settings.llm_timeout_seconds == 15.0 and settings.llm_max_retries == 1
 
 
 # --- exceptions raised by parse() itself -------------------------------------------------

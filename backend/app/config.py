@@ -13,7 +13,21 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 
 # Google Gemini through its OpenAI-compatible endpoint (the OpenAI SDK talks to it unchanged).
 DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
-DEFAULT_MODEL = "gemini-3.8-flash"
+# Measured 2026-10-10 (same text + image request): gemini-3.5-flash-lite at reasoning_effort "low" answered each
+# call in 1.2-1.9 s with grounded explanations and correct categories; gemini-3.8-flash took 12-120+ s per call.
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
+DEFAULT_REASONING_EFFORT = "low"
+# A slow call is cut off at 15 s (about 8x the slowest measured call) and retried once by the SDK.
+DEFAULT_TIMEOUT_SECONDS = 15.0
+DEFAULT_MAX_RETRIES = 1
+
+
+def _effort(raw: str | None) -> str | None:
+    """LLM_REASONING_EFFORT: empty -> the measured default; "default" -> send no reasoning_effort at all."""
+    value = (raw or "").strip().lower()
+    if not value:
+        return DEFAULT_REASONING_EFFORT
+    return None if value == "default" else value
 
 # .env values never override variables already set in the real environment.
 load_dotenv(BACKEND_DIR / ".env", override=False)
@@ -52,6 +66,7 @@ class Settings:
     openai_base_url: str  # OpenAI-compatible endpoint; the default is Google Gemini's
     normalize_model: str
     explain_model: str
+    llm_reasoning_effort: str | None  # sent as reasoning_effort on both calls; None = provider default
     llm_timeout_seconds: float
     llm_max_retries: int
     demo_mode: bool
@@ -76,8 +91,9 @@ def load_settings() -> Settings:
         openai_base_url=os.getenv("OPENAI_BASE_URL") or DEFAULT_BASE_URL,
         normalize_model=os.getenv("NORMALIZE_MODEL") or DEFAULT_MODEL,
         explain_model=os.getenv("EXPLAIN_MODEL") or DEFAULT_MODEL,
-        llm_timeout_seconds=_float("LLM_TIMEOUT_SECONDS", 60.0),
-        llm_max_retries=_int("LLM_MAX_RETRIES", 2),
+        llm_reasoning_effort=_effort(os.getenv("LLM_REASONING_EFFORT")),
+        llm_timeout_seconds=_float("LLM_TIMEOUT_SECONDS", DEFAULT_TIMEOUT_SECONDS),
+        llm_max_retries=_int("LLM_MAX_RETRIES", DEFAULT_MAX_RETRIES),
         demo_mode=_bool("DEMO_MODE", False),
         cors_origins=_list("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173"),
         log_level=(os.getenv("LOG_LEVEL") or "INFO").upper(),

@@ -216,6 +216,8 @@ class OpenAILLM:
             "messages": messages,
             "response_format": response_format,
         }
+        if self.settings.llm_reasoning_effort:  # e.g. "minimal" / "low": far less thinking time per call
+            params["reasoning_effort"] = self.settings.llm_reasoning_effort
 
         last_problem = ""
         for attempt in range(1, INVALID_OUTPUT_ATTEMPTS + 1):
