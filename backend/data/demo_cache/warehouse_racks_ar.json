@@ -1,8 +1,8 @@
 {
   "id": "warehouse_racks_ar",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:23.609854+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "رفوف مستودعات"
   },
@@ -17,15 +17,58 @@
   "image_sha256": null,
   "normalization": {
     "is_physical_product": true,
-    "product_name_en": "Warehouse racks",
+    "product_name_en": "Warehouse Storage Racks",
     "product_name_ar": "رفوف مستودعات",
-    "description": "Metal storage racks for a warehouse.",
+    "description": "Metal shelving units used for storage and organization in warehouses and shops.",
     "category_id": "warehouse_racks",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.95,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "Manufacturing Warehouse Storage Racks in Jordan is a promising opportunity with a score of 7.2 out of 10, leading to a MANUFACTURE verdict. Local production offers a solid cost advantage against imported alternatives, supported by growing market demand.",
+      "reasons_for": [
+        "Growing import trends indicate a healthy demand for metal shelving and storage racks in Jordan.",
+        "Favorable local production costs compared to landed import prices provide a strong financial margin.",
+        "Good availability of skilled labor supports manufacturing feasibility in the local market."
+      ],
+      "concerns": [
+        "Raw materials are predominantly imported, creating supply chain dependency.",
+        "Raw material availability is rated low based on local sourcing limitations.",
+        "Large logistics and warehouse projects often prefer importing ready-made racks."
+      ],
+      "next_steps": [
+        "Obtain formal equipment quotations and shipping estimates from international machinery suppliers.",
+        "Verify custom duties and specific product classifications with local Jordanian authorities.",
+        "Conduct direct outreach to potential local warehouse and retail clients to test demand."
+      ],
+      "caveats": [
+        "Equipment capex_usd_range is equipment only and partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "Break-even analysis is indicative: equipment only, excluding buildings and working capital, and assuming sales at the import-parity price.",
+        "Several cost and availability figures are estimates based on available data notes."
+      ]
+    },
+    "ar": {
+      "summary": "يظهر التقرير فرصة جيدة لتصنيع رفوف المستودعات المعدنية في الأردن بنتيجة 7.2 من 10 وقرار تصنيع. تبلغ تكلفة الإنتاج المحلية المقدرة 2.09 دولار لكل كيلوغرام مقارنة بتكلفة واصلة قدرها 3.21 دولار لكل كيلوغرام.",
+      "reasons_for": [
+        "وجود هامش ربح وتكلفة إنتاج محلية أقل مقارنة بالاستيراد",
+        "نمو مستمر في واردات رفوف المستودعات المعدنية",
+        "توفر العمالة الماهرة والمهارات اللازمة للإنتاج بنسبة جيدة"
+      ],
+      "concerns": [
+        "استيراد المواد الخام من الصلب المغلفن بالكامل",
+        "وجود منافسة من المصانع المحلية المحدودة والمستوردات الجاهزة للمشاريع الكبيرة",
+        "الحاجة لشهادات تحميل لمشاريع المستودعات الكبيرة"
+      ],
+      "next_steps": [
+        "التحقق من أسعار ومواصفات الآلات والمعدات المطلوبة من الموردين",
+        "طلب عروض أسعار تفصيلية للمواد الخام مثل صفائح الصلب المغلفن",
+        "مراجعة التراخيص الصناعية والمتطلبات القانونية للبدء بالمشروع"
+      ],
+      "caveats": [
+        "نطاق تكلفة الآلات (capex_usd_range) يمثل المعدات فقط بشكل جزئي استناداً إلى أسعار الموردين ولا يشمل الشحن أو الجمارك أو التركيب أو القوالب والمباني."
+      ]
+    }
   }
 }

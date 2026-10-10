@@ -233,18 +233,18 @@
     }
   },
   {
-    "id": "plastic_folding_chair_uncertain",
-    "text": "plastic folding chair",
+    "id": "plastic_chair_metal_legs_uncertain",
+    "text": "plastic chair with metal legs",
     "match_keywords": [
-      "plastic folding chair",
-      "folding chair",
-      "كرسي بلاستيك"
+      "plastic chair with metal legs",
+      "chair with metal legs",
+      "كرسي بلاستيك بأرجل معدنية"
     ],
     "expected_category_id": "metal_chair",
     "placeholder": {
-      "name_en": "Plastic folding chair",
-      "name_ar": "كرسي بلاستيك قابل للطي",
-      "description": "A folding chair made mostly of moulded plastic.",
+      "name_en": "Plastic chair with metal legs",
+      "name_ar": "كرسي بلاستيك بأرجل معدنية",
+      "description": "A chair with a moulded plastic seat on a metal frame.",
       "confidence": 0.45,
       "alternatives": [
         {

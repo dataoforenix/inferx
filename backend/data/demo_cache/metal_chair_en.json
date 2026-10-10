@@ -1,8 +1,8 @@
 {
   "id": "metal_chair_en",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:09.865011+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "metal office chair"
   },
@@ -20,13 +20,57 @@
     "is_physical_product": true,
     "product_name_en": "Metal office chair",
     "product_name_ar": "كرسي مكتب معدني",
-    "description": "An office chair with a steel frame and a padded seat and back.",
+    "description": "An office chair featuring a metal frame and upholstered seat and back.",
     "category_id": "metal_chair",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.99,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "Local manufacturing of the metal office chair is feasible and earns an overall score of 7.0 out of 10, resulting in a MANUFACTURE verdict. Producing locally offers an estimated cost of 3.71 USD/kg compared to a landed import cost of 5.5 USD/kg, giving a strong cost advantage.",
+      "reasons_for": [
+        "Local production costs are estimated at 3.71 USD/kg, which is lower than the landed import cost of 5.5 USD/kg.",
+        "Machinery availability is rated 4.0 out of 5, indicating good access to necessary equipment.",
+        "Skills availability is rated 4.0 out of 5, showing a supportive local labor force for manufacturing."
+      ],
+      "concerns": [
+        "Some raw materials like steel tubes are partially imported.",
+        "There is strong price competition from Chinese products.",
+        "The local market size is relatively small, with imports at 2.2 million USD in 2024."
+      ],
+      "next_steps": [
+        "Request formal price quotations from equipment suppliers for machinery like tube benders and powder-coating booths.",
+        "Verify local supplier prices and availability for raw materials such as steel tubes, foam, and fabric.",
+        "Check industrial licensing and regulatory requirements with local Jordanian authorities."
+      ],
+      "caveats": [
+        "Equipment capex ranges from 9,200.0 to 30,800.0 USD, covering equipment only: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "The estimated local cost per kg is an estimate.",
+        "Break-even is indicative only: equipment only, excluding buildings and working capital, and assuming sales at the import-parity price."
+      ]
+    },
+    "ar": {
+      "summary": "يُظهر تقرير جدوى تصنيع كرسي مكتب معدني في الأردن نتيجة إيجابية بنسبة 7.0 من 10 وقراراً بالبدء في التصنيع. تبلغ تكلفة الإنتاج المحلية المقدرة 3.71 دولار لكل كيلوغرام بينما تبلغ التكلفة الواصلة 5.5 دولار لكل كيلوغرام مما يوفر ميزة تكلفتها 32.6 بالمئة.",
+      "reasons_for": [
+        "وجود ميزة تكلفة واضحة مقارنة بالاستيراد",
+        "توفر الآلات والمهارات المطلوبة للإنتاج بشكل جيد محلياً",
+        "سوق استيراد متنامي يعكس طلباً قائماً"
+      ],
+      "concerns": [
+        "حجم السوق المحلي الصغير نسبياً",
+        "الاعتماد على استيراد بعض المواد الخام مثل أنابيب الحديد",
+        "منافسة سعرية محتملة من المنتجات المستوردة"
+      ],
+      "next_steps": [
+        "الحصول على عروض أسعار تفصيلية للآلات والمعدات مباشرة من الموردين",
+        "التحقق من تراخيص ومتطلبات إنشاء المصنع محلياً",
+        "التواصل مع الموردين المحليين والمستوردين للمواد الخام لضمان سلاسة الإمداد"
+      ],
+      "caveats": [
+        "تكاليف الآلات والمعدات المذكورة هي للأسعار الأساسية من الموردين ولا تشمل الشحن أو التركيب أو المباني",
+        "تقديرات تكلفة الإنتاج المحلية تعتمد على افتراضات قابلة للتغيير"
+      ]
+    }
   }
 }

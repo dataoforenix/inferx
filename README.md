@@ -34,7 +34,8 @@ pip install -r requirements.txt
 
 ### 2. Run without any API key (demo mode)
 
-Demo mode serves prepared product recognitions. Scores are still computed live from the data.
+Demo mode replays product recognitions and AI explanations recorded from the live pipeline. Scores are still
+computed live from the data.
 
 ```bash
 # macOS/Linux
@@ -53,7 +54,8 @@ curl -X POST http://localhost:8000/api/whatif -H "Content-Type: application/json
 ```
 
 Demo mode only recognises the prepared examples (for example "metal office chair", "steel shelving unit for a
-warehouse", "ceiling fan with three blades", "frozen french fries", "canned tomato paste", "plastic folding chair").
+warehouse", "ceiling fan with three blades", "frozen french fries", "canned tomato paste", "plastic chair with metal legs",
+or their Arabic versions such as "معجون بندورة").
 Any other input returns `404 demo_no_match`, and the error message lists the examples.
 
 ### 3. Run with the live AI (Google Gemini)

@@ -1,7 +1,7 @@
 {
   "error": {
     "code": "demo_no_match",
-    "message": "Demo mode only knows the prepared examples. Try one of: مروحة سقف; ceiling fan with three blades; بطاطا مجمدة فرنش فرايز; frozen french fries; كرسي مكتب معدني منجد; metal office chair; plastic folding chair; صحون بلاستيك للمطبخ; plastic plates and cups; accounting software for small shops; rooftop solar panel; معجون بندورة; canned tomato paste; رفوف مستودعات; steel shelving unit for a warehouse",
+    "message": "Demo mode only knows the prepared examples. Try one of: مروحة سقف; ceiling fan with three blades; بطاطا مجمدة فرنش فرايز; frozen french fries; كرسي مكتب معدني منجد; metal office chair; plastic chair with metal legs; صحون بلاستيك للمطبخ; plastic plates and cups; accounting software for small shops; rooftop solar panel; معجون بندورة; canned tomato paste; رفوف مستودعات; steel shelving unit for a warehouse",
     "request_id": "0123456789abcdef0123456789abcdef"
   }
 }

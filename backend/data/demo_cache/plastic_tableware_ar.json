@@ -1,8 +1,8 @@
 {
   "id": "plastic_tableware_ar",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:32.501025+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "صحون بلاستيك للمطبخ"
   },
@@ -19,13 +19,56 @@
     "is_physical_product": true,
     "product_name_en": "Plastic plates",
     "product_name_ar": "صحون بلاستيك",
-    "description": "Plastic plates for household kitchen use.",
+    "description": "Plastic plates used for serving food in kitchens.",
     "category_id": "plastic_tableware",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.95,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "Manufacturing plastic plates locally shows good potential with a supportive cost advantage and a growing import market. Local production can achieve an estimated 2.37 USD/kg compared to the landed cost of 2.75 USD/kg.",
+      "reasons_for": [
+        "Local production costs are lower than the landed import cost, providing an estimated 13.7 percent cost advantage.",
+        "The import market for plastic tableware and kitchenware is growing, reaching 10.3 million USD in 2024.",
+        "There are an estimated 6 local factories already operating in this category, showing an established local manufacturing base."
+      ],
+      "concerns": [
+        "Raw materials are completely imported, with raw material availability rated very low locally.",
+        "Competition is moderate to high with existing local factories covering a large part of the market and a saturation score of 10.",
+        "Initial mould costs can be high and profit margins are narrow, requiring strict compliance with food-contact standards."
+      ],
+      "next_steps": [
+        "Obtain detailed supplier quotes and specifications for injection moulding machines and steel moulds.",
+        "Verify regulatory requirements and compliance standards for food-contact items in Jordan.",
+        "Conduct a thorough local market survey to assess existing competitor pricing and customer demand."
+      ],
+      "caveats": [
+        "Equipment capex ranges from 21000.0 to 45000.0 USD, covering equipment only and partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "Break-even volume of 88.0 tons is indicative only: equipment only, excludes buildings and working capital, and assumes sales at the import-parity price.",
+        "Local cost per kg of an estimated 2.37 USD/kg and conversion costs are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يُظهر التقرير فرصة جيدة لتصنيع الصحون البلاستيكية في الأردن بناءً على معطيات السوق الحالية. تبلغ كلفة الإنتاج المحلية المقدرة 2.37 دولار لكل كيلوغرام مقارنة بكلفة وصول مستوردة تبلغ 2.75 دولار لكل كيلوغرام. تشير هذه المؤشرات إلى جدوى مبدئية معتدلة في قطاع أواني ومستلزمات المطبخ البلاستيكية.",
+      "reasons_for": [
+        "وجود ميزة تكلفة لصالح الإنتاج المحلي مقارنة بالاستيراد",
+        "نمو مستمر في حجم الواردات خلال السنوات الماضية",
+        "وجود مصانع بلاستيكية قائمة في الأردن تدعم البنية التحتية للقطاع"
+      ],
+      "concerns": [
+        "الاعتماد الكامل على استيراد المواد الخام الأولية مثل الحبيبات البلاستيكية",
+        "ارتفاع كلفة القوالب الأولية وضيق الهامش الربحي",
+        "الحاجة إلى مطابقة مواصفات ملامسة الغذاء الصارمة"
+      ],
+      "next_steps": [
+        "الحصول على عروض أسعار تفصيلية للمعدات من الموردين",
+        "التحقق من متطلبات التراخيص الصناعية ومواصفات ملامسة الغذاء في الأردن",
+        "التواصل مع مصنعي القوالب لتقدير التكاليف الإضافية بدقة"
+      ],
+      "caveats": [
+        "نطاق نفقات رأس المال المذكور يغطي المعدات فقط وبشكل جزئي، ويشمل أسعار الموردين السابقين للمصنع باستثناء الشحن والجمارك والتركيب والقوالب والمباني."
+      ]
+    }
   }
 }

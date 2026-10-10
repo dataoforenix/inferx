@@ -1,8 +1,8 @@
 {
   "id": "ceiling_fan_en",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:36.996582+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "ceiling fan with three blades"
   },
@@ -16,15 +16,58 @@
   "image_sha256": null,
   "normalization": {
     "is_physical_product": true,
-    "product_name_en": "Ceiling fan",
+    "product_name_en": "Ceiling Fan",
     "product_name_ar": "مروحة سقف",
-    "description": "An electric ceiling fan with three blades.",
+    "description": "An electric ceiling fan with three blades used for air circulation.",
     "category_id": "ceiling_fan",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.99,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "The manufacturing feasibility report for ceiling fans gives a score of 5.2 out of 10 with a verdict of MAYBE. The market shows a stable import value reaching 7.2 million USD in 2024, but local production faces a cost disadvantage.",
+      "reasons_for": [
+        "There are currently zero local competing factories, leaving the market entirely open for domestic production.",
+        "Imports have remained steady, showing consistent demand with a latest import value of 7.2 million USD in 2024.",
+        "The local market size and steady import growth provide a foundation to explore assembly and manufacturing."
+      ],
+      "concerns": [
+        "Producing locally at an estimated 3.2 USD/kg costs more than the landed import price of 3.09 USD/kg.",
+        "Raw materials such as electric motors need to be imported, shifting the operation heavily towards assembly rather than full manufacturing.",
+        "Both machinery availability and skills availability score low at 2.0 out of 5, indicating operational hurdles."
+      ],
+      "next_steps": [
+        "Request formal supplier quotations for the required machinery and assembly lines.",
+        "Verify electrical safety certification requirements with the Jordan Standards and Metrology Organization.",
+        "Conduct detailed supply chain checks for imported raw materials like electric motors and steel sheets."
+      ],
+      "caveats": [
+        "Equipment-only capex range is partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "Several data fields including local cost and skill availability are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يُظهر التقرير الخاص بمراوح السقف أن دراسة جدوى إنتاجها محلياً حصلت على تقييم 5.2 من 10 مع قرار 'ممكن'. لقد كان هذا القرار محدوداً لأن إنتاج الكيلوجرام محلياً يكلف 3.2 دولار بينما يبلغ التكلفة الواصلة للاستيراد 3.09 دولار.",
+      "reasons_for": [
+        "حجم الواردات مستقر ويبلغ 7.2 مليون دولار في عام 2024.",
+        "لا توجد مصانع محلية منافسة حالياً مما يترك فرصة في السوق.",
+        "إمكانية استخدام خطوط تجميع وتصنيع متوفرة لدى الموردين."
+      ],
+      "concerns": [
+        "تكلفة الإنتاج المحلي أعلى بقليل من تكلفة الاستيراد الواصلة.",
+        "توفر المهارات والآلات المحلية محدود وفقاً للتقديرات.",
+        "المواد الخام مثل المحركات الكهربائية تحتاج إلى استيراد."
+      ],
+      "next_steps": [
+        "التحقق من أسعار الآلات والمعدات مباشرة من الموردين.",
+        "التواصل مع الجهات الرسمية لمعرفة متطلبات شهادة السلامة الكهربائية.",
+        "دراسة تفصيلية لتكاليف الشحن والجمارك والمساحات المطلوبة للمصنع."
+      ],
+      "caveats": [
+        "نطاق رأس المال للمعدات فقط ويشمل الأسعار الابتدائية من الموردين بدون الشحن أو التركيب.",
+        "بعض البيانات مثل التكاليف المحلية وتوفر المهارات هي تقديرات أولية."
+      ]
+    }
   }
 }

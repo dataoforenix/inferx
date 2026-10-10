@@ -1,8 +1,8 @@
 {
   "id": "tomato_paste_ar",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:14:58.003338+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "معجون بندورة"
   },
@@ -15,15 +15,58 @@
   "image_sha256": null,
   "normalization": {
     "is_physical_product": true,
-    "product_name_en": "Tomato paste",
+    "product_name_en": "Tomato Paste",
     "product_name_ar": "معجون بندورة",
-    "description": "Concentrated tomato paste.",
+    "description": "Concentrated tomato paste used for cooking and preparing sauces.",
     "category_id": "tomato_paste",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 1.0,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "The manufacturing feasibility report gives Tomato Paste a score of 3.9 out of 10 with a DONT verdict. The verdict was limited because producing locally costs more than importing, quoting a local cost of 4.01 USD/kg and a landed cost of 1.44 USD/kg.",
+      "reasons_for": [
+        "Raw materials like fresh tomatoes are locally available in abundance.",
+        "The import market for tomato paste is growing.",
+        "There are existing local factories operating in the market."
+      ],
+      "concerns": [
+        "High capital requirement for setting up the production line.",
+        "Local production costs are significantly higher than the landed import prices.",
+        "Limited local availability of specialized machinery and skilled labour."
+      ],
+      "next_steps": [
+        "Obtain detailed quotations from equipment suppliers.",
+        "Verify local regulatory and licensing requirements for food processing.",
+        "Conduct a more in-depth study on raw material supply consistency throughout the year."
+      ],
+      "caveats": [
+        "Equipment costs are partial and cover ex-works supplier listing prices only, excluding shipping, customs, installation, moulds and buildings.",
+        "Several cost and availability fields are estimates.",
+        "Market and trade data are based on recent statistics."
+      ]
+    },
+    "ar": {
+      "summary": "تم تحديد الحكم بعدم المضي قدماً لأن تكلفة الإنتاج المحلي تبلغ 4.01 دولار لكل كيلوغرام بينما تبلغ تكلفة الاستيراد الواصلة 1.44 دولار لكل كيلوغرام. هذا الفارق الكبير حد من النتيجة النهائية على الرغم من وجود سوق نمو جيد.",
+      "reasons_for": [
+        "السوق محلياً يشهد نمواً مستمراً في الاستيراد.",
+        "توفر المواد الخام الطازجة محلياً مثل الطماطم.",
+        "وجود بنية تحتية أساسية لبعض المصانع القائمة."
+      ],
+      "concerns": [
+        "ارتفاع متطلبات رأس المال لتوفير المعدات.",
+        "تكلفة الإنتاج المحلي أعلى بكثير مقارنة بالاستيراد.",
+        "منافسة محدودة ولكن قوية من المصانع القائمة."
+      ],
+      "next_steps": [
+        "الحصول على عروض أسعار مفصلة من موردي المعدات.",
+        "التحقق من التراخيص الحكومية المطلوبة للإنتاج.",
+        "دراسة إمكانية تقليل تكاليف الإنتاج المحلي."
+      ],
+      "caveats": [
+        "تكاليف الآلات المذكورة تشمل المعدات فقط ولا تشمل المباني أو الشحن."
+      ]
+    }
   }
 }

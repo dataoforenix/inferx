@@ -1,8 +1,8 @@
 {
   "id": "frozen_fries_ar",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:50.532162+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "بطاطا مجمدة فرنش فرايز"
   },
@@ -17,14 +17,58 @@
   "normalization": {
     "is_physical_product": true,
     "product_name_en": "Frozen French fries",
-    "product_name_ar": "بطاطا مجمّدة (فرنش فرايز)",
-    "description": "Frozen potato strips for frying.",
+    "product_name_ar": "بطاطا مقلية مجمدة",
+    "description": "Pre-cut and par-fried potato strips packaged for freezing and easy cooking.",
     "category_id": "frozen_fries",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 1.0,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "Manufacturing frozen French fries in Jordan scores a strong 8.6 out of 10 with a verdict to manufacture. The market is growing steadily with latest imports reaching 92.8 million USD in 2024, and local production benefits from an estimated cost of 1.14 USD/kg compared to a landed import cost of 1.3 USD/kg.",
+      "reasons_for": [
+        "Strong import demand reaching 92.8 million USD in 2024 with a growing trend",
+        "Favorable local cost advantage compared to landed import costs",
+        "Good availability of local raw materials like potatoes grown in Jordan"
+      ],
+      "concerns": [
+        "High capital requirement for equipment",
+        "Machinery availability score is low at 2.0 out of 5",
+        "Lack of active local factories creating a completely greenfield environment"
+      ],
+      "next_steps": [
+        "Obtain official supplier quotes for the machinery range",
+        "Verify food safety and licensing requirements with the Jordan Food and Drug Administration",
+        "Conduct trials with local potato suppliers to ensure consistent quality"
+      ],
+      "caveats": [
+        "The capex_usd_range of 45000.0 to 420000.0 USD is equipment only and partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "The break-even volume of 1458.0 tons is indicative only: equipment only, excluding buildings and working capital, and assuming sales at the import-parity price.",
+        "Several fields including local_cost_per_kg_est_usd and conversion_cost_per_kg_usd are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يُظهر التقرير فرصة استثمارية جيدة لإنتاج بطاطا مقلية مجمدة في الأردن بنهج تصنيعي واعد. يحقق المشروع نقاط قوة قوية في السوق والمنافسة، مع تكلفة محلية مقدرة بـ 1.14 دولار لكل كيلوغرام وتكلفة واصلة (لاندد) بـ 1.3 دولار لكل كيلوغرام.",
+      "reasons_for": [
+        "نمو قوي في حجم الواردات والطلب المحلي في السوق الأردني.",
+        "وجود وفرة جيدة في المواد الخام المحلية من البطاطا.",
+        "غياب المصانع المحلية العاملة في هذا المجال حالياً."
+      ],
+      "concerns": [
+        "وجود متطلبات رأسمالية عالية لتجهيز خط الإنتاج.",
+        "ارتفاع كلفة الآلات والمعدات المطلوبة للتشغيل.",
+        "حاجة العمل إلى سلاسل تبريد دقيقة وتراخيص صارمة."
+      ],
+      "next_steps": [
+        "طلب عروض اسعار تفصيلية ومباشرة من موردي الآلات.",
+        "التحقق من متطلبات التراخيص الرسمية من الجهات المعنية.",
+        "دراسة توافر سلاسل التبريد والتخزين المطلوبة للمنتج."
+      ],
+      "caveats": [
+        "نطاق رأس مال المعدات المذكور هو للمعدات فقط وبشكل جزئي ولا يمثل إجمالي الاستثمار.",
+        "تقديرات التكلفة والمهارات والوفرة هي قيم تقديرية."
+      ]
+    }
   }
 }

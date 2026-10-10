@@ -1,8 +1,8 @@
 {
   "id": "warehouse_racks_en",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:19.337656+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "steel shelving unit for a warehouse"
   },
@@ -18,14 +18,63 @@
   "normalization": {
     "is_physical_product": true,
     "product_name_en": "Steel shelving unit",
-    "product_name_ar": "وحدة رفوف معدنية",
-    "description": "A knock-down steel shelving unit for storage.",
+    "product_name_ar": "وحدة رفوف فولاذية",
+    "description": "A metal shelving unit used for storage in warehouses and shops.",
     "category_id": "warehouse_racks",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.98,
+    "alternatives": [
+      {
+        "category_id": "metal_chair",
+        "confidence": 0.01
+      }
+    ],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "This report evaluates the manufacturing feasibility of steel shelving units in Jordan, resulting in a score of 7.2 out of 10 and a verdict of MANUFACTURE. The local production cost is estimated at an advantageous 2.09 USD/kg compared to a landed import cost of 3.21 USD/kg.",
+      "reasons_for": [
+        "Strong local cost advantage of 35.0 percent compared to imports.",
+        "Growing market trend with latest imports reaching 16.2 million USD in 2024.",
+        "Good availability of skilled labor in Jordan with a score of 4.0 out of 5."
+      ],
+      "concerns": [
+        "Raw materials are entirely imported with a local availability score of only 1.0 out of 5.",
+        "Machinery availability is moderate, scoring 3.0 out of 5.",
+        "Competition includes a limited number of local factories while large logistics projects tend to import finished products."
+      ],
+      "next_steps": [
+        "Obtain detailed quotations for machinery and equipment from suppliers.",
+        "Verify raw material import channels and costs for galvanized steel sheets.",
+        "Check local industrial licensing and warehouse certification requirements."
+      ],
+      "caveats": [
+        "Equipment capex ranges from 25,000.0 to 128,300.0 USD, representing equipment only and partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "Break-even is indicative: equipment only, excluding buildings and working capital, and assuming sales at the import-parity price, estimated at 68.0 tons.",
+        "Several fields including local production cost and conversion cost are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يظهر التقرير فرصة جيدة لتصنيع وحدة الرفوف الفولاذية محلياً في الأردن بنتيجة تقييم إجمالية تبلغ 7.2 من 10 وقرار تصنيع إيجابي. تبلغ تكلفة الإنتاج المحلية المقدرة 2.09 دولار لكل كيلوغرام مقارنة بتكلفة وصول استيرادية تبلغ 3.21 دولار لكل كيلوغرام، مما يوفر ميزة تكلّفية جيدة.",
+      "reasons_for": [
+        "وجود ميزة تكلّفية واضحة للإنتاج المحلي مقارنة بالاستيراد.",
+        "نمو مستمر في حجم الواردات السنوية للمنتج.",
+        "توفر العمالة والمهارات اللازمة محلياً بدرجة مقبولة."
+      ],
+      "concerns": [
+        "المواد الخام الأساسية مستوردة بالكامل وليست متوفرة محلياً.",
+        "توافر الآلات والمعدات يحتاج إلى تطوير واهتمام إضافي.",
+        "وجود منافسة من المصانع المحلية الحالية والمستوردات الجاهزة."
+      ],
+      "next_steps": [
+        "الحصول على عروض أسعار تفصيلية للآلات والمعدات مباشرة من الموردين.",
+        "التحقق من التراخيص الحكومية المطلوبة لتصنيع المنتجات المعدنية.",
+        "دراسة تفاصيل تكاليف المواد الخام المستوردة وسلاسل الإمداد."
+      ],
+      "caveats": [
+        "نطاق رأس المال المذكور يغطي المعدات فقط وبشكل جزئي (أسعار الموردين السابقين لعمل التجهيزات دون الشحن والتركيب والمباني).",
+        "بعض الحقول والحسابات مبنية على تقديرات أولية."
+      ]
+    }
   }
 }

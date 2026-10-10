@@ -270,12 +270,14 @@ aren't cached. Turn the feature off with `MARKET_PREVIEW=false`.
 
 The demo inputs live in [`data/demo_inputs.json`](data/demo_inputs.json) (text, match keywords, expected
 category, placeholder recognition): two per category (English and Arabic, e.g. "metal office chair",
-"رفوف مستودعات", "canned tomato paste", "معجون بندورة"), "plastic folding chair" (→ needs confirmation:
-metal_chair or plastic_tableware), "accounting software for small shops" (→ unsupported, not physical) and
+"رفوف مستودعات", "canned tomato paste", "معجون بندورة"), "plastic chair with metal legs" (→ needs confirmation:
+recorded as metal_chair at confidence 0.6), "accounting software for small shops" (→ unsupported, not physical) and
 "rooftop solar panel" (→ unsupported, physical but outside the catalogue). Other inputs return `404 demo_no_match`.
 
-The shipped cache entries are **hand-written placeholders** (`generated_by: PLACEHOLDER_HANDWRITTEN`)
-containing only product recognition, so explanations come from the template. Record real outputs with a key:
+The shipped cache entries were **recorded from the live pipeline** on 2026-10-10 (`generated_by: pipeline`,
+gemini-3.5-flash-lite at reasoning effort `low`). Every complete entry has English and Arabic AI explanations that
+passed the grounding guard, so demo mode shows `explanation_source: "llm"` for them. To re-record with a key, or to go
+back to hand-written placeholders without one:
 
 ```powershell
 .venv\Scripts\python.exe scripts\record_demo_cache.py               # live pipeline, a few cents

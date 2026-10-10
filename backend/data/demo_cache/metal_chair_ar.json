@@ -1,8 +1,8 @@
 {
   "id": "metal_chair_ar",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:14.308420+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "كرسي مكتب معدني منجد"
   },
@@ -18,14 +18,59 @@
   "normalization": {
     "is_physical_product": true,
     "product_name_en": "Upholstered metal office chair",
-    "product_name_ar": "كرسي مكتب معدني منجّد",
-    "description": "An upholstered chair with a metal frame.",
+    "product_name_ar": "كرسي مكتب معدني منجد",
+    "description": "An office chair featuring a metal frame and an upholstered seat and backrest.",
     "category_id": "metal_chair",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.99,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "This report evaluates the manufacturing feasibility of upholstered metal office chairs in Jordan, giving it a score of 7.0 out of 10 and a verdict of MANUFACTURE. Local production is supported by an estimated local cost of 3.71 USD/kg compared to a landed import cost of 5.50 USD/kg, providing an estimated cost advantage of 32.6 percent. Equipment availability and local skills are also favorable for starting production.",
+      "reasons_for": [
+        "Favorable estimated local production cost compared to landed import costs",
+        "Good availability of required machinery and skilled labor in the market",
+        "Growing import trend indicating steady demand for office chairs"
+      ],
+      "concerns": [
+        "Raw materials such as steel tubes are partially imported",
+        "Strong price competition from existing Chinese imported products",
+        "The local market size is relatively small at 2.2 million USD in 2024"
+      ],
+      "next_steps": [
+        "Request formal price quotations and shipping estimates from machinery suppliers",
+        "Verify local availability and pricing of raw materials like steel tubes and foam",
+        "Check regulatory requirements and obtain necessary manufacturing licenses in Jordan"
+      ],
+      "caveats": [
+        "The equipment capex range of 9200.0 to 30800.0 USD is equipment only and partial, excluding shipping, customs, installation, moulds, and buildings.",
+        "The break-even volume of 11.0 tons is indicative only, assuming sales at the import-parity price and excluding buildings and working capital.",
+        "Several data fields including local costs and availability scores are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يحقق تقرير تصنيع كرسي مكتب معدني منجد تقييماً قدره 7.0 من 10 مع قرار بالتصنيع نظراً لوجود جدوى اقتصادية جيدة. تبلغ تكلفة الإنتاج المحلي المقدرة 3.71 دولار لكل كيلوغرام مقارنة بتكلفة الاستيراد الواصلة البالغة 5.5 دولار لكل كيلوغرام.",
+      "reasons_for": [
+        "توجد وفرة جيدة في الآليات والمهارات اللازمة للإنتاج المحلي.",
+        "سوق الواردات يشهد نمواً ملحوظاً بنسبة 5.2 بالمئة سنوياً.",
+        "وجود ميزة تكلفة ملحوظة للإنتاج المحلي مقارنة بالاستيراد."
+      ],
+      "concerns": [
+        "أنابيب الحديد مستوردة جزئياً مما يعرض الإنتاج لتقلبات المواد الخام.",
+        "منافسة سعرية قوية من المنتجات الصينية في السوق المحلي.",
+        "حجم السوق يعتبر صغيراً نسبياً حيث بلغ 2.2 مليون دولار في سنة 2024."
+      ],
+      "next_steps": [
+        "الحصول على عروض أسعار تفصيلية للمعدات المطلوبة من الموردين.",
+        "التحقق من توافر المواد الخام المحلية وأسعارها بدقة.",
+        "مراجعة التراخيص الحكومية اللازمة لفتح أو توسيع المصنع."
+      ],
+      "caveats": [
+        "نطاق تكلفة الآليات يغطي المعدات فقط ولا يشمل المباني أو الشحن.",
+        "تكلفة الإنتاج المحلي هي قيمة مقدرة وليست نهائية.",
+        "حساب نقطة التعادل هو مؤشر افتراضي يعتمد على أسعار الاستيراد."
+      ]
+    }
   }
 }

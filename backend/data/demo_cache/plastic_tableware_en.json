@@ -1,8 +1,8 @@
 {
   "id": "plastic_tableware_en",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:27.796675+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "plastic plates and cups"
   },
@@ -20,13 +20,57 @@
     "is_physical_product": true,
     "product_name_en": "Plastic plates and cups",
     "product_name_ar": "صحون وكاسات بلاستيك",
-    "description": "Reusable plastic plates and cups for the kitchen.",
+    "description": "Plastic tableware including plates and cups for food and beverage use.",
     "category_id": "plastic_tableware",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 0.95,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "Manufacturing plastic plates and cups in Jordan achieves a solid feasibility score of 6.2 out of 10, resulting in a MANUFACTURE verdict. Local production shows promising cost efficiency with an estimated local cost of 2.37 USD/kg compared to a landed import cost of 2.75 USD/kg.",
+      "reasons_for": [
+        "Growing import trends indicate steady market demand for plastic tableware.",
+        "Local production costs offer a favorable cost advantage of 13.7 percent over imports.",
+        "Basic machinery and conversion skills are moderately available locally."
+      ],
+      "concerns": [
+        "Raw materials are almost entirely imported, reducing local supply chain depth.",
+        "Initial equipment costs and mould requirements present financial hurdles.",
+        "Existing local factories already cover a significant portion of the domestic market."
+      ],
+      "next_steps": [
+        "Request formal supplier quotes for injection moulding machines and steel moulds.",
+        "Verify food-contact compliance regulations and local manufacturing licenses.",
+        "Conduct detailed site and working capital assessments with local partners."
+      ],
+      "caveats": [
+        "Equipment capex ranges from 21000.0 to 45000.0 USD and covers equipment only, partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "Break-even analysis is indicative: equipment only, excludes buildings and working capital, assumes selling at import-parity price.",
+        "Several data fields including estimated local costs and conversion expenses are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يسعدني أن أقدم لك تقرير جدوى تصنيع الصحون والكاسات البلاستيكية في الأردن. يحصل هذا المنتج على نتيجة إجمالية قدرها 6.2 من 10 مع قرار تصنيع، حيث يبلغ سعر الاستيراد 2.62 دولار لكل كيلو وتكلفة الإنتاج المحلي المقدرة 2.37 دولار لكل كيلو.",
+      "reasons_for": [
+        "وجود سوق نمو مستمر للاستيراد في الأردن.",
+        "وجود ميزة تكلفة لصالح الإنتاج المحلي مقارنة بالاستيراد.",
+        "توفر الخبرات الأساسية والآليات الملائمة بنسبة مقبولة."
+      ],
+      "concerns": [
+        "الحبيبات البلاستيكية مستوردة بالكامل وليست متوفرة محلياً.",
+        "وجود منافسة من المصانع القائمة محلياً في السوق.",
+        "الحاجة لمطابقة مواصفات ملامسة الغذاء بدقة."
+      ],
+      "next_steps": [
+        "الحصول على عروض أسعار تفصيلية للمعدات مباشرة من الموردين.",
+        "التحقق من التراخيص المطلوبة لمطابقة مواصفات ملامسة الغذاء.",
+        "التواصل مع عملاء محتملين في السوق المحلي لاختبار الطلب."
+      ],
+      "caveats": [
+        "نطاق رأس المال للمعدات فقط (ex-works) ويشمل الأسعار الأولية دون الشحن أو التركيب أو المباني.",
+        "العديد من الحقول مثل تكلفة الإنتاج المحلي وتوفر الآلات تعتمد على تقديرات."
+      ]
+    }
   }
 }

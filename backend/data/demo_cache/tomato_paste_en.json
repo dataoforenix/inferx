@@ -1,8 +1,8 @@
 {
   "id": "tomato_paste_en",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:14:53.805477+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "canned tomato paste"
   },
@@ -15,15 +15,57 @@
   "image_sha256": null,
   "normalization": {
     "is_physical_product": true,
-    "product_name_en": "Tomato paste",
+    "product_name_en": "Tomato Paste",
     "product_name_ar": "معجون بندورة",
-    "description": "Concentrated tomato paste in a can.",
+    "description": "Concentrated tomato paste packed in a can.",
     "category_id": "tomato_paste",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 1.0,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "The manufacturing feasibility report for Tomato Paste gives it a score of 3.9 out of 10 with a verdict of DONT. The verdict was limited because producing locally costs more than importing, quoting a local cost of an estimated 4.01 USD/kg against a landed cost of 1.44 USD/kg.",
+      "reasons_for": [
+        "Strong market demand with growing imports reaching 21.5 million USD in 2024.",
+        "Good local availability of raw fresh tomatoes grown in Jordan.",
+        "Presence of existing local factories indicating a baseline processing ecosystem."
+      ],
+      "concerns": [
+        "High capital requirement for equipment.",
+        "Local production costs are significantly higher than the landed import price.",
+        "Low machinery and skills availability scores making local setup more challenging."
+      ],
+      "next_steps": [
+        "Request detailed equipment supplier quotations.",
+        "Verify local regulatory and licensing requirements.",
+        "Conduct further market research on local distribution channels."
+      ],
+      "caveats": [
+        "Equipment capex range of 50000 to 500000 USD is equipment only and partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings.",
+        "Several figures such as local cost are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "تم تحديد القرار بعدم المضي قدماً في المشروع لأن تكلفة الإنتاج المحلي المقدرة تبلغ 4.01 دولار لكل كيلوجرام بينما تكلفة الوصل المستوردة تبلغ 1.44 دولار لكل كيلوجرام (مع سعر استيراد CIF يبلغ 1.31 دولار لكل كيلوجرام ورسوم جمركية بنسبة 10.0 في المائة)، مما جعل التكلفة أعلى بكثير من الاستيراد.",
+      "reasons_for": [
+        "تتوفر الطازجة محلياً في الأردن بشكل ممتاز.",
+        "سوق الواردات ينمو بمعدل 12.5 في المائة سنوياً.",
+        "حجم الواردات الكلي بلغ 21.5 مليون دولار في عام 2024."
+      ],
+      "concerns": [
+        "تتطلب الآلات والمعدات رأس مال مرتفع جداً.",
+        "تكلفة الإنتاج المحلي المقدرة أعلى بكثير من سعر الاستيراد.",
+        "عدد المصانع المحلية الحالية محدود ووجود تشبع محدود."
+      ],
+      "next_steps": [
+        "التواصل مع الموردين المحليين للتحقق من أسعار المواد الخام.",
+        "طلب عروض أسعار تفصيلية ومحددة للآلات من المصانع الخارجية.",
+        "مراجعة التراخيص الحكومية والمتطلبات القانونية للصناعات الغذائية."
+      ],
+      "caveats": [
+        "تكاليف الآلات المذكورة تمثل المعدات فقط وبشكل جزئي وتعتمد على أسعار الشركات المصنعة دون الشحن أو التركيب."
+      ]
+    }
   }
 }

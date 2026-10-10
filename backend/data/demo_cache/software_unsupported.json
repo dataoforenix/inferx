@@ -1,8 +1,8 @@
 {
   "id": "software_unsupported",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:14:59.944362+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "accounting software for small shops"
   },
@@ -18,10 +18,11 @@
     "is_physical_product": false,
     "product_name_en": "Accounting software",
     "product_name_ar": "برنامج محاسبة",
-    "description": "A software product, not a physical good.",
+    "description": "Accounting software designed for small shops and businesses.",
     "category_id": "unsupported",
-    "confidence": 0.97,
-    "alternatives": []
+    "confidence": 1.0,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
     "en": null,

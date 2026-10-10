@@ -1,8 +1,8 @@
 {
   "id": "solar_panel_out_of_catalog",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:15:00.865033+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "rooftop solar panel"
   },
@@ -16,11 +16,12 @@
   "normalization": {
     "is_physical_product": true,
     "product_name_en": "Solar panel",
-    "product_name_ar": "لوح طاقة شمسية",
-    "description": "A photovoltaic panel: a physical product outside the six supported categories.",
+    "product_name_ar": "لوح شمسي",
+    "description": "A photovoltaic panel designed for generating electricity from sunlight on rooftops.",
     "category_id": "unsupported",
     "confidence": 0.95,
-    "alternatives": []
+    "alternatives": [],
+    "hs6_guess": "854143"
   },
   "explanations": {
     "en": null,

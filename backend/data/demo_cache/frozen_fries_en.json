@@ -1,8 +1,8 @@
 {
   "id": "frozen_fries_en",
-  "generated_by": "PLACEHOLDER_HANDWRITTEN",
-  "generated_at": null,
-  "model": null,
+  "generated_by": "pipeline",
+  "generated_at": "2026-10-10T01:12:45.971169+00:00",
+  "model": "normalize=gemini-3.5-flash-lite; explain=gemini-3.5-flash-lite",
   "example_input": {
     "text": "frozen french fries"
   },
@@ -15,15 +15,57 @@
   "image_sha256": null,
   "normalization": {
     "is_physical_product": true,
-    "product_name_en": "Frozen French fries",
+    "product_name_en": "Frozen French Fries",
     "product_name_ar": "بطاطا مقلية مجمّدة",
-    "description": "Par-fried frozen potato strips.",
+    "description": "Par-fried frozen potato strips suitable for frying or baking.",
     "category_id": "frozen_fries",
-    "confidence": 0.92,
-    "alternatives": []
+    "confidence": 1.0,
+    "alternatives": [],
+    "hs6_guess": null
   },
   "explanations": {
-    "en": null,
-    "ar": null
+    "en": {
+      "summary": "Manufacturing frozen French fries in Jordan shows strong potential with a score of 8.6 out of 10, earning a MANUFACTURE verdict. Imports reached 92.8 million USD in 2024, showing a growing market with a local cost advantage of an estimated 12.3 percent.",
+      "reasons_for": [
+        "Growing import demand with latest imports reaching 92.8 million USD in 2024.",
+        "Good local availability of raw potatoes grown in Jordan.",
+        "Zero active local factories currently operating in this product category."
+      ],
+      "concerns": [
+        "High capital requirement with equipment capex ranging from 45,000 to 420,000 USD (equipment only, partial: ex-works supplier listing prices, excluding shipping, customs, installation, moulds and buildings).",
+        "Machinery availability is moderately challenging with a score of 2.0 out of 5.",
+        "Seasonal price variations for raw potatoes and stringent cold chain and Jordan Food and Drug Administration licensing requirements."
+      ],
+      "next_steps": [
+        "Obtain detailed itemized supplier quotes for the machinery lines.",
+        "Verify regulatory and licensing requirements with the Jordan Food and Drug Administration.",
+        "Conduct trials on local potato varieties to confirm processing suitability and yields."
+      ],
+      "caveats": [
+        "Some figures such as local cost per kg, conversion cost, machinery availability, skills availability, local factories, factories saturation, shipping percentage, and protection percentage are estimates."
+      ]
+    },
+    "ar": {
+      "summary": "يظهر التقرير فرصة جيدة لتصنيع بطاطا مقلية مجمّدة في الأردن بحصول المنتج على تقييم 8.6 من 10 وقرار تصنيع. يبلغ حجم الواردات 92.8 مليون دولار في عام 2024 مع نمو قوي في السوق، وتبلغ كلفة الإنتاج المحلية المقدرة 1.14 دولار لكل كيلوغرام مقارنة بكلفة وصول تبلغ 1.3 دولار لكل كيلوغرام.",
+      "reasons_for": [
+        "سوق الواردات كبير ونامٍ وبلغ 92.8 مليون دولار في عام 2024.",
+        "توفر المواد الخام المحلية من البطاطا في الأردن.",
+        "وجود ميزة كلفة واضحة في الإنتاج المحلي مقارنة بالاستيراد."
+      ],
+      "concerns": [
+        "وجود متطلبات رأس مال مرتفعة للمعدات.",
+        "التحديات المرتبطة بسلسلة التبريد وتراخيص مؤسسة الغذاء والدواء.",
+        "موسمية أسعار البطاطا ومخاطر تقلبها."
+      ],
+      "next_steps": [
+        "التحقق من أسعار الموردين للمعدات والحصول على عروض أسعار مفصلة.",
+        "التواصل مع الجهات التنظيمية لمعرفة متطلبات التراخيص الصحية.",
+        "إجراء دراسة تفصيلية لسلسلة التبريد والتخزين البارد."
+      ],
+      "caveats": [
+        "نطاق رأس مال المعدات يتضمن أسعار المصنع فقط ولا يشمل الشحن أو التركيب أو المباني.",
+        "بعض القيم مثل كلفة الإنتاج المحلية هي تقديرات أولية."
+      ]
+    }
   }
 }
