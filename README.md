@@ -53,9 +53,26 @@ curl -X POST http://localhost:8000/api/whatif -H "Content-Type: application/json
   -d '{"category_id": "tomato_paste", "overrides": {"local_cost_per_kg_est_usd": 1.0}}'
 ```
 
-Demo mode only recognises the prepared examples (for example "metal office chair", "steel shelving unit for a
-warehouse", "ceiling fan with three blades", "frozen french fries", "canned tomato paste", "plastic chair with metal legs",
-or their Arabic versions such as "معجون بندورة").
+Demo mode only recognises these prepared inputs (from `backend/data/demo_inputs.json`):
+
+| Text | Text language | Demo result |
+|---|---|---|
+| metal office chair | en | complete (metal_chair) |
+| كرسي مكتب معدني منجد | ar | complete (metal_chair) |
+| steel shelving unit for a warehouse | en | complete (warehouse_racks) |
+| رفوف مستودعات | ar | complete (warehouse_racks) |
+| plastic plates and cups | en | complete (plastic_tableware) |
+| صحون بلاستيك للمطبخ | ar | complete (plastic_tableware) |
+| ceiling fan with three blades | en | complete (ceiling_fan) |
+| مروحة سقف | ar | complete (ceiling_fan) |
+| frozen french fries | en | complete (frozen_fries) |
+| بطاطا مجمدة فرنش فرايز | ar | complete (frozen_fries) |
+| canned tomato paste | en | complete (tomato_paste) |
+| معجون بندورة | ar | complete (tomato_paste) |
+| plastic chair with metal legs | en | needs_confirmation (metal_chair, confidence 0.6) |
+| accounting software for small shops | en | unsupported (not a physical product) |
+| rooftop solar panel | en | unsupported (physical, outside the categories) |
+
 Any other input returns `404 demo_no_match`, and the error message lists the examples.
 
 ### 3. Run with the live AI (Google Gemini)

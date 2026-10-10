@@ -269,10 +269,26 @@ aren't cached. Turn the feature off with `MARKET_PREVIEW=false`.
 **scores are always recomputed live from the CSV**, and cached explanations still pass the grounding guard.
 
 The demo inputs live in [`data/demo_inputs.json`](data/demo_inputs.json) (text, match keywords, expected
-category, placeholder recognition): two per category (English and Arabic, e.g. "metal office chair",
-"رفوف مستودعات", "canned tomato paste", "معجون بندورة"), "plastic chair with metal legs" (→ needs confirmation:
-recorded as metal_chair at confidence 0.6), "accounting software for small shops" (→ unsupported, not physical) and
-"rooftop solar panel" (→ unsupported, physical but outside the catalogue). Other inputs return `404 demo_no_match`.
+category, placeholder recognition). Demo mode recognises exactly these 15 inputs (matched by keywords, so close
+variants also work); any other input returns `404 demo_no_match`:
+
+| Text | Text language | Demo result |
+|---|---|---|
+| metal office chair | en | complete (metal_chair) |
+| كرسي مكتب معدني منجد | ar | complete (metal_chair) |
+| steel shelving unit for a warehouse | en | complete (warehouse_racks) |
+| رفوف مستودعات | ar | complete (warehouse_racks) |
+| plastic plates and cups | en | complete (plastic_tableware) |
+| صحون بلاستيك للمطبخ | ar | complete (plastic_tableware) |
+| ceiling fan with three blades | en | complete (ceiling_fan) |
+| مروحة سقف | ar | complete (ceiling_fan) |
+| frozen french fries | en | complete (frozen_fries) |
+| بطاطا مجمدة فرنش فرايز | ar | complete (frozen_fries) |
+| canned tomato paste | en | complete (tomato_paste) |
+| معجون بندورة | ar | complete (tomato_paste) |
+| plastic chair with metal legs | en | needs_confirmation (metal_chair, confidence 0.6) |
+| accounting software for small shops | en | unsupported (not a physical product) |
+| rooftop solar panel | en | unsupported (physical, outside the categories) |
 
 The shipped cache entries were **recorded from the live pipeline** on 2026-10-10 (`generated_by: pipeline`,
 gemini-3.5-flash-lite at reasoning effort `low`). Every complete entry has English and Arabic AI explanations that

@@ -180,3 +180,11 @@ def test_demo_cache_matches_demo_inputs(store):
         entry = cache.match(None, item.text)
         assert entry is not None and entry.id == item.id
         assert entry.normalization.category_id == item.expected_category_id
+
+
+@pytest.mark.parametrize("readme", [BACKEND / "README.md", BACKEND.parent / "README.md"], ids=["backend", "root"])
+def test_readmes_list_every_demo_input(readme):
+    """The demo-mode example tables in both READMEs must list exactly the inputs demo mode recognises."""
+    text = readme.read_text(encoding="utf-8")
+    missing = [i.text for i in load_demo_inputs() if f"| {i.text} |" not in text]
+    assert not missing, f"{readme.name} does not list demo inputs {missing}"

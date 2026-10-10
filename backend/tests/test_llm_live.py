@@ -11,6 +11,8 @@ Nothing here hard-codes a category id.
 
 from __future__ import annotations
 
+import time
+
 import pytest
 
 from app.config import load_settings
@@ -38,9 +40,28 @@ def store():
     return load_categories(SETTINGS.categories_csv)
 
 
+# The Gemini free tier allows 15 requests per minute per model (HTTP 429 RESOURCE_EXHAUSTED above that), and
+# this module makes about 19 calls. Pace them so the run measures the model, not the quota. Assertions unchanged.
+MIN_SECONDS_BETWEEN_CALLS = 60 / 14
+
+
+class PacedLLM(OpenAILLM):
+    _last_call: float | None = None
+
+    def _send(self, op, params):
+        if PacedLLM._last_call is not None:
+            wait = PacedLLM._last_call + MIN_SECONDS_BETWEEN_CALLS - time.monotonic()
+            if wait > 0:
+                time.sleep(wait)
+        try:
+            return super()._send(op, params)
+        finally:
+            PacedLLM._last_call = time.monotonic()
+
+
 @pytest.fixture(scope="module")
 def llm():
-    return OpenAILLM(SETTINGS)
+    return PacedLLM(SETTINGS)
 
 
 def test_demo_inputs_match_real_categories(store):
