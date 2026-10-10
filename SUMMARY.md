@@ -23,13 +23,18 @@ Two additive HTTP header changes only:
 2. **CORS fix** (`c3ef7f6`): `CORSMiddleware` is now registered last, so it is the outermost layer. Three new tests cover 429, 413 and 411.
 3. **Test fix** (`8bed6f0`): `tests/test_check_data.py` runs the script by absolute path, so the suite passes from any working directory.
 4. **Root `README.md`** (`571847f`): quick start for judges (install, demo mode without a key, live mode with a Gemini key, tests).
+5. **Latency fix** (`e1ba264`)
+   - New setting `LLM_REASONING_EFFORT`, sent as `reasoning_effort` on both calls. The default is `low`; `default` omits the parameter.
+   - New measured defaults: `gemini-3.5-flash-lite`, effort `low`, `LLM_TIMEOUT_SECONDS=15` (was 60), `LLM_MAX_RETRIES=1` (was 2).
+   - Measurements are below.
 
 ## Tests (measured, Python 3.11.17, conda env `inferx`)
 | When | Command | Result |
 |---|---|---|
 | Baseline, before any change | `python -m pytest` in `backend/` | 525 passed, 0 failed, 20 deselected |
-| Final | `python -m pytest` in `backend/` | **541 passed, 0 failed, 20 deselected** |
-| Final | `python -m pytest -c backend/pytest.ini backend/tests` in the repo root | 541 passed, 0 failed, 20 deselected |
+| After step 4 | `python -m pytest` in `backend/` and in the repo root | 541 passed, 0 failed, 20 deselected |
+| Final (after latency fix) | `python -m pytest` in `backend/` | **547 passed, 0 failed, 20 deselected** |
+| Final (after latency fix) | `python -m pytest -c backend/pytest.ini backend/tests` in the repo root | 547 passed, 0 failed, 20 deselected |
 
 The 20 deselected tests are the live `-m llm` tests. They were **not run**.
 
@@ -42,7 +47,7 @@ Correction to my earlier audit: the baseline was already green. `httpx2` is a re
 - "spaceship engine": `404 demo_no_match` with the list of examples.
 - No tracebacks in the server log.
 
-## Live smoke test with the Gemini key (one text request and one image request, measured)
+## First live smoke test, old defaults (gemini-3.8-flash, 60 s timeout, 2 SDK retries)
 | Request | status | explanation_source | Structured output | Total time |
 |---|---|---|---|---|
 | text "plastic plates and cups" (en) | `complete` (plastic_tableware 6.2 MANUFACTURE, confidence 0.98) | **`fallback`** | normalize: **parsed**. explain: never returned (3 × 60 s timeouts) | 237.6 s |
@@ -52,17 +57,54 @@ The image was a Pillow drawing of a red can labelled "TOMATO PASTE", not a real 
 
 Why it was slow: single Gemini calls took about 27 s to over 60 s. Calls over 60 s hit `LLM_TIMEOUT_SECONDS=60`, and the SDK retried up to 2 times. That happened on 3 of the 4 calls.
 
+## Latency comparison (measured; 12 live API calls in total)
+Same two requests for every config, sent through the full `/api/analyze` stack (in-process):
+- text: "plastic plates and cups", expected plastic_tableware
+- image: the synthetic tomato-paste can, expected tomato_paste
+
+Timeout 120 s, SDK retries off (so each request made at most 2 LLM calls), market preview off. Plus 1 `models.list()` call.
+
+`models.list()` on this key returned 62 models. There is no text-only `gemini-3.8-flash-lite`. The newest text
+Flash-Lite is `gemini-3.5-flash-lite`; also present: `gemini-3.1-flash-lite`, `gemini-2.5-flash-lite`, `gemini-flash-lite-latest`.
+
+| Model | effort | Request | Total time | normalize / explain | status | explanation_source | Category correct |
+|---|---|---|---|---|---|---|---|
+| gemini-3.8-flash | minimal | text | 0.8 s | failed at normalize | 502 `llm_error` | – | – |
+| gemini-3.8-flash | minimal | image | 0.5 s | failed at normalize | 502 `llm_error` | – | – |
+| gemini-3.8-flash | low | text | 55.9 s | 11.7 s / 44.2 s | complete | `llm` | yes |
+| gemini-3.8-flash | low | image | 120.1 s | normalize > 120 s (timeout) | 503 `llm_unavailable` | – | – |
+| **gemini-3.5-flash-lite** | **low** | text | **3.6 s** | 1.7 s / 1.9 s | complete | **`llm`** | **yes** (0.95) |
+| **gemini-3.5-flash-lite** | **low** | image | **2.8 s** | 1.2 s / 1.5 s | complete | **`llm`** | **yes** (1.0) |
+| gemini-3.5-flash-lite (new defaults, real uvicorn, nothing overridden) | low | text | 3.1 s wall | 1.2 s / 1.9 s | complete | `llm` | yes |
+
+Notes:
+- "minimal" failed immediately with `llm_error`; the exact HTTP status was not captured.
+- "minimal" was not tried on Flash-Lite.
+- Chosen default: **gemini-3.5-flash-lite + low**, the fastest config that gave `llm` and the right category on both requests.
+- With a 15 s timeout and 1 retry, the worst case per request is bounded: recognition 2 × 15 s, plus up to 2 explanation calls (grounding retry) at 2 × 15 s each. A failed explanation falls back to the template.
+
+## Recording real demo-cache outputs (`scripts/record_demo_cache.py`): NOT run, waiting for your OK
+`data/demo_inputs.json` has 15 inputs. The script makes:
+- 1 normalize call per input;
+- for inputs that land on a real category with confidence ≥ 0.7: 2 more calls (English + Arabic explanation);
+- no grounding retries. An ungrounded explanation is stored as null and the template is used.
+
+Expected total: **39 to 41 calls** (12 category inputs × 3 = 36; the 2 "unsupported" inputs × 1 = 2; the
+plastic-folding-chair input is 1 or 3 depending on the confidence the model returns). The SDK retry (1) could at
+most double this if calls time out; none of the Flash-Lite calls did.
+
+Risks to check before running:
+1. `tests/test_real_data.py::test_demo_cache_matches_demo_inputs` requires every recorded category to equal `expected_category_id`. If the model files the folding chair (or anything else) under another category, the offline suite goes red until the entry or the test is adjusted.
+2. The folding-chair entry exists to demo `needs_confirmation` (placeholder confidence 0.45). A recorded confidence ≥ 0.7 would remove that demo path.
+3. The script overwrites the 15 tracked files in `data/demo_cache/`. Review `git diff` before committing.
+
 ## Known risks (most serious first)
-1. **Live latency of about 4 minutes per analyze request**, measured on 2 requests. The text explanation timed out completely and fell back to the template. Options, none tested:
-   - Use `DEMO_MODE=true` for the judged demo.
-   - Raise `LLM_TIMEOUT_SECONDS` (e.g. 120) and lower `LLM_MAX_RETRIES` to 0–1.
-   - Try a lower Gemini reasoning effort (`reasoning_effort` on the OpenAI-compatible endpoint). This needs code plus a live test.
-   - The frontend needs a long fetch timeout and a progress UI.
-2. Only 2 live requests were made. These are untested live: Arabic output, `/api/analyze/confirm`, the grounding retry path, `market_preview` (UN Comtrade), a real camera photo, and the 20 `-m llm` tests.
+1. **Latency was measured on only 3 Flash-Lite requests** (2.8–3.6 s). Gemini latency varied widely for gemini-3.8-flash (12 s to over 120 s per call), so Flash-Lite may vary too under load. If it does, the 15 s timeout turns a slow call into the template explanation (or a 503 at recognition) instead of a multi-minute wait.
+2. **Flash-Lite was tested on 2 inputs only.** These are untested live: Arabic output, `/api/analyze/confirm`, the grounding retry path, `market_preview` (UN Comtrade), a real camera photo, needs-confirmation behaviour, and the 20 `-m llm` tests. A smaller model may classify ambiguous products less well.
 3. Unhandled 500 responses still carry no CORS headers. Starlette's error middleware sits outside CORS; this was not changed.
 4. The tests still read the developer's `backend/.env` through `load_settings()` (hermetic-test work was skipped by request). A `.env` that changes models, limits or the confidence threshold can change test results.
 5. No lock file or CI. Direct dependencies are pinned, transitive ones are not. Tested only on Windows with Python 3.11.17.
-6. `gemini-3.8-flash` is used as given. It worked for both calls that returned.
+6. `gemini-3.5-flash-lite` and `gemini-3.8-flash` both existed on this key on 2026-10-10 (`models.list()`).
 7. Git commits used `zalhasani05 <zalhasani05@gmail.com>` as author through per-command `-c` flags. No git config was changed.
 
 ## Not done (out of scope by request)
