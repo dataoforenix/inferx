@@ -12,6 +12,7 @@ from starlette.formparsers import MultiPartParser
 
 from app import __version__
 from app.config import Settings, get_settings
+from app.cache import AnalysisCache
 from app.comtrade import ComtradeClient
 from app.data_store import DataStore, load_categories
 from app.demo import DemoCache
@@ -19,7 +20,7 @@ from app.errors import error_response, register_error_handlers
 from app.llm import OpenAILLM, LLMClient
 from app.pipeline import Pipeline
 from app.rate_limit import LIMITED_PATHS, RateLimiter
-from app.routers import analyze, guidance, meta, whatif
+from app.routers import analyze, guidance, meta, searches, whatif
 
 logger = logging.getLogger("sannaha")
 
@@ -59,6 +60,9 @@ def create_app(
     if comtrade is None and settings.market_preview and not settings.demo_mode:
         comtrade = ComtradeClient()
     app.state.pipeline = Pipeline(settings, store, llm, demo, comtrade)
+    # Optional SQLite cache: off with DB_ENABLED=false and never in DEMO_MODE (then nothing changes at all).
+    app.state.cache = (AnalysisCache(settings.db_path, settings.cache_ttl_hours * 3600)
+                       if settings.db_enabled and not settings.demo_mode else None)
     limiter = RateLimiter(settings.rate_limit_per_minute)
     app.state.rate_limiter = limiter
 
@@ -104,4 +108,6 @@ def create_app(
     app.include_router(whatif.router)
     app.include_router(analyze.router)
     app.include_router(guidance.router)
+    if app.state.cache is not None:  # the endpoint only exists while the cache is on
+        app.include_router(searches.router)
     return app

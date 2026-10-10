@@ -79,6 +79,9 @@ class Settings:
     confirm_confidence_threshold: float
     rate_limit_per_minute: int
     market_preview: bool = True  # UN Comtrade scan for physical products outside the categories
+    db_enabled: bool = True  # optional SQLite response cache + search counter (never in DEMO_MODE)
+    db_path: Path = BACKEND_DIR / "data" / "sannaha.db"
+    cache_ttl_hours: float = 24.0
 
     @property
     def llm_configured(self) -> bool:
@@ -104,6 +107,9 @@ def load_settings() -> Settings:
         confirm_confidence_threshold=_float("CONFIRM_CONFIDENCE_THRESHOLD", 0.7),
         rate_limit_per_minute=_int("RATE_LIMIT_PER_MINUTE", 30),
         market_preview=_bool("MARKET_PREVIEW", True),
+        db_enabled=_bool("DB_ENABLED", True),
+        db_path=_path("DB_PATH", "data/sannaha.db"),
+        cache_ttl_hours=_float("CACHE_TTL_HOURS", 24.0),
     )
 
 

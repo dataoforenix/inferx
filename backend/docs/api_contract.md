@@ -304,3 +304,23 @@ Errors: `404 unknown_category`, `422 capex_unavailable` (category without an equ
 [`methodology.json`](examples/methodology.json): `weights`, `thresholds`, `cost_gate`, `min_completeness`, `growth_years`
 (numbers come from the scoring code) and `sections.en` / `sections.ar`: a list of `{title, body}` (score, components, cost
 gate, data completeness, data sources, and the known limitation that growth uses 2020–2024 with 2020 as a COVID low base).
+
+### Optional response cache (`DB_ENABLED`, branch `db-cache`; additive)
+
+When the server runs with `DB_ENABLED=true` (the default) and **not** in demo mode:
+
+- **`POST /api/analyze` responses get one extra field, `cache`: `"hit"` or `"miss"`.**
+  - `hit`: an earlier `complete` or `market_preview` response for the same normalised text (case and spacing ignored), the same image (by SHA-256) and the same `language`, younger than `CACHE_TTL_HOURS` (default 24), was returned without calling the AI. Its `request_id` is new; `timings_ms.normalize` / `explain` are `null`.
+  - `needs_confirmation`, `unsupported` and errors are never cached; they always come back as `miss` (errors have no `cache` field).
+  - With `DB_ENABLED=false` or in demo mode the field is **absent**: responses are byte-for-byte what they were before.
+- **`GET /api/searches/top?limit=10` (`limit` 1–50) is a new endpoint** that exists only while the cache is on (404 otherwise).
+  - Response: `{request_id, searches: [{category_id, hs6_guess, name_en, name_ar, count}]}`, most analysed first.
+  - It counts `complete` (by `category_id`) and `market_preview` (by `hs6_guess`) results, cache hits included.
+  - No personal data: no IP addresses, no request text.
+
+```json
+{ "request_id": "…", "searches": [
+  { "category_id": "plastic_tableware", "hs6_guess": null, "name_en": "Plastic tableware and kitchenware",
+    "name_ar": "أواني ومستلزمات مطبخ بلاستيك", "count": 3 },
+  { "category_id": null, "hs6_guess": "690721", "name_en": "Ceramic floor tiles", "name_ar": "بلاط أرضيات سيراميك", "count": 1 } ] }
+```

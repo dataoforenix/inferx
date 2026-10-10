@@ -83,6 +83,7 @@ Interactive API docs: http://localhost:8000/docs
 | `CONFIRM_CONFIDENCE_THRESHOLD` | `0.7` | Below this the user must confirm the category |
 | `RATE_LIMIT_PER_MINUTE` | `30` | Limit **per client IP** on `POST /api/analyze` and `/api/analyze/confirm`; `0` disables. Behind a dev proxy (e.g. Vite `server.proxy`) every browser shares the proxy's IP, so use ~`300` while rehearsing |
 | `MARKET_PREVIEW` | `true` | UN Comtrade market preview for physical products outside the categories (live mode only; never in demo mode) |
+| `DB_ENABLED` / `DB_PATH` / `CACHE_TTL_HOURS` | `true` / `data/sannaha.db` / `24` | Optional SQLite cache of complete and market-preview responses, plus a search counter for `GET /api/searches/top`. Fail-open (database errors are logged and ignored); stores only a SHA-256 of the sanitised image, never the image; never used in demo mode. `false` = exactly the previous behaviour. |
 | `CATEGORIES_CSV` / `DEMO_CACHE_DIR` | `data/categories.csv` / `data/demo_cache` | |
 
 ## Data

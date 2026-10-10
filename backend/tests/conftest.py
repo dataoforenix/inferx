@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import tempfile
 from pathlib import Path
 
 import pandas as pd
@@ -24,6 +25,8 @@ def test_settings(**overrides):
         categories_csv=TEST_CSV, demo_cache_dir=TEST_DEMO_CACHE,
         rate_limit_per_minute=0,  # disabled in tests unless a test enables it
         market_preview=False,  # never reach UN Comtrade; market-preview tests pass a fake client
+        # DB_ENABLED comes from the environment (default true); each app gets its own temporary database.
+        db_path=Path(tempfile.mkdtemp(prefix="sannaha-test-db-")) / "test.db",
     )
     return dataclasses.replace(base, **overrides)
 

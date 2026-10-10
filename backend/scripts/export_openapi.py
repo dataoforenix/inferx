@@ -25,7 +25,7 @@ OUT = BACKEND_DIR / "docs" / "openapi.json"
 
 def build_openapi() -> dict:
     settings = dataclasses.replace(
-        load_settings(), openai_api_key=None, demo_mode=False,
+        load_settings(), openai_api_key=None, demo_mode=False, db_enabled=False,  # path list independent of DB_ENABLED (/api/searches/top: see api_contract.md)
         categories_csv=FIXTURES / "categories_test.csv", demo_cache_dir=FIXTURES / "demo_cache",
     )
     return create_app(settings).openapi()

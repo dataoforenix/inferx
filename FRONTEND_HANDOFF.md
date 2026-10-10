@@ -143,6 +143,17 @@ Response (`backend/docs/examples/methodology.json`):
   Fetch it once and cache it.
 - Keep the last section (the COVID 2020 base-year note) visible. It is an honest limitation.
 
+## 7. Optional response cache (branch `db-cache`, only if it is merged)
+
+- `POST /api/analyze` may carry `"cache": "hit" | "miss"` (only when the server runs with `DB_ENABLED=true`, never in demo mode).
+  - **Show:** on `hit`, a small grey note «نتيجة محفوظة من تحليل سابق (أقل من 24 ساعة)».
+  - On `hit` the analysis is instant, so the staged 4.8 s animation (`ANALYSIS_MS`) is optional.
+  - Don't rely on the field being present.
+- `GET /api/searches/top?limit=10` → `{searches: [{category_id, hs6_guess, name_en, name_ar, count}]}`.
+  - It returns 404 when the cache is off, so hide the widget then.
+  - **Show:** a «الأكثر بحثاً» list of `name_ar` with the count. A click can pre-fill the input with `name_ar`.
+  - Contains no personal data.
+
 ---
 
 ## Browser test of the current frontend (2026-10-10, measured; no frontend file was changed)

@@ -4,9 +4,11 @@ import time
 
 from fastapi import APIRouter, File, Form, Request, UploadFile
 
+from app.cache import cache_key
+from app.demo import image_fingerprint
 from app.errors import AppError, request_id_of
 from app.image_utils import prepare_image
-from app.schemas import AnalyzeResponse, ConfirmRequest, ErrorResponse, Language
+from app.schemas import AnalyzeResponse, ConfirmRequest, ErrorResponse, Language, Timings
 
 router = APIRouter(prefix="/api", tags=["analyze"])
 
@@ -37,8 +39,41 @@ def analyze(
     if prepared is None and text is None:
         raise AppError(400, "empty_input", "Provide a product photo, a description, or both.")
 
+    cache = request.app.state.cache  # None when DB_ENABLED=false or in DEMO_MODE: then nothing below changes
+    if cache is None:
+        response = request.app.state.pipeline.analyze(request_id_of(request), prepared, text, language)
+        return _with_total(response, started)
+
+    key = cache_key(text, image_fingerprint(prepared) if prepared else None, language)  # image: SHA-256 only
+    stored = cache.get(key)
+    if stored is not None:
+        try:
+            hit = AnalyzeResponse.model_validate(stored)
+        except ValueError:  # e.g. stored under an older schema: treat as a miss
+            hit = None
+        if hit is not None:
+            hit = hit.model_copy(update={"request_id": request_id_of(request), "cache": "hit", "timings_ms": Timings()})
+            _count_search(cache, hit)
+            return _with_total(hit, started)
+
     response = request.app.state.pipeline.analyze(request_id_of(request), prepared, text, language)
+    response.cache = "miss"
+    if response.status in CACHEABLE and response.source == "live":
+        cache.put(key, response.model_dump(mode="json", exclude={"cache"}))
+        _count_search(cache, response)
     return _with_total(response, started)
+
+
+CACHEABLE = ("complete", "market_preview")  # never errors, needs_confirmation or unsupported
+
+
+def _count_search(cache, response: AnalyzeResponse) -> None:
+    if response.product is None or response.report is None:
+        return
+    if response.status == "complete":
+        cache.record_search(response.report.category_id, None, response.report.name_en, response.report.name_ar)
+    elif response.status == "market_preview":
+        cache.record_search(None, response.product.hs6_guess, response.product.name_en, response.product.name_ar)
 
 
 @router.post("/analyze/confirm", response_model=AnalyzeResponse, responses=_ERRORS)

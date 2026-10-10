@@ -564,6 +564,22 @@
           },
           "timings_ms": {
             "$ref": "#/components/schemas/Timings"
+          },
+          "cache": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "hit",
+                  "miss"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cache",
+            "description": "Only present when the server's response cache is on (DB_ENABLED): hit = a stored response for the same text / image / language younger than CACHE_TTL_HOURS was returned without calling the AI."
           }
         },
         "type": "object",

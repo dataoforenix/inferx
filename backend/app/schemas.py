@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_serializer
 
 Language = Literal["ar", "en"]
 DataStatus = Literal["VERIFIED", "ESTIMATE", "TODO_REAL_DATA"]
@@ -455,6 +455,32 @@ class AnalyzeResponse(BaseModel):
     )
     warnings: list[str]
     timings_ms: Timings = Field(default_factory=Timings)
+    cache: Literal["hit", "miss"] | None = Field(
+        default=None,
+        description="Only present when the server's response cache is on (DB_ENABLED): hit = a stored response for "
+                    "the same text / image / language younger than CACHE_TTL_HOURS was returned without calling the AI.",
+    )
+
+    @model_serializer(mode="wrap")
+    def _omit_cache_when_off(self, handler):
+        # With the cache off the field is absent, so responses stay byte-for-byte what they were before it existed.
+        data = handler(self)
+        if self.cache is None:
+            data.pop("cache", None)
+        return data
+
+
+class TopSearch(BaseModel):
+    category_id: str | None = Field(description="Set for the supported categories")
+    hs6_guess: str | None = Field(description="Set for market-preview products outside the categories")
+    name_en: str
+    name_ar: str
+    count: int
+
+
+class TopSearchesResponse(BaseModel):
+    request_id: str
+    searches: list[TopSearch] = Field(description="Most analysed products first. No personal data, no IP addresses.")
 
 
 class ConfirmRequest(BaseModel):
