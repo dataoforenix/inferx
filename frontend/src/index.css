@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f6f3ec;
-  --color-paper-2: #ece6da;
-  --color-ink: #0e1726;
-  --color-ink-muted: #5b6474;
-  --color-hairline: rgb(14 23 38 / 0.12);
-  --color-brand: #1e4fd6;
-  --color-brand-deep: #13328f;
-  --color-signal: #f0641e;
+  /* Graphite on a cool white, one accent: industrial yellow (fills and marks only, never text on paper).
+     Brick is reserved for risk and errors. Radius scale: badges 4px, buttons/inputs 10-12px, panels 16px. */
+  --color-paper: #eceeec;
+  --color-paper-2: #e0e3e1;
+  --color-white: #f9faf9;
+  --color-ink: #15181b;
+  --color-ink-muted: #596067;
+  --color-hairline: rgb(21 24 27 / 0.12);
+  --color-brand: #1c2024;
+  --color-brand-deep: #0d0f11;
+  --color-accent: #e6b325;
+  --color-accent-deep: #c99a12;
+  --color-signal: #b3412e;
 
   --font-display: "Alexandria", "IBM Plex Sans Arabic", system-ui, sans-serif;
   --font-sans: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -33,18 +38,25 @@
   }
 
   ::selection {
-    background: rgb(30 79 214 / 0.18);
+    background: rgb(230 179 37 / 0.4);
   }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+/* Highlighter mark under a word (the accent as a fill, so contrast stays with the ink). */
+.mark {
+  background: linear-gradient(transparent 60%, var(--color-accent) 60% 90%, transparent 90%);
+  padding-inline: 0.06em;
 }
 
 /* ---------- Living blueprint backdrop ---------- */
 .backdrop-fade {
   mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 35%, transparent 100%);
-}
-/* ---------- Custom cursor (mouse only) ---------- */
-html.custom-cursor,
-html.custom-cursor * {
-  cursor: none !important;
 }
 
 /* ---------- Opening sequence ---------- */
@@ -77,18 +89,6 @@ html[data-phase='opening'] .site-header .header-link {
   animation-delay: calc(var(--i, 0) * 70ms + 80ms);
 }
 
-@keyframes cue-travel {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(260%);
-  }
-}
-
-.cue-dot {
-  animation: cue-travel 1.8s var(--ease-in-out) infinite;
-}
 
 .canvas-fade {
   opacity: 0;
@@ -101,8 +101,8 @@ html[data-phase='opening'] .site-header .header-link {
 /* ---------- Analysis ---------- */
 /* Conveyor belt: dashes run toward the end of the line (leftward in RTL). */
 .belt {
-  background-color: rgb(14 23 38 / 0.06);
-  background-image: repeating-linear-gradient(90deg, rgb(14 23 38 / 0.22) 0 10px, transparent 10px 20px);
+  background-color: rgb(21 24 27 / 0.06);
+  background-image: repeating-linear-gradient(90deg, rgb(21 24 27 / 0.22) 0 10px, transparent 10px 20px);
   background-size: 20px 100%;
   animation: belt-run 0.9s linear infinite;
 }
@@ -158,7 +158,6 @@ html[data-phase='opening'] .site-header .header-link {
     animation-name: fade-only;
     animation-duration: 300ms;
   }
-  .cue-dot,
   .belt,
   .gear-spinner {
     animation: none;

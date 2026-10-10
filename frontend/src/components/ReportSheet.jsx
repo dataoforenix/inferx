@@ -6,9 +6,9 @@
 import EstimateTag from './EstimateTag';
 
 const VERDICT = {
-  go: { label: 'صنّعها', badge: 'bg-brand text-white' },
-  maybe: { label: 'ربما', badge: 'bg-[#fdf3dc] text-[#8a5a00]' },
-  no: { label: 'لا تصنّعها', badge: 'bg-[#fdeee5] text-[#b4400e]' },
+  go: { label: 'صنّعها', badge: 'bg-[#e6b325] text-ink' },
+  maybe: { label: 'ربما', badge: 'border border-[#b9bdb9] text-ink' },
+  no: { label: 'لا تصنّعها', badge: 'bg-[#b3412e] text-white' },
 };
 
 const today = () => new Intl.DateTimeFormat('ar-JO-u-nu-latn', { dateStyle: 'long' }).format(new Date());
@@ -37,8 +37,8 @@ function SheetFactor({ factor }) {
   const risk = factor.id === 'risk';
   const est = factor.est ?? {};
   return (
-    <div className={`rounded-2xl border p-5 ${risk ? 'border-[#f6c8ad] bg-[#fff7f1]' : 'border-hairline bg-white'}`}>
-      <p className={`text-[13px] font-semibold ${risk ? 'text-[#b4400e]' : 'text-brand'}`}>{factor.title}</p>
+    <div className={`rounded-2xl border p-5 ${risk ? 'border-[#e6c9c2] bg-[#f6ecea]' : 'border-hairline bg-white'}`}>
+      <p className={`text-[13px] font-semibold ${risk ? 'text-[#b3412e]' : 'text-brand'}`}>{factor.title}</p>
       <p className="mt-2 font-display text-[16px] leading-[1.6] font-semibold">
         {factor.headline}
         <EstimateTag show={est.headline} plain />
@@ -107,13 +107,13 @@ export function PreviewSheet({ outcome }) {
     <SheetRoot>
       <Page n={1} total={1} title="مسح أولي للسوق">
         <section className="mt-8">
-          <span className="inline-block rounded-full bg-[#fdf3dc] px-4 py-1 font-display text-[14px] font-semibold text-[#8a5a00]">
+          <span className="inline-block rounded-[4px] border border-[#b9bdb9] px-3 py-1 font-display text-[14px] font-semibold text-ink">
             ربما: البيانات لا تكفي لحكم كامل
           </span>
           <h1 className="mt-4 font-display text-[26px] leading-[1.45] font-semibold">{outcome.productName}</h1>
           <p className="mt-2 text-[12.5px] text-ink-muted">
             رمز HS مقترح: <span className="font-mono text-ink">{outcome.hsCode}</span>{' '}
-            <span className="text-[#8a5a00]">(اقترحه الذكاء الاصطناعي، تأكّد منه)</span>
+            <span className="text-ink-muted">(اقترحه الذكاء الاصطناعي، تأكّد منه)</span>
           </p>
         </section>
 
@@ -126,9 +126,9 @@ export function PreviewSheet({ outcome }) {
           {outcome.trend && <p className="mt-3 text-[13px]">{outcome.trend}</p>}
         </section>
 
-        <section className="mt-4 rounded-2xl border border-[#f1dca8] bg-[#fffaf0] p-6">
-          <p className="text-[13px] font-semibold text-[#8a5a00]">لماذا لا يوجد حكم كامل؟ ما ينقصنا لنحكم</p>
-          <SheetList items={outcome.missing} dot="bg-[#c98a0b]" />
+        <section className="mt-4 rounded-2xl border border-[#d3d7d4] bg-[#e7eae8] p-6">
+          <p className="text-[13px] font-semibold text-ink">لماذا لا يوجد حكم كامل؟ ما ينقصنا لنحكم</p>
+          <SheetList items={outcome.missing} dot="bg-[#596067]" />
         </section>
 
         <section className="mt-4 rounded-2xl border border-hairline bg-white p-6">
@@ -152,7 +152,7 @@ export default function ReportSheet({ result }) {
         <section className="mt-8 flex items-start justify-between gap-8">
           <div className="min-w-0">
             <span
-              className={`inline-block rounded-full px-4 py-1 font-display text-[14px] font-semibold ${VERDICT[result.verdict].badge}`}
+              className={`inline-block rounded-[4px] px-3 py-1 font-display text-[14px] font-semibold ${VERDICT[result.verdict].badge}`}
             >
               {VERDICT[result.verdict].label}
             </span>

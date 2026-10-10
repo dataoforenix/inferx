@@ -60,9 +60,9 @@ export default function SiteBackdrop() {
           }
           const size = 1.5 + k * 1.3;
           if (k > 0.02) {
-            ctx.fillStyle = `rgba(30, 79, 214, ${0.18 + k * 0.5})`;
+            ctx.fillStyle = `rgba(201, 154, 18, ${0.2 + k * 0.55})`;
           } else {
-            ctx.fillStyle = `rgba(14, 23, 38, ${0.13 + wave * 0.035})`;
+            ctx.fillStyle = `rgba(21, 24, 27, ${0.12 + wave * 0.035})`;
           }
           ctx.fillRect(x - size / 2, y - size / 2, size, size);
         }

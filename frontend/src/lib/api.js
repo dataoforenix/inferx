@@ -149,20 +149,24 @@ export function mapReport(body, inputName) {
       ? 'لا تتوفر بيانات كافية'
       : margin >= 0
         ? `المحلي أرخص بـ ${pct(margin)}`
-        : `المستورد أرخص بـ ${pct(-margin)}`;
+        : `المحلي أغلى بـ ${pct(-margin)}`;
   const costBody =
     cost.landed_cost_per_kg_usd != null && cost.local_cost_per_kg_est_usd != null
       ? `كلفة المستورد مع الجمرك ${formatJod(cost.landed_cost_per_kg_usd * USD_TO_JOD)}/كغ، مقابل كلفة محلية تقديرية ${formatJod(cost.local_cost_per_kg_est_usd * USD_TO_JOD)}/كغ.`
       : null;
 
-  const ratings = [
+  const ratingRows = [
     ['الآلات', feasibility.machinery_availability],
     ['المواد الخام', feasibility.raw_material_local],
     ['المهارات', feasibility.skills_availability],
-  ]
-    .filter(([, v]) => v != null)
-    .map(([k, v]) => `${k} ${v}/5`)
-    .join(' · ');
+  ].filter(([, v]) => v != null);
+  const ratings = ratingRows.map(([k, v]) => `${k} ${v}/5`).join(' · ');
+
+  // Chart data for the factor tiles (the PDF keeps the text form).
+  const series = Object.entries(r.imports_usd ?? {})
+    .map(([year, usd]) => ({ year, jod: usd != null ? usd * USD_TO_JOD : null }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+  const perKg = (usd) => (usd != null ? usd * USD_TO_JOD : null);
 
   const concerns = (ex.concerns ?? (r.risk_notes ? [r.risk_notes] : [])).map(usdTextToJod);
 
@@ -201,6 +205,7 @@ export function mapReport(body, inputName) {
         id: 'market',
         est: est.market,
         title: 'السوق',
+        chart: series.some((d) => d.jod != null) ? { kind: 'series', data: series } : null,
         headline: latestJod != null ? formatJod(latestJod) : 'لا تتوفر بيانات كافية',
         caption: 'واردات الأردن في 2024',
         body: marketBody || null,
@@ -210,6 +215,10 @@ export function mapReport(body, inputName) {
         id: 'cost',
         est: est.cost,
         title: 'الكلفة',
+        chart:
+          cost.landed_cost_per_kg_usd != null && cost.local_cost_per_kg_est_usd != null
+            ? { kind: 'compare', imported: perKg(cost.landed_cost_per_kg_usd), local: perKg(cost.local_cost_per_kg_est_usd) }
+            : null,
         headline: costHeadline,
         caption: cost.customs_pct != null ? `الجمرك على المستورد: ${pct(cost.customs_pct)}` : '',
         body: costBody,
@@ -219,6 +228,7 @@ export function mapReport(body, inputName) {
         id: 'readiness',
         est: est.readiness,
         title: 'جاهزية التصنيع',
+        chart: ratingRows.length ? { kind: 'ratings', data: ratingRows.map(([label, value]) => ({ label, value })) } : null,
         headline: readinessLabel(feasibility.score),
         caption: ratings,
         body: r.competition_note ? usdTextToJod(r.competition_note) : null,
@@ -264,6 +274,9 @@ export function mapMarketPreview(body, inputName) {
     inputName,
     hsCode: hsLabel(r.hs6 ?? body.product?.hs6_guess),
     importsLatest: latest != null ? formatJod(latest * USD_TO_JOD) : null,
+    series: Object.entries(r.imports_usd ?? {})
+      .map(([year, usd]) => ({ year, jod: usd != null ? usd * USD_TO_JOD : null }))
+      .sort((a, b) => a.year.localeCompare(b.year)),
     trend: [trend && `الاتجاه: ${trend}`, r.market?.cagr != null && `بمعدل ${pct(r.market.cagr, 1)} سنوياً بين 2020 و2024`]
       .filter(Boolean)
       .join('، '),

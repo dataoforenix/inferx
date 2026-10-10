@@ -7,7 +7,7 @@ export default function EstimateTag({ show, plain = false }) {
   if (!show) return null;
   if (plain) return <span className="ms-1 text-[11px] font-normal text-[#5b6474]">(تقدير)</span>;
   return (
-    <span className="ms-1.5 inline-flex h-[17px] items-center rounded-full border border-[#d6d2c8] bg-[#f6f3ec] px-1.5 align-middle font-sans text-[10.5px] leading-none font-medium text-[#5b6474]">
+    <span className="ms-1.5 inline-flex h-[17px] items-center rounded-[4px] border border-[#cfd3d0] bg-[#eceeec] px-1.5 align-middle font-sans text-[10.5px] leading-none font-medium text-[#596067]">
       تقدير
     </span>
   );

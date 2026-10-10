@@ -3,9 +3,9 @@ import * as THREE from 'three';
 export function createMaterials() {
   return {
     anodizedBlue: new THREE.MeshPhysicalMaterial({
-      color: '#1e4fd6',
-      metalness: 0.55,
-      roughness: 0.3,
+      color: '#2a2f35',
+      metalness: 0.6,
+      roughness: 0.32,
       clearcoat: 0.7,
       clearcoatRoughness: 0.18,
     }),
@@ -30,7 +30,7 @@ export function createMaterials() {
       roughness: 0.42,
     }),
     signalOrange: new THREE.MeshPhysicalMaterial({
-      color: '#f0641e',
+      color: '#e6b325',
       metalness: 0.25,
       roughness: 0.32,
       clearcoat: 0.6,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RotateCcw, SlidersHorizontal } from 'lucide-react';
+import { ArrowCounterClockwise, SlidersHorizontal } from '@phosphor-icons/react';
 import { postWhatIf, USD_TO_JOD } from '../lib/api';
 
 const DEBOUNCE_MS = 150;
@@ -9,7 +9,7 @@ function Slider({ label, value, display, min, max, step, onChange, ltr = true })
     <label className="block">
       <span className="flex items-baseline justify-between gap-3 text-[14px]">
         <span className="font-medium text-ink">{label}</span>
-        <span className={`text-[13px] text-brand ${ltr ? 'font-mono' : 'font-medium'}`} dir={ltr ? 'ltr' : undefined}>
+        <span className={`text-[13px] text-ink ${ltr ? 'font-mono' : 'font-medium'}`} dir={ltr ? 'ltr' : undefined}>
           {display}
         </span>
       </span>
@@ -20,7 +20,7 @@ function Slider({ label, value, display, min, max, step, onChange, ltr = true })
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-2 w-full accent-[#1e4fd6]"
+        className="mt-2 w-full accent-[#1c2024]"
       />
     </label>
   );
@@ -66,7 +66,7 @@ export default function WhatIf({ whatIf, baseScore, verdicts }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rise-in mt-6 inline-flex items-center gap-2 rounded-full border border-ink/12 bg-white/80 px-4 py-2 text-[14px] font-medium text-ink transition-[border-color,color,scale] duration-150 hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal active:scale-[0.97]"
+        className="rise-in mt-6 inline-flex items-center gap-2 rounded-[10px] border border-ink/15 bg-white px-4 py-2.5 text-[14px] font-medium text-ink transition-[border-color,color,scale] duration-150 hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal active:scale-[0.97]"
         style={{ '--i': 7 }}
       >
         <SlidersHorizontal className="size-4" aria-hidden="true" />
@@ -87,7 +87,7 @@ export default function WhatIf({ whatIf, baseScore, verdicts }) {
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h4 className="flex items-center gap-2 text-[15px] font-semibold text-ink">
-          <SlidersHorizontal className="size-4 text-brand" aria-hidden="true" />
+          <SlidersHorizontal className="size-5 text-ink" aria-hidden="true" />
           ماذا لو؟
         </h4>
         <button
@@ -96,7 +96,7 @@ export default function WhatIf({ whatIf, baseScore, verdicts }) {
           disabled={!changed}
           className="inline-flex items-center gap-1.5 rounded-md text-[13px] text-ink-muted transition-colors duration-150 hover:text-ink disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
         >
-          <RotateCcw className="size-3.5" aria-hidden="true" />
+          <ArrowCounterClockwise className="size-4" aria-hidden="true" />
           القيم الأصلية
         </button>
       </div>
@@ -128,7 +128,7 @@ export default function WhatIf({ whatIf, baseScore, verdicts }) {
             <span>{shown ? shown.score.toFixed(1) : '—'}</span>
           </p>
           {verdict && (
-            <span className={`rounded-full px-3 py-1 font-display text-[13px] font-semibold ${verdict.badge}`}>
+            <span className={`rounded-[4px] px-2.5 py-1 font-display text-[13px] font-semibold ${verdict.badge}`}>
               {verdict.label}
             </span>
           )}

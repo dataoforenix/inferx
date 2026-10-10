@@ -1,9 +1,9 @@
 export function BrandMark({ className = 'size-8' }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
-      <rect width="32" height="32" rx="8" fill="#1e4fd6" />
-      <circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" strokeWidth="3" strokeDasharray="4.2 2.47" />
-      <circle cx="16" cy="16" r="3" fill="#f0641e" />
+      <rect width="32" height="32" rx="8" fill="#1c2024" />
+      <circle cx="16" cy="16" r="8.5" fill="none" stroke="#f9faf9" strokeWidth="3" strokeDasharray="4.2 2.47" />
+      <circle cx="16" cy="16" r="3" fill="#e6b325" />
     </svg>
   );
 }
@@ -15,7 +15,7 @@ export default function SiteHeader() {
         <a
           href="/"
           className="flex items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal"
-          aria-label="صنّعها — الصفحة الرئيسية"
+          aria-label="صنّعها: الصفحة الرئيسية"
         >
           <BrandMark />
           <span className="font-display text-[1.375rem] font-bold text-ink">صنّعها</span>

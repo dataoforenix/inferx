@@ -210,7 +210,7 @@ export default function MechanicalAssembly({ progress, scroll, reduce, labelsRef
                 [0, 0, -2.2],
                 [0, 0, 4.6],
               ]}
-              color="#1e4fd6"
+              color="#1c2024"
               lineWidth={1}
               dashed
               dashSize={0.08}

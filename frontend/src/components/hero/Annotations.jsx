@@ -30,7 +30,7 @@ export default function Annotations({ labelsRef }) {
               ref={register(id, 'line')}
               points={`0,0 ${sx * ELBOW.x},${sy * ELBOW.y} ${sx * SHELF},${sy * ELBOW.y}`}
               fill="none"
-              stroke="#1e4fd6"
+              stroke="#1c2024"
               strokeWidth="1"
               pathLength="1"
               strokeDasharray="1"

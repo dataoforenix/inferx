@@ -1,22 +1,16 @@
-import { ListChecks, MapPin, Wallet, Wrench } from 'lucide-react';
+import { ListNumbers, MapPin, Wallet, Wrench } from '@phosphor-icons/react';
 import EstimateTag from './EstimateTag';
 import ReportButton from './ReportButton';
 import ReportSheet from './ReportSheet';
 
-function PlanCard({ icon: Icon, title, i, children }) {
+const PANEL = 'rounded-[16px] border border-hairline bg-white';
+
+function TileHeader({ icon: Icon, children, tone = 'text-ink-muted' }) {
   return (
-    <article
-      className="rise-in flex min-w-0 flex-col rounded-2xl border border-hairline bg-white/75 p-4 shadow-[0_24px_48px_-36px_rgb(14_23_38/0.35)] backdrop-blur-sm lg:rounded-3xl lg:p-6"
-      style={{ '--i': i }}
-    >
-      <header className="flex items-center gap-2 lg:gap-3">
-        <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-brand/8 text-brand lg:size-9 lg:rounded-xl">
-          <Icon className="size-4 lg:size-[18px]" strokeWidth={1.75} aria-hidden="true" />
-        </span>
-        <h4 className="text-[13px] leading-snug font-semibold text-ink lg:text-[15px]">{title}</h4>
-      </header>
-      {children}
-    </article>
+    <header className={`flex items-center gap-2 ${tone}`}>
+      <Icon className="size-5 shrink-0" aria-hidden="true" />
+      <h4 className="text-[14.5px] font-semibold">{children}</h4>
+    </header>
   );
 }
 
@@ -24,96 +18,90 @@ export default function ActionPlan({ result }) {
   const { plan } = result;
 
   return (
-    <section className="mt-14" aria-labelledby="plan-heading">
-      <div className="rise-in mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between" style={{ '--i': 7 }}>
+    <section className="mt-16" aria-labelledby="plan-heading">
+      <div className="rise-in mb-7 flex flex-col gap-5 md:flex-row md:items-end md:justify-between" style={{ '--i': 7 }}>
         <div>
-          <h3 id="plan-heading" className="font-display text-[1.5rem] font-semibold text-ink">
+          <h3 id="plan-heading" className="font-display text-[1.75rem] font-bold text-ink">
             الخطوة التالية
           </h3>
-          <p className="mt-2 text-[14px] text-ink-muted">
+          <p className="mt-2 text-[14.5px] text-ink-muted">
             {result.verdict === 'go'
               ? 'ما تحتاجه لتبدأ، بأرقام تقريبية من بيانات المنتج.'
               : 'إذا قررت المضي، هذا ما تحتاجه بأرقام تقريبية.'}
           </p>
         </div>
-        <ReportButton
-          productName={result.productName}
-          renderSheet={() => <ReportSheet result={result} />}
-        />
+        <ReportButton productName={result.productName} renderSheet={() => <ReportSheet result={result} />} />
       </div>
 
-      <div className="grid gap-3 md:grid-cols-3 lg:gap-4">
-        <PlanCard icon={Wallet} title="رأس مال المكائن" i={8}>
+      <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
+        {/* The one dark tile on the page: the number a workshop owner asks first. */}
+        <article className="rise-in flex flex-col rounded-[16px] bg-brand p-6 text-white lg:col-span-5 lg:p-8" style={{ '--i': 8 }}>
+          <TileHeader icon={Wallet} tone="text-white/65">
+            رأس مال المكائن
+          </TileHeader>
           {plan.capital ? (
             <>
-              <p className="mt-3 font-display text-[1.375rem] leading-[1.4] font-semibold text-ink lg:mt-5">
-                من {plan.capital.minK} إلى {plan.capital.maxK} ألف دينار
+              <p className="mt-6 font-display leading-[1.15] font-bold">
+                <span className="text-[1.25rem] text-white/60">من </span>
+                <span className="text-[clamp(2.5rem,2rem+2vw,3.5rem)] tabular-nums">{plan.capital.minK}</span>
+                <span className="text-[1.25rem] text-white/60"> إلى </span>
+                <span className="text-[clamp(2.5rem,2rem+2vw,3.5rem)] tabular-nums">{plan.capital.maxK}</span>
+                <span className="ms-2 text-[1.25rem] text-white/75">ألف دينار</span>
                 <EstimateTag show={plan.est?.capital} />
               </p>
-              <p className="mt-1.5 text-[12px] leading-[1.7] text-ink-muted lg:text-[12.5px]">
-                {plan.capitalNote ?? 'كلفة المكائن فقط، تقدير تقريبي'}
-              </p>
+              <p className="mt-2 text-[13px] leading-[1.75] text-white/60">{plan.capitalNote ?? 'كلفة المكائن فقط، تقدير تقريبي'}</p>
               {plan.breakEven && (
-                <p className="mt-3 text-[12.5px] leading-[1.8] text-ink/80 lg:text-[13.5px]">
+                <p className="mt-6 border-s-2 border-accent ps-4 text-[14.5px] leading-[1.85] text-white/90">
                   {plan.breakEven}
                   <EstimateTag show={plan.est?.breakEven} />
                 </p>
               )}
             </>
           ) : (
-            <p className="mt-3 text-[14px] text-ink-muted lg:mt-5">التقدير غير متوفر لهذا المنتج بعد.</p>
+            <p className="mt-6 text-[15px] text-white/75">التقدير غير متوفر لهذا المنتج بعد.</p>
           )}
           {plan.factories && (
-            <div className="mt-auto pt-4 lg:pt-5">
-              <p className="border-t border-hairline pt-3 text-[12.5px] leading-[1.75] text-ink/80 lg:text-[13.5px]">
-                {plan.factories}
-                <EstimateTag show={plan.est?.factories} />
-              </p>
-            </div>
+            <p className="mt-auto pt-8 text-[13.5px] leading-[1.75] text-white/65">
+              {plan.factories}
+              <EstimateTag show={plan.est?.factories} />
+            </p>
           )}
-        </PlanCard>
-
-        <PlanCard icon={Wrench} title="المكائن المطلوبة" i={9}>
-          <ul className="mt-3 space-y-2 lg:mt-5 lg:space-y-2.5">
-            {plan.machines.map((m) => (
-              <li key={m} className="flex gap-2 text-[12.5px] leading-[1.75] text-ink/80 lg:gap-2.5 lg:text-[14px] lg:leading-[1.8]">
-                <span className="mt-[0.7em] size-1.5 shrink-0 bg-brand" aria-hidden="true" />
-                {m}
-              </li>
-            ))}
-          </ul>
-        </PlanCard>
+        </article>
 
         {plan.steps.length > 0 ? (
-          <PlanCard icon={ListChecks} title="خطوات البداية" i={10}>
-            <ol className="mt-3 space-y-2.5 lg:mt-5">
+          <article className={`rise-in ${PANEL} p-6 lg:col-span-7 lg:p-8`} style={{ '--i': 9 }}>
+            <TileHeader icon={ListNumbers}>خطوات البداية</TileHeader>
+            <ol className="mt-6 space-y-5">
               {plan.steps.map((step, n) => (
-                <li key={step} className="flex gap-2.5 text-[12.5px] leading-[1.8] text-ink/80 lg:text-[14px]">
-                  <span className="font-mono text-[12px] leading-[2] text-brand" dir="ltr">
-                    0{n + 1}
+                <li key={step} className="grid grid-cols-[2rem_1fr] gap-3 text-[14.5px] leading-[1.85] text-ink/85 lg:text-[15.5px]">
+                  <span className="font-display text-[1.5rem] leading-[1.15] font-bold text-ink/20 tabular-nums" dir="ltr">
+                    {n + 1}
                   </span>
                   {step}
                 </li>
               ))}
             </ol>
-            {plan.rawMaterials && (
-              <p className="mt-3 text-[12px] leading-[1.75] text-ink-muted lg:text-[12.5px] lg:leading-[1.8]">
-                المواد الخام: {plan.rawMaterials}
-              </p>
-            )}
-          </PlanCard>
+          </article>
         ) : (
-          <PlanCard icon={MapPin} title="أين تبدأ في الأردن" i={10}>
-            <p className="mt-3 text-[12.5px] leading-[1.8] text-ink/80 lg:mt-5 lg:text-[14px] lg:leading-[1.85]">
-              {plan.workshops}
-            </p>
-            <p className="mt-3 text-[12px] leading-[1.75] text-ink-muted lg:text-[12.5px] lg:leading-[1.8]">
-              المواد الخام: {plan.rawMaterials}
-            </p>
-          </PlanCard>
+          <article className={`rise-in ${PANEL} p-6 lg:col-span-7 lg:p-8`} style={{ '--i': 9 }}>
+            <TileHeader icon={MapPin}>أين تبدأ في الأردن</TileHeader>
+            <p className="mt-6 text-[15px] leading-[1.9] text-ink/85">{plan.workshops}</p>
+          </article>
         )}
-      </div>
 
+        <article className={`rise-in ${PANEL} p-6 lg:col-span-12 lg:p-8`} style={{ '--i': 10 }}>
+          <TileHeader icon={Wrench}>المكائن المطلوبة</TileHeader>
+          <ul className="mt-5 gap-x-10 sm:columns-2 lg:columns-3">
+            {plan.machines.map((m) => (
+              <li key={m} className="flex break-inside-avoid gap-2.5 py-1.5 text-[14px] leading-[1.75] text-ink/85">
+                <span className="mt-[0.85em] h-px w-3 shrink-0 bg-ink/40" aria-hidden="true" />
+                {m}
+              </li>
+            ))}
+          </ul>
+          {plan.rawMaterials && <p className="mt-4 text-[13.5px] leading-[1.8] text-ink-muted">المواد الخام: {plan.rawMaterials}</p>}
+        </article>
+      </div>
     </section>
   );
 }

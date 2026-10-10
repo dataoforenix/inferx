@@ -1,10 +1,10 @@
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from '@phosphor-icons/react';
 
 const MAGNET = { stiffness: 320, damping: 22, mass: 0.5 };
 
 /** Primary CTA. A real link (works without JS), with a soft magnetic pull on mouse only. */
-export default function MakeItButton({ href = '#product-input', label = 'صنّعها' }) {
+export default function MakeItButton({ href = '#product-input', label = 'ابدأ التقييم' }) {
   const reduce = useReducedMotion();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -42,22 +42,18 @@ export default function MakeItButton({ href = '#product-input', label = 'صنّ�
         onClick={onClick}
         onPointerMove={onPointerMove}
         onPointerLeave={reset}
-        className="group relative inline-flex h-14 items-center gap-5 rounded-[14px] bg-brand ps-7 pe-2.5 font-display text-[1.125rem] font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.22),0_16px_32px_-16px_rgb(19_50_143/0.8)] transition-[background-color,box-shadow,scale] duration-150 ease-(--ease-out) select-none hover:bg-brand-deep hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_20px_36px_-14px_rgb(19_50_143/0.85)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal active:scale-[0.97]"
+        className="group relative inline-flex h-14 items-center gap-5 rounded-[12px] bg-brand ps-7 pe-2 font-display text-[1.0625rem] font-semibold text-white shadow-[0_16px_30px_-18px_rgb(21_24_27/0.75)] transition-[background-color,scale] duration-150 ease-(--ease-out) select-none hover:bg-brand-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal active:scale-[0.98]"
       >
         <span>{label}</span>
-        <span
-          aria-hidden="true"
-          className="relative grid size-9 place-items-center overflow-hidden rounded-[10px] bg-white/15"
-        >
+        <span aria-hidden="true" className="relative grid size-10 place-items-center overflow-hidden rounded-[9px] bg-accent text-ink">
           <ArrowLeft
-            strokeWidth={2.25}
+            weight="bold"
             className="size-[18px] transition-transform duration-250 ease-(--ease-out) group-hover:-translate-x-[180%]"
           />
           <ArrowLeft
-            strokeWidth={2.25}
+            weight="bold"
             className="absolute size-[18px] translate-x-[180%] transition-transform duration-250 ease-(--ease-out) group-hover:translate-x-0"
           />
-          <span className="absolute -bottom-px left-1/2 h-0.5 w-3 -translate-x-1/2 rounded-full bg-signal opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
         </span>
       </a>
     </motion.span>

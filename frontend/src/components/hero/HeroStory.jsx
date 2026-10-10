@@ -6,7 +6,7 @@ import CanvasErrorBoundary from '../three/CanvasErrorBoundary';
 import StaticAssemblyFallback from '../three/StaticAssemblyFallback';
 import HeroCopy from './HeroCopy';
 import Annotations from './Annotations';
-import { CornerMarks, OpeningChrome, ScrollCue } from './StoryChrome';
+import { OpeningChrome } from './StoryChrome';
 
 // three.js ships in its own chunk so the page shell paints first.
 const AssemblyCanvas = lazy(() => import('../three/AssemblyCanvas'));
@@ -85,7 +85,6 @@ export default function HeroStory() {
 
   return (
     <section ref={sectionRef} aria-labelledby="hero-title" className="relative h-svh min-h-[600px] overflow-hidden">
-      <CornerMarks />
 
       {show3D ? (
         <CanvasErrorBoundary fallback={<StaticAssemblyFallback />}>
@@ -113,7 +112,6 @@ export default function HeroStory() {
       {show3D && <Annotations labelsRef={labelsRef} />}
       <HeroCopy story={story} />
       {plays && <OpeningChrome story={story} onSkip={skip} visible={phase === 'opening'} />}
-      <ScrollCue story={story} scroll={scrollYProgress} />
     </section>
   );
 }

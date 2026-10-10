@@ -1,6 +1,6 @@
 import { BrandMark } from './SiteHeader';
 
-const SOURCES = ['دائرة الإحصاءات العامة', 'جدول التعرفة الجمركية الأردنية', 'غرفة صناعة الأردن'];
+const SOURCES = ['UN Comtrade', 'WITS / TRAINS', 'قوائم أسعار الموردين'];
 
 export default function SiteFooter() {
   return (
@@ -17,9 +17,9 @@ export default function SiteFooter() {
         </div>
         <div>
           <p className="text-[12px] font-medium text-ink-muted">مصادر البيانات</p>
-          <ul className="mt-3 flex flex-wrap gap-2">
+          <ul className="mt-2 space-y-1">
             {SOURCES.map((s) => (
-              <li key={s} className="rounded-full border border-hairline bg-white/60 px-3 py-1.5 text-[13px] text-ink/80">
+              <li key={s} className="text-[14px] text-ink/80">
                 {s}
               </li>
             ))}
