@@ -44,7 +44,11 @@ You need two terminals open at the same time — one for the backend, one for th
 
 ### Part 1 — Backend
 
-Open a terminal in the `backend/` folder.
+Open a terminal and go into the `backend/` folder:
+
+```powershell
+cd backend
+```
 
 **Install dependencies:**
 
@@ -86,9 +90,10 @@ cp .env.example .env   # then open .env and set OPENAI_API_KEY and DEMO_MODE=fal
 
 ### Part 2 — Frontend
 
-Open a **second terminal** in the `frontend/` folder.
+Open a **second terminal**, go into the `frontend/` folder:
 
-```bash
+```powershell
+cd frontend
 npm install
 npm run dev
 ```
