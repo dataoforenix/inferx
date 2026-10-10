@@ -49,7 +49,8 @@ Two additive HTTP header changes only:
 | After recording, before replacing the folding-chair input | `python -m pytest` in `backend/` | 546 passed, **1 failed** (`test_demo_cache_matches_demo_inputs`: recorded `unsupported` ≠ expected `metal_chair`), 20 deselected. Not pushed in this state. |
 | After recording | `python -m pytest` in `backend/` | 547 passed, 0 failed, 20 deselected |
 | **Final** | `python -m pytest` in `backend/` | **549 passed, 0 failed, 20 deselected** |
-| Live suite, once, default config (before pacing) | `python -m pytest -m llm -v` | **19 passed, 1 failed**, 547 deselected, 18.9 s |
+| Live suite, default config, before pacing | `python -m pytest -m llm -v` | 19 passed, **1 failed** (429 quota), 547 deselected, 18.9 s |
+| **Live suite, default config, with pacing** | `python -m pytest -m llm -v` | **20 passed, 0 failed**, 549 deselected, 98.7 s, no 429 |
 
 The 20 deselected tests are the live `-m llm` tests. They were **not run**.
 
@@ -128,8 +129,11 @@ failed and the template is used (none did). Times are per LLM call.
 - Demo mode checked offline afterwards (no key, no live calls): health `ok`, 15 entries, 0 placeholders, no warnings. "metal office chair" (en) and "معجون بندورة" (ar) return `complete` with `explanation_source: llm`; #13b returns `needs_confirmation`; "rooftop solar panel" returns `unsupported`.
 - Calls in this step: 30 + 9 + 1 = 40 successful LLM calls for recording, 10 rejected with 429, plus 2 for the Arabic test.
 
-## Live test suite (`pytest -m llm`, run once, gemini-3.5-flash-lite / low), measured
-**19 passed, 1 failed.**
+## Live test suite (`pytest -m llm`, gemini-3.5-flash-lite / low), measured
+**Final run, with pacing: 20 passed, 0 failed** (98.7 s, no HTTP 429). Both `test_live_explain_is_grounded[en]` and `[ar]` printed
+`ungrounded: []`: every number in the English and Arabic explanations was found in the report.
+
+First run, before pacing: **19 passed, 1 failed.**
 
 Passed:
 - `test_demo_inputs_match_real_categories`;
@@ -141,7 +145,7 @@ Passed:
 Failed: `test_live_explain_is_grounded[ar]`.
 - **Real cause: the API quota, not the model or our code.** Gemini returned HTTP 429 `RESOURCE_EXHAUSTED`: "Quota exceeded for metric `generate_content_free_tier_requests`, limit: 15, model: gemini-3.5-flash-lite" (quota id `GenerateRequestsPerMinutePerProjectPerModel-FreeTier`, retry delay 19 s).
 - It was the suite's 19th call in about 19 s. The SDK's single retry, about 0.4 s later, was rejected too.
-- Fix: the live tests are now paced to at most 14 calls per minute, with no assertion changed. **The re-run with pacing has not been done** (one run was approved). The Arabic explanation itself was verified separately through the full pipeline (next section).
+- Fix: the live tests are now paced to at most 14 calls per minute, with no assertion changed. The re-run with pacing passed 20/20 (above).
 - No failure was caused by model behaviour, so no model limitation was added from this run.
 
 ## Live Arabic request (measured, real uvicorn, default config)
@@ -152,7 +156,7 @@ Failed: `test_live_explain_is_grounded[ar]`.
 
 ## Known risks (most serious first)
 1. **Flash-Lite latency was measured on 4 analyze requests (2.8–3.8 s) and 40 recorder calls (0.76–2.04 s each)**, all on 2026-10-10 between 04:00 and 04:20 JST. Gemini latency varied widely for gemini-3.8-flash (12 s to over 120 s per call), so Flash-Lite may vary too under load. If it does, the 15 s timeout turns a slow call into the template explanation (or a 503 at recognition) instead of a multi-minute wait.
-2. **Flash-Lite classification was measured on 19 text inputs (15 recorder inputs, the replacement input, "plastic plates and cups" twice, 1 Arabic request) and 1 synthetic image.** It got 18 of 19 text inputs right, plus the image. The miss was the ambiguous "plastic folding chair" (→ `unsupported`). Still untested live: `/api/analyze/confirm`, the grounding *retry* path, `market_preview` (UN Comtrade), a real camera photo, and the 20 `-m llm` tests.
+2. **Flash-Lite classification was measured on 19 text inputs (15 recorder inputs, the replacement input, "plastic plates and cups" twice, 1 Arabic request) and 1 synthetic image.** It got 18 of 19 text inputs right, plus the image. The miss was the ambiguous "plastic folding chair" (→ `unsupported`). The 20 `-m llm` tests pass (with pacing). Still untested live: `/api/analyze/confirm`, the grounding *retry* path, `market_preview` (UN Comtrade), and a real camera photo.
 3. **Rate limit (most likely to bite during judging):** the key is on the Gemini **free tier: 15 requests per minute per model**, as stated in the API's 429 error. In the recording run, 30 calls went through in about 45 s before 429s started, so the quota appears to allow short bursts; the exact behaviour was not measured.
    - Each analyze request makes 2 calls, so expect about **7 analyze requests per minute** before failures.
    - A 429 that survives the SDK's one retry becomes `503 llm_unavailable` at recognition, or a template explanation at the explain step.
