@@ -11,16 +11,18 @@ const VERDICT = {
 
 const today = () => new Intl.DateTimeFormat('ar-JO-u-nu-latn', { dateStyle: 'long' }).format(new Date());
 
-function Page({ children, n, total }) {
+function Page({ children, n, total, title = 'تقرير جدوى التصنيع المحلي' }) {
   return (
     <div data-report-page className="flex h-[1123px] w-[794px] flex-col bg-paper px-14 pt-12 pb-10 text-ink">
       <header className="flex items-center justify-between border-b border-ink pb-4">
         <p className="font-display text-[22px] font-bold text-brand">صنّعها</p>
-        <p className="text-[13px] text-ink-muted">تقرير جدوى التصنيع المحلي · {today()}</p>
+        <p className="text-[13px] text-ink-muted">
+          {title} · {today()}
+        </p>
       </header>
       <div className="flex-1">{children}</div>
       <footer className="flex items-center justify-between border-t border-hairline pt-3 text-[11px] text-ink-muted">
-        <span>بيانات تجريبية وأرقام تقريبية، ولا تغني عن دراسة جدوى تفصيلية.</span>
+        <span>أرقام تقريبية، ولا تغني عن دراسة جدوى تفصيلية.</span>
         <span className="font-mono" dir="ltr">
           {n} / {total}
         </span>
@@ -53,15 +55,80 @@ function SheetFactor({ factor }) {
   );
 }
 
-export default function ReportSheet({ ref, result }) {
+/** Hidden on screen; exportReportPdf makes it visible only inside html2canvas's clone. */
+function SheetRoot({ children }) {
+  return (
+    <div aria-hidden="true" dir="rtl" className="pointer-events-none invisible absolute top-0 left-0 font-sans">
+      {children}
+    </div>
+  );
+}
+
+function SheetList({ items, numbered = false, dot = 'bg-brand' }) {
+  const Tag = numbered ? 'ol' : 'ul';
+  return (
+    <Tag className="mt-3 space-y-2">
+      {items.map((item, n) => (
+        <li key={item} className="flex gap-2.5 text-[13.5px] leading-[1.8]">
+          {numbered ? (
+            <span className="font-mono text-[12px] leading-[2] text-brand">0{n + 1}</span>
+          ) : (
+            <span className={`mt-[0.7em] size-1.5 shrink-0 ${dot}`} />
+          )}
+          {item}
+        </li>
+      ))}
+    </Tag>
+  );
+}
+
+/** One-page report for a market_preview: what we found, what's missing to judge, and how to check. */
+export function PreviewSheet({ outcome }) {
+  return (
+    <SheetRoot>
+      <Page n={1} total={1} title="مسح أولي للسوق">
+        <section className="mt-8">
+          <span className="inline-block rounded-full bg-[#fdf3dc] px-4 py-1 font-display text-[14px] font-semibold text-[#8a5a00]">
+            ربما: البيانات لا تكفي لحكم كامل
+          </span>
+          <h1 className="mt-4 font-display text-[26px] leading-[1.45] font-semibold">{outcome.productName}</h1>
+          <p className="mt-2 text-[12.5px] text-ink-muted">
+            رمز HS مقترح: <span className="font-mono text-ink">{outcome.hsCode}</span>{' '}
+            <span className="text-[#8a5a00]">(اقترحه الذكاء الاصطناعي، تأكّد منه)</span>
+          </p>
+        </section>
+
+        {outcome.summary && <p className="mt-6 text-[14px] leading-[1.9]">{outcome.summary}</p>}
+
+        <section className="mt-6 rounded-2xl border border-hairline bg-white p-6">
+          <p className="text-[13px] font-semibold text-brand">السوق: بيانات رسمية</p>
+          <p className="mt-2 font-display text-[24px] font-semibold">{outcome.importsLatest ?? 'لا تتوفر بيانات'}</p>
+          <p className="mt-1 text-[12px] text-ink-muted">واردات الأردن في 2024 · المصدر: UN Comtrade</p>
+          {outcome.trend && <p className="mt-3 text-[13px]">{outcome.trend}</p>}
+        </section>
+
+        <section className="mt-4 rounded-2xl border border-[#f1dca8] bg-[#fffaf0] p-6">
+          <p className="text-[13px] font-semibold text-[#8a5a00]">لماذا لا يوجد حكم كامل؟ ما ينقصنا لنحكم</p>
+          <SheetList items={outcome.missing} dot="bg-[#c98a0b]" />
+        </section>
+
+        <section className="mt-4 rounded-2xl border border-hairline bg-white p-6">
+          <p className="text-[13px] font-semibold text-brand">خطوات للتحقق</p>
+          <SheetList items={outcome.steps} numbered />
+        </section>
+
+        <p className="mt-6 text-[12px] leading-[1.9] text-ink-muted">
+          هذا مسح أولي فقط: أرقام الواردات رسمية، أما التكلفة والتصنيع والمنافسة فلم تُقيَّم بعد لعدم توفر بياناتها.
+        </p>
+      </Page>
+    </SheetRoot>
+  );
+}
+
+export default function ReportSheet({ result }) {
   const { plan } = result;
   return (
-    <div
-      ref={ref}
-      aria-hidden="true"
-      dir="rtl"
-      className="pointer-events-none invisible absolute top-0 left-0 font-sans"
-    >
+    <SheetRoot>
       <Page n={1} total={2}>
         <section className="mt-8 flex items-start justify-between gap-8">
           <div className="min-w-0">
@@ -160,6 +227,6 @@ export default function ReportSheet({ ref, result }) {
           </p>
         </section>
       </Page>
-    </div>
+    </SheetRoot>
   );
 }

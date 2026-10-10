@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, CircleHelp, Coins, Factory, ListChecks, Package, RotateCcw, ShieldAlert, TrendingUp } from 'lucide-react';
 import { ANALYSIS_MS, ANALYSIS_STEPS } from '../lib/analyzeProduct';
 import ActionPlan from './ActionPlan';
+import ReportButton from './ReportButton';
+import { PreviewSheet } from './ReportSheet';
 import WhatIf from './WhatIf';
 
 const STEP_MS = ANALYSIS_MS / ANALYSIS_STEPS.length;
@@ -362,7 +364,14 @@ function PreviewView({ outcome, onReset }) {
 
       <div className="mt-12 flex flex-col items-start gap-4 border-t border-hairline pt-8 md:flex-row md:items-center md:justify-between">
         <p className="text-[13px] text-ink-muted">مسح أولي: أرقام الواردات رسمية، والتكلفة والتصنيع والمنافسة لم تُقيَّم بعد.</p>
-        <ResetButton onReset={onReset} />
+        <div className="flex flex-wrap items-start gap-3">
+          <ReportButton
+            productName={outcome.productName}
+            renderSheet={() => <PreviewSheet outcome={outcome} />}
+            align="start"
+          />
+          <ResetButton onReset={onReset} />
+        </div>
       </div>
     </div>
   );
