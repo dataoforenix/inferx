@@ -1,63 +1,82 @@
-# inferx: Sanna'ha (صنّعها)
-
-Sanna'ha helps Jordanian entrepreneurs decide whether an imported product could be manufactured locally.
-Send a product photo and/or an Arabic or English description. An LLM identifies the product, Python
-code scores feasibility from 0 to 10 (MANUFACTURE / MAYBE / DONT) from real UN Comtrade and WITS trade data,
-and the LLM explains the result in English or Arabic. Every number in the explanation is checked against
-the computed report.
-
-This repository holds the **FastAPI backend** (`backend/`). Full documentation:
-[`backend/README.md`](backend/README.md); API contract for the frontend:
-[`backend/docs/api_contract.md`](backend/docs/api_contract.md).
+# صنّعها — Sanna'ha
 
 > **Demo mode vs real AI.** In demo mode (`DEMO_MODE=true`, no key) uploaded photos are **not** really analysed:
 > the app only recognises a fixed list of prepared inputs and returns prepared answers. To analyse your own text or photos,
-> run with the real AI (section 3).
+> run with the real AI (section 3 below).
 >
 > **وضع العرض مقابل الذكاء الاصطناعي الحقيقي:** في وضع العرض (`DEMO_MODE=true` بدون مفتاح) **لا يتم تحليل الصور المرفوعة فعلياً**؛
 > التطبيق يتعرّف فقط على قائمة ثابتة من المدخلات المجهّزة ويعيد إجابات مجهّزة. لتحليل نصك أو صورك شغّله مع الذكاء الاصطناعي الحقيقي (القسم 3).
 
-## Quick start for judges
+---
+
+**Should Jordan make it, or keep importing it?**
+
+Sanna'ha is a tool for Jordanian entrepreneurs and investors who want a quick, data-backed answer to one question: *could this product be manufactured locally instead of imported?*
+
+You upload a photo or type a product name (in Arabic or English), and the system:
+
+1. Identifies what the product is using AI
+2. Looks up real trade data for Jordan (import volumes, prices, customs)
+3. Runs a scoring model across four dimensions — market size, cost advantage, manufacturing feasibility, and competition
+4. Gives you a verdict: **Manufacture**, **Maybe**, or **Don't** — with a plain-language explanation of why
+
+The AI identifies and explains. All numbers and verdicts come from a verified Python model, not the AI.
+
+---
+
+## What it can analyse today
+
+| Product | Verdict |
+|---|---|
+| Metal / office chairs | Manufacture ✅ |
+| Warehouse storage racks | Manufacture ✅ |
+| Plastic tableware (plates, cups) | Manufacture ✅ |
+| Frozen french fries | Manufacture ✅ |
+| Ceiling fans | Maybe ⚠️ |
+| Tomato paste | Don't ❌ |
+
+For products outside these categories, it pulls live import data from UN Comtrade to give you a preliminary market scan.
+
+---
+
+## Quick start
 
 Requires **Python 3.11**. All commands run from `backend/`.
 
 ### 1. Install
 
 With conda:
+
 ```bash
-conda create -n inferx python=3.11 -y
-conda activate inferx
-cd backend
+conda create -n sannaha python=3.11 -y
+conda activate sannaha
 pip install -r requirements.txt
 ```
 
-Or with a plain virtualenv:
+Without conda:
+
 ```bash
-cd backend
 python -m venv .venv
-# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
+# Windows:
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+# Mac / Linux:
+.venv/bin/python -m pip install -r requirements.txt
 ```
 
-### 2. Run without any API key (demo mode)
-
-Demo mode replays product recognitions and AI explanations recorded from the live pipeline. Scores are still
-computed live from the data.
+### 2. Run in demo mode (no API key needed)
 
 ```bash
-# macOS/Linux
-DEMO_MODE=true python -m uvicorn app.main:app --port 8000
-# Windows PowerShell
-$env:DEMO_MODE="true"; python -m uvicorn app.main:app --port 8000
+cp .env.example .env      # Mac / Linux
+copy .env.example .env    # Windows
 ```
 
-Open http://localhost:8000/docs, or try:
+Make sure `DEMO_MODE=true` in `backend/.env`, then:
 
 ```bash
-curl -X POST http://localhost:8000/api/analyze -F "text=metal office chair" -F "language=en"
-curl -X POST http://localhost:8000/api/analyze -F "text=canned tomato paste" -F "language=en"
-curl -X POST http://localhost:8000/api/whatif -H "Content-Type: application/json" \
-  -d '{"category_id": "tomato_paste", "overrides": {"local_cost_per_kg_est_usd": 1.0}}'
+# Windows:
+.venv\Scripts\python.exe -m uvicorn app.main:app --port 8000
+# Mac / Linux:
+.venv/bin/python -m uvicorn app.main:app --port 8000
 ```
 
 Demo mode only recognises these prepared inputs (from `backend/data/demo_inputs.json`):
@@ -86,8 +105,7 @@ Any other input returns `404 demo_no_match`, and the error message lists the exa
 
 1. Get a free Gemini API key at https://aistudio.google.com/apikey.
    **If the organisers gave you a judges' key, paste that one instead.**
-2. Copy `backend/.env.example` to `backend/.env` and paste the key as `OPENAI_API_KEY`. The name is kept for the
-   OpenAI SDK; the backend talks to Gemini's OpenAI-compatible endpoint. Make sure `DEMO_MODE=false`.
+2. Copy `backend/.env.example` to `backend/.env` and paste the key as `OPENAI_API_KEY`. Make sure `DEMO_MODE=false`.
 3. Restart the backend.
 
 Windows PowerShell, from the repository root:
@@ -118,35 +136,30 @@ Check it: `Invoke-RestMethod http://localhost:8000/api/health` must show `llm_co
 الحد المجاني حوالي **7 تحليلات في الدقيقة** (15 طلب ذكاء اصطناعي في الدقيقة، وكل تحليل يستخدم طلبين). البحث المكرر
 (نفس النص أو نفس الصورة ونفس اللغة خلال 24 ساعة) يأتي من الذاكرة المؤقتة فوراً ولا يستهلك من الحد.
 
-### Frontend / الواجهة
+### 4. Frontend / الواجهة
 
 In a second terminal, from `frontend/` (Node.js 20.19 or newer):
 
-```powershell
+```bash
 npm ci
 npm run dev        # http://localhost:5173  (talks to the backend on http://localhost:8000)
 ```
 
-### 4. Run the tests
+---
 
-The offline tests need no key and no network; the LLM is mocked:
+## Troubleshooting
 
-```bash
-python -m pytest
-```
+**"Python was not found"** — close the terminal, reopen it. If it still fails, reinstall Python and tick "Add Python to PATH".
 
-The live tests call the real Gemini API. They cost a few cents and are skipped without a key:
+**"npm: command not found"** — close and reopen the terminal after installing Node.js.
 
-```bash
-python -m pytest -m llm -v
-```
+**The backend starts but the frontend shows "server unavailable"** — make sure the backend is still running in its terminal.
 
-## Endpoints
+**Port already in use** — change `--port 8000` to `--port 8001` in the backend command, then open `frontend/.env` (copy from `frontend/.env.example` if it doesn't exist) and set `VITE_API_URL=http://localhost:8001`.
 
-| Method | Path | What it does |
-|---|---|---|
-| POST | `/api/analyze` | photo and/or text → `complete` / `needs_confirmation` / `unsupported` / `market_preview` |
-| POST | `/api/analyze/confirm` | the user picks the category after `needs_confirmation` |
-| POST | `/api/whatif` | recompute the score with changed customs, costs or factory count (no AI) |
-| GET | `/api/categories` | the supported product categories |
-| GET | `/api/health` | service status |
+---
+
+## For developers
+
+- Backend details, scoring formula, API contract, test suite: [backend/README.md](backend/README.md)
+- Frontend details, component map, API mapping: [frontend/README.md](frontend/README.md)
