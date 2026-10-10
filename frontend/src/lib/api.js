@@ -1,3 +1,5 @@
+import { termsAr } from './terms';
+
 // Client for the inferx backend (docs/api_contract.md in that repo).
 // Maps its report to the shape the UI renders. All money is shown in JOD.
 
@@ -134,7 +136,9 @@ export function mapReport(body, inputName) {
   const { market, cost, feasibility, competition, weights } = r;
   const est = estimates(r.estimated_fields);
 
-  const latestJod = market.latest_import_usd != null ? market.latest_import_usd * USD_TO_JOD : null;
+  // Prefer the backend's own JOD figure (latest_import_usd × 0.709); fall back to converting here.
+  const latestJod =
+    market.latest_import_jod ?? (market.latest_import_usd != null ? market.latest_import_usd * USD_TO_JOD : null);
   const trend = TRENDS[r.trend_label];
   const marketBody = [
     trend && `الاتجاه: ${trend}`,
@@ -211,8 +215,6 @@ export function mapReport(body, inputName) {
         headline: latestJod != null ? formatJod(latestJod) : 'لا تتوفر بيانات كافية',
         caption: 'واردات الأردن في 2024',
         body: marketBody || null,
-        // Backend-derived JOD value (market.latest_import_jod = USD × 0.709), shown next to the USD figure.
-        meta: usdNote(market.latest_import_usd, market.latest_import_jod),
         source: 'UN Comtrade',
       },
       {
@@ -264,9 +266,10 @@ export function mapReport(body, inputName) {
       capitalNote: 'المعدات فقط بأسعار الموردين، بدون الشحن والجمارك والتركيب والمباني.',
       breakEven: breakEvenNote(r.break_even),
       factories: factoriesNote(competition.local_factories),
-      machines: r.machinery ?? [],
-      rawMaterials: (r.raw_materials ?? []).join('، '),
-      steps: (ex.next_steps ?? []).map(usdTextToJod),
+      machines: termsAr(r.machinery),
+      rawMaterials: termsAr(r.raw_materials).join('، '),
+      // One list of start steps: the backend's verified steps when it sends them, else the AI's.
+      steps: r.next_steps?.ar?.length ? r.next_steps.ar : (ex.next_steps ?? []).map(usdTextToJod),
     },
   };
 }
@@ -308,13 +311,6 @@ export function mapUnsupported(body, inputName) {
     productName: body.product?.name_ar || inputName,
     searchedHs: hs6 && (body.warnings ?? []).some((w) => w.includes(PREVIEW_UNAVAILABLE)) ? hsLabel(hs6) : null,
   };
-}
-
-/** "2.2 مليون دولار ≈ 1.6 مليون دينار" from the backend's USD and derived JOD values. */
-function usdNote(usd, jod) {
-  if (usd == null || jod == null) return null;
-  const usdText = usd >= 1e6 ? `${(usd / 1e6).toFixed(1)} مليون دولار` : `${Math.round(usd).toLocaleString('en-US')} دولار`;
-  return `${usdText} ≈ ${formatJod(jod)}`;
 }
 
 /* ───────────── Requests ───────────── */

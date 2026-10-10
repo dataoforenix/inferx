@@ -13,7 +13,7 @@ import {
 import { ANALYSIS_MS, ANALYSIS_STEPS } from '../lib/analyzeProduct';
 import { formatJod } from '../lib/api';
 import ActionPlan from './ActionPlan';
-import GuidancePanels from './GuidancePanels';
+import GuidancePanels, { Methodology } from './GuidancePanels';
 import EstimateTag from './EstimateTag';
 import ReportButton from './ReportButton';
 import { PreviewSheet } from './ReportSheet';
@@ -501,6 +501,7 @@ function ResultView({ result, onReset }) {
                 كيف حسبنا التقييم؟
               </summary>
               <p className="mt-3 rounded-[10px] bg-paper-2/70 px-4 py-3 text-[14px] leading-[1.9] text-ink/85">{result.formula}</p>
+              <Methodology />
             </details>
           )}
         </div>
