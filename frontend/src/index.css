@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f6f3ec;
+  --color-paper-2: #ece6da;
+  --color-ink: #0e1726;
+  --color-ink-muted: #5b6474;
+  --color-hairline: rgb(14 23 38 / 0.12);
+  --color-brand: #1e4fd6;
+  --color-brand-deep: #13328f;
+  --color-signal: #f0641e;
+
+  --font-display: "Alexandria", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgb(30 79 214 / 0.18);
+  }
+}
+
+/* ---------- Living blueprint backdrop ---------- */
+.backdrop-fade {
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 35%, transparent 100%);
+}
+/* ---------- Custom cursor (mouse only) ---------- */
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
+}
+
+/* ---------- Opening sequence ---------- */
+html[data-phase='opening'] {
+  overflow: hidden;
+}
+.site-header .header-link {
+  transition: opacity 500ms var(--ease-out), translate 500ms var(--ease-out);
+}
+html[data-phase='opening'] .site-header .header-link {
+  opacity: 0;
+  translate: 0 -6px;
+  pointer-events: none;
+}
+
+/* Hero entrance: predetermined, so CSS keeps it smooth while three.js boots. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 80ms);
+}
+
+@keyframes cue-travel {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(260%);
+  }
+}
+
+.cue-dot {
+  animation: cue-travel 1.8s var(--ease-in-out) infinite;
+}
+
+.canvas-fade {
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out);
+}
+.canvas-fade[data-ready="true"] {
+  opacity: 1;
+}
+
+/* ---------- Analysis ---------- */
+/* Conveyor belt: dashes run toward the end of the line (leftward in RTL). */
+.belt {
+  background-color: rgb(14 23 38 / 0.06);
+  background-image: repeating-linear-gradient(90deg, rgb(14 23 38 / 0.22) 0 10px, transparent 10px 20px);
+  background-size: 20px 100%;
+  animation: belt-run 0.9s linear infinite;
+}
+@keyframes belt-run {
+  to {
+    background-position: -20px 0;
+  }
+}
+/* The product dwells at each station, then moves on (transform only). */
+.puck-travel {
+  animation: puck-travel var(--line-ms, 4800ms) var(--ease-in-out) both;
+}
+@keyframes puck-travel {
+  0%,
+  8% {
+    transform: translateX(0);
+  }
+  25%,
+  33% {
+    transform: translateX(-33.333%);
+  }
+  50%,
+  58% {
+    transform: translateX(-66.666%);
+  }
+  75%,
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.gear-spinner {
+  border-radius: 9999px;
+  border: 2.5px dashed var(--color-brand);
+  animation: spin-gear 1.4s linear infinite;
+}
+@keyframes spin-gear {
+  to {
+    rotate: 360deg;
+  }
+}
+.pop-in {
+  animation: pop-in 260ms var(--ease-out) both;
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation-name: fade-only;
+    animation-duration: 300ms;
+  }
+  .cue-dot,
+  .belt,
+  .gear-spinner {
+    animation: none;
+  }
+  .puck-travel {
+    animation: none;
+    opacity: 0;
+  }
+  @keyframes fade-only {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

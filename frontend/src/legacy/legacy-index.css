@@ -1,0 +1,397 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    direction: rtl;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f0f4f8;
+    color: #1e293b;
+    overflow-x: hidden;
+  }
+}
+
+/* ===== INTRO ANIMATION ===== */
+@keyframes gearSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes gearSpinReverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+@keyframes converge {
+  0% { opacity: 0; transform: scale(0.3) translateY(40px); }
+  60% { opacity: 1; transform: scale(1.1) translateY(-5px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeSlideUp {
+  0% { opacity: 0; transform: translateY(60px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideDown {
+  0% { opacity: 0; transform: translateY(-40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes introSlideUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-12px) rotate(2deg); }
+  66% { transform: translateY(6px) rotate(-1deg); }
+}
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes progressFill {
+  0% { width: 0%; }
+  100% { width: var(--progress); }
+}
+@keyframes scaleIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes borderDraw {
+  0% { stroke-dashoffset: 283; }
+  100% { stroke-dashoffset: var(--dash-offset); }
+}
+@keyframes slideInRight {
+  0% { opacity: 0; transform: translateX(80px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  0% { opacity: 0; transform: translateX(-80px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes bounceSubtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes ripple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ===== REVEAL / UNFOLD ANIMATIONS ===== */
+@keyframes unfoldVertical {
+  0% {
+    opacity: 0;
+    transform: perspective(800px) rotateX(-70deg) translateY(-40px);
+    transform-origin: top center;
+  }
+  40% {
+    opacity: 1;
+    transform: perspective(800px) rotateX(10deg) translateY(0);
+  }
+  70% {
+    transform: perspective(800px) rotateX(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(800px) rotateX(0deg) translateY(0);
+  }
+}
+@keyframes unfoldHorizontal {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateY(50deg) scale(0.85);
+    transform-origin: right center;
+  }
+  50% {
+    opacity: 1;
+    transform: perspective(600px) rotateY(-8deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateY(0deg) scale(1);
+  }
+}
+@keyframes revealFromCenter {
+  0% {
+    opacity: 0;
+    clip-path: inset(50% 50% 50% 50% round 20px);
+    transform: scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    clip-path: inset(2% 2% 2% 2% round 20px);
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0% 0% 0% 0% round 20px);
+    transform: scale(1);
+  }
+}
+@keyframes popReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(30px);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08) translateY(-5px);
+    filter: blur(0px);
+  }
+  70% {
+    transform: scale(0.96) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+@keyframes cardFlipIn {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateY(90deg) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: perspective(600px) rotateY(-10deg) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateY(0deg) scale(1);
+  }
+}
+@keyframes slideRevealUp {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.92);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes scoreCountUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(-20deg);
+    filter: blur(12px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2) rotate(5deg);
+    filter: blur(0);
+  }
+  80% {
+    transform: scale(0.95) rotate(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+@keyframes verdictStamp {
+  0% {
+    opacity: 0;
+    transform: scale(3) rotate(-15deg);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.9) rotate(2deg);
+    filter: blur(0);
+  }
+  70% {
+    transform: scale(1.05) rotate(-1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  50% { box-shadow: 0 0 30px 10px rgba(16, 185, 129, 0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+@keyframes glowPulseRed {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 0 30px 10px rgba(239, 68, 68, 0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@keyframes expandLine {
+  0% { width: 0; opacity: 0; }
+  100% { width: 100%; opacity: 1; }
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.animate-gear-spin {
+  animation: gearSpin 8s linear infinite;
+}
+.animate-gear-spin-reverse {
+  animation: gearSpinReverse 6s linear infinite;
+}
+.animate-converge {
+  animation: converge 1s ease-out forwards;
+}
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.8s ease-out forwards;
+}
+.animate-fade-slide-down {
+  animation: fadeSlideDown 0.8s ease-out forwards;
+}
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+.animate-intro-slide-up {
+  animation: introSlideUp 0.8s ease-in forwards;
+}
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+.animate-slide-in-right {
+  animation: slideInRight 0.7s ease-out forwards;
+}
+.animate-slide-in-left {
+  animation: slideInLeft 0.7s ease-out forwards;
+}
+.animate-bounce-subtle {
+  animation: bounceSubtle 2s ease-in-out infinite;
+}
+.animate-unfold-v {
+  animation: unfoldVertical 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-unfold-h {
+  animation: unfoldHorizontal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-reveal-center {
+  animation: revealFromCenter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-pop-reveal {
+  animation: popReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-card-flip {
+  animation: cardFlipIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-slide-reveal-up {
+  animation: slideRevealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.animate-score-pop {
+  animation: scoreCountUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.animate-verdict-stamp {
+  animation: verdictStamp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.animate-glow-pulse {
+  animation: glowPulse 1.5s ease-out;
+}
+.animate-glow-pulse-red {
+  animation: glowPulseRed 1.5s ease-out;
+}
+
+/* Section reveal on scroll */
+.section-hidden {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stagger-children.section-visible > *:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+.stagger-children.section-visible > *:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+.stagger-children.section-visible > *:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.stagger-children.section-visible > *:nth-child(4) { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
+.stagger-children.section-visible > *:nth-child(5) { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
+
+/* Result cards scroll-stagger */
+.result-card {
+  opacity: 0;
+  transform: perspective(600px) rotateX(-15deg) translateY(60px) scale(0.9);
+  filter: blur(4px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.result-card.card-visible {
+  opacity: 1;
+  transform: perspective(600px) rotateX(0deg) translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Background grid pattern */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(148,163,184,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Score circle SVG animation */
+.score-circle-bg {
+  fill: none;
+  stroke: #e2e8f0;
+  stroke-width: 8;
+}
+.score-circle-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  animation: borderDraw 1.5s ease-out forwards;
+}
+
+/* Print styles */
+@media print {
+  .no-print { display: none !important; }
+}
