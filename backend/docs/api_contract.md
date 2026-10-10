@@ -266,3 +266,41 @@ Examples: [`error_400_empty_input.json`](examples/error_400_empty_input.json),
 Allowed origins come from the server's `CORS_ORIGINS` setting; the default is
 `http://localhost:3000,http://localhost:5173` (Next/CRA and Vite dev servers). Ask the backend to add
 your deployed origin. The `X-Request-ID` header is exposed to JavaScript.
+
+---
+
+## Added 2026-10-10 (additive only: no existing field or endpoint changed)
+
+| Method | Path | Body | Returns | Calls the AI? |
+|---|---|---|---|---|
+| POST | `/api/budget` | JSON `{category_id, budget_jod}` | `BudgetResponse` | **no** |
+| GET | `/api/methodology` | — | `MethodologyResponse` | **no** |
+
+### New report fields (every `report` object: analyze, confirm, whatif baseline/scenario, market_preview)
+
+| Field | Meaning | Show it |
+|---|---|---|
+| `market.latest_import_jod` | **Derived**: `latest_import_usd × 0.709` (fixed JOD peg). Not a separate data source. `null` when the USD value is null. | Next to the USD figure, labelled "≈ JOD (converted)". |
+| `next_steps` | `{en: [...], ar: [...]}` static steps chosen by `verdict`. Not AI text (unlike `explanation.next_steps`). | "What to do next" list in the user's language. |
+| `advisors` | List of official Jordanian bodies: `{name_en, name_ar, offer_en, offer_ar, url}`. Every URL was checked on 2026-10-10. | Name + one-line offer + link (open in a new tab). |
+| `suppliers` | `{caption_en, caption_ar, items: [{item, kind: machinery\|raw_material, links: [{marketplace, url}]}], local_directory}`. Links are **marketplace searches built from the item name**, not suppliers. | **Always show `caption_en`/`caption_ar`** with the links: "Search links, not supplier recommendations. Verify suppliers yourself." |
+
+### `POST /api/budget`
+
+```json
+{ "category_id": "tomato_paste", "budget_jod": 100000 }
+```
+
+Response ([`budget_partial.json`](examples/budget_partial.json)):
+`status` = `covered` (budget ≥ top of the equipment range) | `partial` (≥ bottom) | `short` (below the bottom);
+`capex_jod_range` = `capex_usd_range × 0.709`; `gap_jod` = what is still missing to reach the top of the range (0 when covered);
+`caption_en` / `caption_ar` = the mandatory equipment-only caption. **Always show the caption**: the range is equipment only
+(ex-works listings), excluding shipping, customs, installation, moulds and buildings.
+Errors: `404 unknown_category`, `422 capex_unavailable` (category without an equipment range), `422 validation_error`
+(`budget_jod` < 0, missing, or extra keys).
+
+### `GET /api/methodology`
+
+[`methodology.json`](examples/methodology.json): `weights`, `thresholds`, `cost_gate`, `min_completeness`, `growth_years`
+(numbers come from the scoring code) and `sections.en` / `sections.ar`: a list of `{title, body}` (score, components, cost
+gate, data completeness, data sources, and the known limitation that growth uses 2020–2024 with 2020 as a COVID low base).
