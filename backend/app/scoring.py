@@ -26,6 +26,8 @@ from app.schemas import (
     WhatIfOverrides,
 )
 
+from app.guidance import ADVISORS, next_steps_for, supplier_links, usd_to_jod  # noqa: E402
+
 WEIGHTS = {"market": 0.35, "cost": 0.30, "feasibility": 0.20, "competition": 0.15}
 VOLUME_SHARE, TREND_SHARE = 0.6, 0.4
 MANUFACTURE_THRESHOLD = 6.0
@@ -325,7 +327,7 @@ def compute_report(record: CategoryRecord, overrides: WhatIfOverrides | None = N
         weights=dict(WEIGHTS),
         market=MarketBreakdown(
             score=r(market, 2), volume_score=r(vol, 2), trend_score=r(trend, 2),
-            cagr=r(growth, 4), latest_import_usd=latest,
+            cagr=r(growth, 4), latest_import_usd=latest, latest_import_jod=usd_to_jod(latest),
         ),
         cost=CostBreakdown(
             score=r(cost, 2), import_price_per_kg_usd=price, shipping_pct=ship, customs_pct=customs,
@@ -362,4 +364,8 @@ def compute_report(record: CategoryRecord, overrides: WhatIfOverrides | None = N
         # Uses the what-if values (landed and local), so sliders move it too.
         break_even=break_even(record.machine_cost_usd_min, record.machine_cost_usd_max, record.import_weight_kg_2024,
                               landed, local if cost is not None else None),
+        # Static guidance (app/guidance.py): never computed by the LLM.
+        next_steps=next_steps_for(verdict),
+        advisors=list(ADVISORS),
+        suppliers=supplier_links(split_list(record.machinery), split_list(record.raw_materials)),
     )

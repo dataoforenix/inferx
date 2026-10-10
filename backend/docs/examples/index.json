@@ -11,6 +11,8 @@
   "confirm_complete_all_fields.json": "AnalyzeResponse",
   "whatif.json": "WhatIfResponse",
   "whatif_shipping_info_only.json": "WhatIfResponse",
+  "budget_partial.json": "BudgetResponse",
+  "methodology.json": "MethodologyResponse",
   "error_400_empty_input.json": "ErrorResponse",
   "error_413_payload_too_large.json": "ErrorResponse",
   "error_415_unsupported_image_type.json": "ErrorResponse",

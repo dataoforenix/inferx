@@ -19,7 +19,7 @@ from app.errors import error_response, register_error_handlers
 from app.llm import OpenAILLM, LLMClient
 from app.pipeline import Pipeline
 from app.rate_limit import LIMITED_PATHS, RateLimiter
-from app.routers import analyze, meta, whatif
+from app.routers import analyze, guidance, meta, whatif
 
 logger = logging.getLogger("sannaha")
 
@@ -103,4 +103,5 @@ def create_app(
     app.include_router(meta.router)
     app.include_router(whatif.router)
     app.include_router(analyze.router)
+    app.include_router(guidance.router)
     return app

@@ -350,10 +350,119 @@
           }
         }
       }
+    },
+    "/api/budget": {
+      "post": {
+        "tags": [
+          "guidance"
+        ],
+        "summary": "Budget",
+        "description": "Compare an equipment budget (JOD) with the category's equipment cost range. Pure Python, no LLM.",
+        "operationId": "budget_api_budget_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BudgetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BudgetResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/methodology": {
+      "get": {
+        "tags": [
+          "guidance"
+        ],
+        "summary": "Get Methodology",
+        "description": "How the score is calculated (en and ar). Static text built from the scoring constants.",
+        "operationId": "get_methodology_api_methodology_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MethodologyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Advisor": {
+        "properties": {
+          "name_en": {
+            "type": "string",
+            "title": "Name En"
+          },
+          "name_ar": {
+            "type": "string",
+            "title": "Name Ar"
+          },
+          "offer_en": {
+            "type": "string",
+            "title": "Offer En",
+            "description": "What the body offers, one line"
+          },
+          "offer_ar": {
+            "type": "string",
+            "title": "Offer Ar"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name_en",
+          "name_ar",
+          "offer_en",
+          "offer_ar",
+          "url"
+        ],
+        "title": "Advisor",
+        "description": "An official Jordanian body (URL verified). No phone numbers or personal names."
+      },
       "AnalyzeResponse": {
         "properties": {
           "request_id": {
@@ -544,6 +653,86 @@
         ],
         "title": "BreakEven",
         "description": "How much must be sold at import-parity price before the equipment pays for itself."
+      },
+      "BudgetRequest": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Category Id"
+          },
+          "budget_jod": {
+            "type": "number",
+            "maximum": 10000000000.0,
+            "minimum": 0.0,
+            "title": "Budget Jod",
+            "description": "Available budget for equipment, JOD"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "category_id",
+          "budget_jod"
+        ],
+        "title": "BudgetRequest"
+      },
+      "BudgetResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "category_id": {
+            "type": "string",
+            "title": "Category Id"
+          },
+          "budget_jod": {
+            "type": "number",
+            "title": "Budget Jod"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "covered",
+              "partial",
+              "short"
+            ],
+            "title": "Status",
+            "description": "covered: budget >= top of the equipment range; partial: >= bottom; short: below the bottom"
+          },
+          "capex_jod_range": {
+            "$ref": "#/components/schemas/JodRange",
+            "description": "capex_usd_range x 0.709 (fixed JOD peg), equipment only"
+          },
+          "gap_jod": {
+            "type": "number",
+            "title": "Gap Jod",
+            "description": "Still missing to reach the top of the range; 0 when covered"
+          },
+          "caption_en": {
+            "type": "string",
+            "title": "Caption En",
+            "description": "Mandatory caption: equipment only, partial investment"
+          },
+          "caption_ar": {
+            "type": "string",
+            "title": "Caption Ar"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "category_id",
+          "budget_jod",
+          "status",
+          "capex_jod_range",
+          "gap_jod",
+          "caption_en",
+          "caption_ar"
+        ],
+        "title": "BudgetResponse"
       },
       "CapexRange": {
         "properties": {
@@ -1306,6 +1495,36 @@
               }
             ],
             "description": "Indicative: equipment only, excludes buildings and working capital, assumes selling at import-parity price. Null unless capex_usd_range (min and max), import_weight_kg_2024 and a cost advantage (landed > local) all exist."
+          },
+          "next_steps": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LocalizedSteps"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Static next steps for this verdict (en/ar)"
+          },
+          "advisors": {
+            "items": {
+              "$ref": "#/components/schemas/Advisor"
+            },
+            "type": "array",
+            "title": "Advisors",
+            "description": "Official Jordanian bodies offering feasibility, consulting, registration or funding support"
+          },
+          "suppliers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SupplierLinks"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Marketplace search links per machinery / raw-material item, with a mandatory caption"
           }
         },
         "type": "object",
@@ -1403,6 +1622,48 @@
         ],
         "title": "HealthResponse"
       },
+      "JodRange": {
+        "properties": {
+          "min": {
+            "type": "number",
+            "title": "Min"
+          },
+          "max": {
+            "type": "number",
+            "title": "Max"
+          }
+        },
+        "type": "object",
+        "required": [
+          "min",
+          "max"
+        ],
+        "title": "JodRange"
+      },
+      "LocalizedSteps": {
+        "properties": {
+          "en": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "En"
+          },
+          "ar": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Ar"
+          }
+        },
+        "type": "object",
+        "required": [
+          "en",
+          "ar"
+        ],
+        "title": "LocalizedSteps"
+      },
       "MachineCostRange": {
         "properties": {
           "min": {
@@ -1494,6 +1755,18 @@
               }
             ],
             "title": "Latest Import Usd"
+          },
+          "latest_import_jod": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Import Jod",
+            "description": "Derived: latest_import_usd x 0.709 (fixed JOD peg). Not a separate data source."
           }
         },
         "type": "object",
@@ -1505,6 +1778,98 @@
           "latest_import_usd"
         ],
         "title": "MarketBreakdown"
+      },
+      "MethodologyResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Weights"
+          },
+          "thresholds": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Thresholds"
+          },
+          "cost_gate": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Cost Gate"
+          },
+          "min_completeness": {
+            "type": "number",
+            "title": "Min Completeness"
+          },
+          "growth_years": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Growth Years"
+          },
+          "sections": {
+            "additionalProperties": {
+              "items": {
+                "$ref": "#/components/schemas/MethodologySection"
+              },
+              "type": "array"
+            },
+            "propertyNames": {
+              "enum": [
+                "ar",
+                "en"
+              ]
+            },
+            "type": "object",
+            "title": "Sections"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "weights",
+          "thresholds",
+          "cost_gate",
+          "min_completeness",
+          "growth_years",
+          "sections"
+        ],
+        "title": "MethodologyResponse"
+      },
+      "MethodologySection": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "body"
+        ],
+        "title": "MethodologySection"
       },
       "NormalizedProduct": {
         "properties": {
@@ -1602,6 +1967,94 @@
         "type": "object",
         "title": "ProductInfo",
         "description": "Normalised product. In /confirm requests it comes from the client, so it is length-limited."
+      },
+      "SupplierItemLinks": {
+        "properties": {
+          "item": {
+            "type": "string",
+            "title": "Item",
+            "description": "An entry of report.machinery or report.raw_materials"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "machinery",
+              "raw_material"
+            ],
+            "title": "Kind"
+          },
+          "links": {
+            "items": {
+              "$ref": "#/components/schemas/SupplierLink"
+            },
+            "type": "array",
+            "title": "Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item",
+          "kind",
+          "links"
+        ],
+        "title": "SupplierItemLinks"
+      },
+      "SupplierLink": {
+        "properties": {
+          "marketplace": {
+            "type": "string",
+            "title": "Marketplace"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "A marketplace search for the item name, not a supplier recommendation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "marketplace",
+          "url"
+        ],
+        "title": "SupplierLink"
+      },
+      "SupplierLinks": {
+        "properties": {
+          "caption_en": {
+            "type": "string",
+            "title": "Caption En",
+            "description": "Mandatory caption: show it with the links"
+          },
+          "caption_ar": {
+            "type": "string",
+            "title": "Caption Ar"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SupplierItemLinks"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "local_directory": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Advisor"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Directory of Jordanian manufacturers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "caption_en",
+          "caption_ar",
+          "items"
+        ],
+        "title": "SupplierLinks"
       },
       "Timings": {
         "properties": {

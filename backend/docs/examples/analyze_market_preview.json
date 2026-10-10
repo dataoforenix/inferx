@@ -51,7 +51,8 @@
       "volume_score": 9.16,
       "trend_score": null,
       "cagr": null,
-      "latest_import_usd": 67533519.488
+      "latest_import_usd": 67533519.488,
+      "latest_import_jod": 47881265.32
     },
     "cost": {
       "score": null,
@@ -106,7 +107,77 @@
     "capex_usd_range": null,
     "machine_source": "",
     "import_weight_kg_2024": 19579573.5,
-    "break_even": null
+    "break_even": null,
+    "next_steps": {
+      "en": [
+        "Check the estimated figures first: get real quotes for local production cost and equipment.",
+        "Try the what-if tool to see which change (cost, customs, competition) would move the verdict.",
+        "Talk to local buyers to test whether they would switch from imports.",
+        "Ask a support body (see advisors) for a professional feasibility study before investing."
+      ],
+      "ar": [
+        "تحقق أولاً من الأرقام التقديرية: اطلب عروض أسعار حقيقية لكلفة الإنتاج المحلي والمعدات.",
+        "جرّب أداة «ماذا لو» لمعرفة أي تغيير (الكلفة، الجمارك، المنافسة) يغيّر النتيجة.",
+        "تحدث مع المشترين المحليين لمعرفة إن كانوا سيتحولون عن المستورد.",
+        "اطلب من إحدى جهات الدعم (انظر قائمة الجهات) دراسة جدوى مهنية قبل الاستثمار."
+      ]
+    },
+    "advisors": [
+      {
+        "name_en": "Jordan Enterprise Development Corporation (JEDCO)",
+        "name_ar": "المؤسسة الأردنية لتطوير المشاريع الاقتصادية (جيدكو)",
+        "offer_en": "Support programmes, technical assistance and financing tools for SMEs, start-ups and manufacturers.",
+        "offer_ar": "برامج دعم ومساعدة فنية وأدوات تمويل للمشاريع الصغيرة والمتوسطة والريادية والصناعية.",
+        "url": "https://www.jedco.gov.jo"
+      },
+      {
+        "name_en": "Jordan Chamber of Industry",
+        "name_ar": "غرفة صناعة الأردن",
+        "offer_en": "Sector studies and industrial data, export support and an industrial directory for manufacturers.",
+        "offer_ar": "دراسات وبيانات قطاعية، ودعم للتصدير، ودليل صناعي للمصانع الأردنية.",
+        "url": "https://www.jci.org.jo"
+      },
+      {
+        "name_en": "Ministry of Industry, Trade and Supply",
+        "name_ar": "وزارة الصناعة والتجارة والتموين",
+        "offer_en": "Industrial development services, importer/exporter registration and import/export licences.",
+        "offer_ar": "خدمات التنمية الصناعية، وتسجيل المستوردين والمصدرين، ورخص الاستيراد والتصدير.",
+        "url": "https://www.mit.gov.jo"
+      },
+      {
+        "name_en": "Companies Control Department",
+        "name_ar": "دائرة مراقبة الشركات",
+        "offer_en": "Registration of new companies (online services).",
+        "offer_ar": "تسجيل الشركات الجديدة (خدمات إلكترونية).",
+        "url": "https://www.ccd.gov.jo"
+      },
+      {
+        "name_en": "Jordan Standards and Metrology Organization (JSMO)",
+        "name_ar": "مؤسسة المواصفات والمقاييس الأردنية",
+        "offer_en": "Jordanian standards, quality mark and conformity certification for products.",
+        "offer_ar": "المواصفات القياسية الأردنية وعلامة الجودة وشهادات المطابقة للمنتجات.",
+        "url": "https://www.jsmo.gov.jo"
+      },
+      {
+        "name_en": "Jordan Loan Guarantee Corporation",
+        "name_ar": "الشركة الأردنية لضمان القروض",
+        "offer_en": "Loan guarantees that improve access to credit for micro, small and medium enterprises.",
+        "offer_ar": "ضمانات قروض تسهّل حصول المؤسسات المتناهية الصغر والصغيرة والمتوسطة على التمويل.",
+        "url": "https://www.jlgc.com"
+      }
+    ],
+    "suppliers": {
+      "caption_en": "Search links, not supplier recommendations. Verify suppliers yourself.",
+      "caption_ar": "روابط بحث وليست توصيات بموردين. تحقّق من الموردين بنفسك.",
+      "items": [],
+      "local_directory": {
+        "name_en": "Jordan Chamber of Industry: industrial directory",
+        "name_ar": "غرفة صناعة الأردن: الدليل الصناعي",
+        "offer_en": "Directory of Jordanian industrial establishments, filterable by sector.",
+        "offer_ar": "دليل المنشآت الصناعية الأردنية مع تصفية حسب القطاع.",
+        "url": "https://jci.org.jo/%d8%a7%d9%84%d8%af%d9%84%d9%8a%d9%84-%d8%a7%d9%84%d8%b5%d9%86%d8%a7%d8%b9%d9%8a/"
+      }
+    }
   },
   "explanation": {
     "language": "en",
@@ -138,9 +209,9 @@
   ],
   "timings_ms": {
     "normalize": 0.0,
-    "score": 0.2,
-    "explain": 0.0,
+    "score": 0.5,
+    "explain": 0.1,
     "market_data": 0.0,
-    "total": 0.4
+    "total": 0.9
   }
 }

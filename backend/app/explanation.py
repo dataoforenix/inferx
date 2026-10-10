@@ -110,13 +110,21 @@ FREE_TEXT_FIELDS = ("risk_notes", "competition_note", "source_notes", "machine_s
 DATA_NOTE_FIELDS = ("source_notes", "risk_notes", "competition_note", "machine_source", "sources")
 # Already in key_figures, so not repeated in the report copy either.
 REPORT_FIELDS_IN_KEY_FIGURES = ("machinery", "raw_materials")
+# Static guidance for the UI (links, steps, bodies): not report data, so never sent to the explanation model.
+REPORT_FIELDS_NOT_FOR_LLM = ("next_steps", "advisors", "suppliers")
+
+
+_LLM_REPORT_EXCLUDE = {
+    **dict.fromkeys((*DATA_NOTE_FIELDS, *REPORT_FIELDS_IN_KEY_FIGURES, *REPORT_FIELDS_NOT_FOR_LLM), True),
+    "market": {"latest_import_jod": True},  # derived JOD value: the model explains the USD figures
+}
 
 
 def llm_facts(report: FeasibilityReport) -> dict[str, Any]:
     """What the explanation model sees: key figures, the report (without long text) and the data notes."""
     return {
         "key_figures": key_figures(report),
-        "report": report.model_dump(mode="json", exclude={*DATA_NOTE_FIELDS, *REPORT_FIELDS_IN_KEY_FIGURES}),
+        "report": report.model_dump(mode="json", exclude=_LLM_REPORT_EXCLUDE),
         "data_notes": {name: getattr(report, name) for name in DATA_NOTE_FIELDS if getattr(report, name)},
     }
 

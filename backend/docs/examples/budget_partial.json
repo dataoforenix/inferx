@@ -1,0 +1,13 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "category_id": "tomato_paste",
+  "budget_jod": 100000.0,
+  "status": "partial",
+  "capex_jod_range": {
+    "min": 35450.0,
+    "max": 354500.0
+  },
+  "gap_jod": 254500.0,
+  "caption_en": "Equipment only: supplier listing prices ex-works, excluding shipping, customs, installation, moulds and buildings (converted to JOD at the fixed peg 1 USD = 0.709 JOD).",
+  "caption_ar": "المعدات فقط: أسعار الموردين المعلنة من المصنع، بدون الشحن والجمارك والتركيب والقوالب والمباني (محوّلة إلى الدينار بسعر ثابت 1 دولار = 0.709 دينار)."
+}

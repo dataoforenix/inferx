@@ -41,7 +41,8 @@
       "volume_score": 9.84,
       "trend_score": 10.0,
       "cagr": 0.1939,
-      "latest_import_usd": 92813747.0
+      "latest_import_usd": 92813747.0,
+      "latest_import_jod": 65804946.62
     },
     "cost": {
       "score": 8.07,
@@ -127,6 +128,187 @@
       "unit_saving_usd_per_kg": 0.1595,
       "break_even_tons": 1457.7,
       "share_of_2024_imports": 0.0177
+    },
+    "next_steps": {
+      "en": [
+        "Get written quotes for the machinery and raw materials listed in the report.",
+        "Confirm demand and target prices with local wholesalers and retailers.",
+        "Register the company and check industrial licensing requirements.",
+        "Ask a support body (see advisors) about feasibility-study, financing or loan-guarantee programmes."
+      ],
+      "ar": [
+        "اطلب عروض أسعار مكتوبة للآلات والمواد الخام المذكورة في التقرير.",
+        "تأكد من الطلب والأسعار المستهدفة مع تجار الجملة والتجزئة المحليين.",
+        "سجّل الشركة وتحقق من متطلبات الترخيص الصناعي.",
+        "اسأل إحدى جهات الدعم (انظر قائمة الجهات) عن برامج دراسات الجدوى أو التمويل أو ضمان القروض."
+      ]
+    },
+    "advisors": [
+      {
+        "name_en": "Jordan Enterprise Development Corporation (JEDCO)",
+        "name_ar": "المؤسسة الأردنية لتطوير المشاريع الاقتصادية (جيدكو)",
+        "offer_en": "Support programmes, technical assistance and financing tools for SMEs, start-ups and manufacturers.",
+        "offer_ar": "برامج دعم ومساعدة فنية وأدوات تمويل للمشاريع الصغيرة والمتوسطة والريادية والصناعية.",
+        "url": "https://www.jedco.gov.jo"
+      },
+      {
+        "name_en": "Jordan Chamber of Industry",
+        "name_ar": "غرفة صناعة الأردن",
+        "offer_en": "Sector studies and industrial data, export support and an industrial directory for manufacturers.",
+        "offer_ar": "دراسات وبيانات قطاعية، ودعم للتصدير، ودليل صناعي للمصانع الأردنية.",
+        "url": "https://www.jci.org.jo"
+      },
+      {
+        "name_en": "Ministry of Industry, Trade and Supply",
+        "name_ar": "وزارة الصناعة والتجارة والتموين",
+        "offer_en": "Industrial development services, importer/exporter registration and import/export licences.",
+        "offer_ar": "خدمات التنمية الصناعية، وتسجيل المستوردين والمصدرين، ورخص الاستيراد والتصدير.",
+        "url": "https://www.mit.gov.jo"
+      },
+      {
+        "name_en": "Companies Control Department",
+        "name_ar": "دائرة مراقبة الشركات",
+        "offer_en": "Registration of new companies (online services).",
+        "offer_ar": "تسجيل الشركات الجديدة (خدمات إلكترونية).",
+        "url": "https://www.ccd.gov.jo"
+      },
+      {
+        "name_en": "Jordan Standards and Metrology Organization (JSMO)",
+        "name_ar": "مؤسسة المواصفات والمقاييس الأردنية",
+        "offer_en": "Jordanian standards, quality mark and conformity certification for products.",
+        "offer_ar": "المواصفات القياسية الأردنية وعلامة الجودة وشهادات المطابقة للمنتجات.",
+        "url": "https://www.jsmo.gov.jo"
+      },
+      {
+        "name_en": "Jordan Loan Guarantee Corporation",
+        "name_ar": "الشركة الأردنية لضمان القروض",
+        "offer_en": "Loan guarantees that improve access to credit for micro, small and medium enterprises.",
+        "offer_ar": "ضمانات قروض تسهّل حصول المؤسسات المتناهية الصغر والصغيرة والمتوسطة على التمويل.",
+        "url": "https://www.jlgc.com"
+      }
+    ],
+    "suppliers": {
+      "caption_en": "Search links, not supplier recommendations. Verify suppliers yourself.",
+      "caption_ar": "روابط بحث وليست توصيات بموردين. تحقّق من الموردين بنفسك.",
+      "items": [
+        {
+          "item": "Washer and peeler",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Washer+and+peeler/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Strip cutter",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Strip+cutter/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Blancher",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Blancher/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Par-fryer",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Par-fryer/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "IQF tunnel freezer",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/IQF+tunnel+freezer/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Cold store",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Cold+store/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Packing machine",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Packing+machine/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Potatoes (grown in Jordan",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Potatoes+%28grown+in+Jordan/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "seed potatoes imported)",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/seed+potatoes+imported%29/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Frying oil",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Frying+oil/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Packaging film",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Packaging+film/F1/1.html"
+            }
+          ]
+        }
+      ],
+      "local_directory": {
+        "name_en": "Jordan Chamber of Industry: industrial directory",
+        "name_ar": "غرفة صناعة الأردن: الدليل الصناعي",
+        "offer_en": "Directory of Jordanian industrial establishments, filterable by sector.",
+        "offer_ar": "دليل المنشآت الصناعية الأردنية مع تصفية حسب القطاع.",
+        "url": "https://jci.org.jo/%d8%a7%d9%84%d8%af%d9%84%d9%8a%d9%84-%d8%a7%d9%84%d8%b5%d9%86%d8%a7%d8%b9%d9%8a/"
+      }
     }
   },
   "explanation": {
@@ -157,8 +339,8 @@
   "timings_ms": {
     "normalize": null,
     "score": 0.3,
-    "explain": 1.1,
+    "explain": 0.9,
     "market_data": null,
-    "total": 1.6
+    "total": 1.4
   }
 }

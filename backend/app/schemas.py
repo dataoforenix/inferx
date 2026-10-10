@@ -133,6 +133,8 @@ class MarketBreakdown(BaseModel):
     trend_score: float | None
     cagr: float | None = Field(description="Compound annual growth 2020-2024, as a fraction")
     latest_import_usd: float | None
+    latest_import_jod: float | None = Field(
+        default=None, description="Derived: latest_import_usd x 0.709 (fixed JOD peg). Not a separate data source.")
 
 
 class CostBreakdown(BaseModel):
@@ -195,6 +197,39 @@ class BreakEven(BaseModel):
     share_of_2024_imports: float = Field(description="break-even weight / import_weight_kg_2024, as a fraction")
 
 
+class LocalizedSteps(BaseModel):
+    en: list[str]
+    ar: list[str]
+
+
+class Advisor(BaseModel):
+    """An official Jordanian body (URL verified). No phone numbers or personal names."""
+
+    name_en: str
+    name_ar: str
+    offer_en: str = Field(description="What the body offers, one line")
+    offer_ar: str
+    url: str
+
+
+class SupplierLink(BaseModel):
+    marketplace: str
+    url: str = Field(description="A marketplace search for the item name, not a supplier recommendation")
+
+
+class SupplierItemLinks(BaseModel):
+    item: str = Field(description="An entry of report.machinery or report.raw_materials")
+    kind: Literal["machinery", "raw_material"]
+    links: list[SupplierLink]
+
+
+class SupplierLinks(BaseModel):
+    caption_en: str = Field(description="Mandatory caption: show it with the links")
+    caption_ar: str
+    items: list[SupplierItemLinks]
+    local_directory: Advisor | None = Field(default=None, description="Directory of Jordanian manufacturers")
+
+
 class FeasibilityReport(BaseModel):
     """Everything here is computed by Python (app/scoring.py) or copied from the CSV. LLMs only explain it."""
 
@@ -246,6 +281,12 @@ class FeasibilityReport(BaseModel):
         description=f"{BREAK_EVEN_DESCRIPTION} Null unless capex_usd_range (min and max), import_weight_kg_2024 "
                     f"and a cost advantage (landed > local) all exist.",
     )
+    next_steps: LocalizedSteps | None = Field(default=None, description="Static next steps for this verdict (en/ar)")
+    advisors: list[Advisor] = Field(
+        default_factory=list,
+        description="Official Jordanian bodies offering feasibility, consulting, registration or funding support")
+    suppliers: SupplierLinks | None = Field(
+        default=None, description="Marketplace search links per machinery / raw-material item, with a mandatory caption")
 
 
 class WhatIfRequest(BaseModel):
@@ -260,6 +301,45 @@ class WhatIfResponse(BaseModel):
     baseline: FeasibilityReport
     scenario: FeasibilityReport
     score_delta: float | None = Field(description="scenario.score - baseline.score, one decimal")
+
+
+class BudgetRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    category_id: str = Field(min_length=1, max_length=64)
+    budget_jod: float = Field(ge=0, le=1e10, description="Available budget for equipment, JOD")
+
+
+class JodRange(BaseModel):
+    min: float
+    max: float
+
+
+class BudgetResponse(BaseModel):
+    request_id: str
+    category_id: str
+    budget_jod: float
+    status: Literal["covered", "partial", "short"] = Field(
+        description="covered: budget >= top of the equipment range; partial: >= bottom; short: below the bottom")
+    capex_jod_range: JodRange = Field(description="capex_usd_range x 0.709 (fixed JOD peg), equipment only")
+    gap_jod: float = Field(description="Still missing to reach the top of the range; 0 when covered")
+    caption_en: str = Field(description="Mandatory caption: equipment only, partial investment")
+    caption_ar: str
+
+
+class MethodologySection(BaseModel):
+    title: str
+    body: str
+
+
+class MethodologyResponse(BaseModel):
+    request_id: str
+    weights: dict[str, float]
+    thresholds: dict[str, float]
+    cost_gate: dict[str, float]
+    min_completeness: float
+    growth_years: dict[str, int | str]
+    sections: dict[Language, list[MethodologySection]]
 
 
 # --- product normalisation / explanation --------------------------------------

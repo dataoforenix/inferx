@@ -41,7 +41,8 @@
       "volume_score": 6.74,
       "trend_score": 10.0,
       "cagr": 0.1252,
-      "latest_import_usd": 21465982.0
+      "latest_import_usd": 21465982.0,
+      "latest_import_jod": 15219381.24
     },
     "cost": {
       "score": 0.0,
@@ -118,7 +119,158 @@
     },
     "machine_source": "Made-in-China supplier listings, Oct 2026: Small tomato paste line USD 50,000 (methena) to high-concentrate line USD 490,000-500,000 (sinojump)",
     "import_weight_kg_2024": 16409923.0,
-    "break_even": null
+    "break_even": null,
+    "next_steps": {
+      "en": [
+        "Do not invest in equipment based on this result.",
+        "Use the what-if tool to see what local cost or customs level would be needed to compete with imports.",
+        "Consider a related product, or trading and distribution instead of manufacturing.",
+        "If you still want to proceed, ask a support body (see advisors) for an independent feasibility study."
+      ],
+      "ar": [
+        "لا تستثمر في المعدات بناءً على هذه النتيجة.",
+        "استخدم أداة «ماذا لو» لمعرفة الكلفة المحلية أو نسبة الجمارك اللازمة لمنافسة المستورد.",
+        "فكّر في منتج قريب، أو في التجارة والتوزيع بدلاً من التصنيع.",
+        "إذا أردت المتابعة، اطلب من إحدى جهات الدعم (انظر قائمة الجهات) دراسة جدوى مستقلة."
+      ]
+    },
+    "advisors": [
+      {
+        "name_en": "Jordan Enterprise Development Corporation (JEDCO)",
+        "name_ar": "المؤسسة الأردنية لتطوير المشاريع الاقتصادية (جيدكو)",
+        "offer_en": "Support programmes, technical assistance and financing tools for SMEs, start-ups and manufacturers.",
+        "offer_ar": "برامج دعم ومساعدة فنية وأدوات تمويل للمشاريع الصغيرة والمتوسطة والريادية والصناعية.",
+        "url": "https://www.jedco.gov.jo"
+      },
+      {
+        "name_en": "Jordan Chamber of Industry",
+        "name_ar": "غرفة صناعة الأردن",
+        "offer_en": "Sector studies and industrial data, export support and an industrial directory for manufacturers.",
+        "offer_ar": "دراسات وبيانات قطاعية، ودعم للتصدير، ودليل صناعي للمصانع الأردنية.",
+        "url": "https://www.jci.org.jo"
+      },
+      {
+        "name_en": "Ministry of Industry, Trade and Supply",
+        "name_ar": "وزارة الصناعة والتجارة والتموين",
+        "offer_en": "Industrial development services, importer/exporter registration and import/export licences.",
+        "offer_ar": "خدمات التنمية الصناعية، وتسجيل المستوردين والمصدرين، ورخص الاستيراد والتصدير.",
+        "url": "https://www.mit.gov.jo"
+      },
+      {
+        "name_en": "Companies Control Department",
+        "name_ar": "دائرة مراقبة الشركات",
+        "offer_en": "Registration of new companies (online services).",
+        "offer_ar": "تسجيل الشركات الجديدة (خدمات إلكترونية).",
+        "url": "https://www.ccd.gov.jo"
+      },
+      {
+        "name_en": "Jordan Standards and Metrology Organization (JSMO)",
+        "name_ar": "مؤسسة المواصفات والمقاييس الأردنية",
+        "offer_en": "Jordanian standards, quality mark and conformity certification for products.",
+        "offer_ar": "المواصفات القياسية الأردنية وعلامة الجودة وشهادات المطابقة للمنتجات.",
+        "url": "https://www.jsmo.gov.jo"
+      },
+      {
+        "name_en": "Jordan Loan Guarantee Corporation",
+        "name_ar": "الشركة الأردنية لضمان القروض",
+        "offer_en": "Loan guarantees that improve access to credit for micro, small and medium enterprises.",
+        "offer_ar": "ضمانات قروض تسهّل حصول المؤسسات المتناهية الصغر والصغيرة والمتوسطة على التمويل.",
+        "url": "https://www.jlgc.com"
+      }
+    ],
+    "suppliers": {
+      "caption_en": "Search links, not supplier recommendations. Verify suppliers yourself.",
+      "caption_ar": "روابط بحث وليست توصيات بموردين. تحقّق من الموردين بنفسك.",
+      "items": [
+        {
+          "item": "Washer and sorter",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Washer+and+sorter/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Hot-break unit",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Hot-break+unit/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Pulper/finisher",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Pulper%2Ffinisher/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Vacuum evaporator",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Vacuum+evaporator/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Aseptic or can filler",
+          "kind": "machinery",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Aseptic+or+can+filler/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Fresh tomatoes (grown in Jordan)",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Fresh+tomatoes+%28grown+in+Jordan%29/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Cans or jars",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Cans+or+jars/F1/1.html"
+            }
+          ]
+        },
+        {
+          "item": "Salt",
+          "kind": "raw_material",
+          "links": [
+            {
+              "marketplace": "Made-in-China.com",
+              "url": "https://www.made-in-china.com/multi-search/Salt/F1/1.html"
+            }
+          ]
+        }
+      ],
+      "local_directory": {
+        "name_en": "Jordan Chamber of Industry: industrial directory",
+        "name_ar": "غرفة صناعة الأردن: الدليل الصناعي",
+        "offer_en": "Directory of Jordanian industrial establishments, filterable by sector.",
+        "offer_ar": "دليل المنشآت الصناعية الأردنية مع تصفية حسب القطاع.",
+        "url": "https://jci.org.jo/%d8%a7%d9%84%d8%af%d9%84%d9%8a%d9%84-%d8%a7%d9%84%d8%b5%d9%86%d8%a7%d8%b9%d9%8a/"
+      }
+    }
   },
   "explanation": {
     "language": "en",
@@ -147,9 +299,9 @@
   "warnings": [],
   "timings_ms": {
     "normalize": null,
-    "score": 0.2,
-    "explain": 0.7,
+    "score": 0.5,
+    "explain": 2.2,
     "market_data": null,
-    "total": 1.0
+    "total": 2.9
   }
 }

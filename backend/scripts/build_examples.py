@@ -171,6 +171,10 @@ def main() -> int:
          live.post("/api/whatif", json={"category_id": "frozen_fries", "overrides": {"shipping_pct": 0.5}}),
          "WhatIfResponse", 200)
 
+    save("budget_partial.json",
+         live.post("/api/budget", json={"category_id": "tomato_paste", "budget_jod": 100000}), "BudgetResponse", 200)
+    save("methodology.json", live.get("/api/methodology"), "MethodologyResponse", 200)
+
     # Common errors
     save("error_400_empty_input.json", live.post("/api/analyze", data={"language": "en"}), "ErrorResponse", 400)
     small = client(FakeLLM(), max_upload_bytes=1024)

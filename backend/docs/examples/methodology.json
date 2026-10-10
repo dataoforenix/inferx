@@ -1,0 +1,79 @@
+{
+  "request_id": "0123456789abcdef0123456789abcdef",
+  "weights": {
+    "market": 0.35,
+    "cost": 0.3,
+    "feasibility": 0.2,
+    "competition": 0.15
+  },
+  "thresholds": {
+    "manufacture": 6.0,
+    "maybe": 4.0
+  },
+  "cost_gate": {
+    "maybe_below_margin": 0.0,
+    "maybe_score_cap": 5.9,
+    "dont_below_margin": -0.25,
+    "dont_score_cap": 3.9
+  },
+  "min_completeness": 0.8,
+  "growth_years": {
+    "first": 2020,
+    "last": 2024,
+    "note": "2020 was a COVID low base year"
+  },
+  "sections": {
+    "en": [
+      {
+        "title": "Score",
+        "body": "The 0-10 score is a weighted average of four components, each 0-10: market 35%, cost 30%, manufacturing feasibility 20%, competition 15%. 6 or more = MANUFACTURE, 4 or more = MAYBE, otherwise DONT. Everything is calculated in Python; the AI only explains the result."
+      },
+      {
+        "title": "Components",
+        "body": "Market = 0.6 x import volume (log scale of the latest year's imports) + 0.4 x growth trend (5 + annual growth x 50). Cost = 5 + margin x 25, where margin = (landed import cost - local cost) / landed import cost and landed cost = CIF import price x (1 + customs); freight is already in the CIF price. Feasibility = (machinery + raw material + skills ratings, each 0-5) / 15 x 10. Competition = 10 x (1 - local factories / saturation level)."
+      },
+      {
+        "title": "Cost gate",
+        "body": "If producing locally costs more than importing (margin below 0), the verdict is at most MAYBE and the score is capped at 5.9. If the margin is below -0.25, the verdict is DONT and the score is capped at 3.9."
+      },
+      {
+        "title": "Data completeness",
+        "body": "Missing data is never guessed: the affected component is switched off and the score is recalculated from the remaining ones. If less than 80% of the weight is backed by data, the verdict is forced to MAYBE. Equipment costing 250,000 USD or more is flagged as a high capital requirement (no score change)."
+      },
+      {
+        "title": "Data sources",
+        "body": "Imports and import weight: UN Comtrade (Jordan, CIF, USD). Customs duties: WITS/TRAINS. Equipment prices: supplier listings (equipment only). Local costs, ratings and factory counts: partly estimates, marked in each report's estimated_fields. Money is converted at the fixed peg 1 JOD = 1.4104 USD."
+      },
+      {
+        "title": "Known limitation: growth",
+        "body": "Growth is measured from 2020 to 2024. 2020 was a COVID low year for many imports, so growth from that base can look stronger than the long-term trend."
+      }
+    ],
+    "ar": [
+      {
+        "title": "التقييم",
+        "body": "التقييم من 0 إلى 10 هو متوسط مرجّح لأربعة عناصر، كل منها من 0 إلى 10: السوق 35%، الكلفة 30%، إمكانية التصنيع 20%، المنافسة 15%. 6 فأكثر = صنّعها، 4 فأكثر = ربما، وأقل من ذلك = لا تصنّعها. كل الحسابات تتم ببرنامج بايثون؛ الذكاء الاصطناعي يشرح النتيجة فقط."
+      },
+      {
+        "title": "العناصر",
+        "body": "السوق = 0.6 × حجم الاستيراد (مقياس لوغاريتمي لواردات آخر سنة) + 0.4 × اتجاه النمو (5 + النمو السنوي × 50). الكلفة = 5 + الهامش × 25، والهامش = (كلفة المستورد الواصل − الكلفة المحلية) ÷ كلفة المستورد الواصل، وكلفة المستورد الواصل = سعر الاستيراد شامل الشحن والتأمين × (1 + الجمارك)؛ الشحن مشمول أصلاً في السعر. إمكانية التصنيع = (تقييم الآلات + المواد الخام + المهارات، كل منها 0-5) ÷ 15 × 10. المنافسة = 10 × (1 − عدد المصانع المحلية ÷ حد التشبع)."
+      },
+      {
+        "title": "شرط الكلفة",
+        "body": "إذا كان الإنتاج المحلي أغلى من الاستيراد (هامش أقل من 0)، تكون النتيجة «ربما» كحد أقصى ويُحدّ التقييم عند 5.9. وإذا كان الهامش أقل من -0.25 تكون النتيجة «لا تصنّعها» ويُحدّ التقييم عند 3.9."
+      },
+      {
+        "title": "اكتمال البيانات",
+        "body": "لا يتم تخمين أي بيانات ناقصة: يُستبعد العنصر المتأثر ويُعاد حساب التقييم من العناصر المتبقية. إذا كانت البيانات تغطي أقل من 80% من الأوزان تصبح النتيجة «ربما». المعدات التي تكلف 250,000 دولار أو أكثر تُعلَّم كمتطلب رأس مال مرتفع (دون تغيير التقييم)."
+      },
+      {
+        "title": "مصادر البيانات",
+        "body": "الواردات ووزنها: UN Comtrade (الأردن، شاملة الشحن والتأمين، بالدولار). الرسوم الجمركية: WITS/TRAINS. أسعار المعدات: عروض الموردين المعلنة (المعدات فقط). الكلفة المحلية والتقييمات وعدد المصانع: تقديرية جزئياً، ومذكورة في estimated_fields لكل تقرير. التحويل بسعر ثابت 1 دينار = 1.4104 دولار."
+      },
+      {
+        "title": "قيد معروف: النمو",
+        "body": "يُقاس النمو من 2020 إلى 2024. كانت 2020 سنة منخفضة بسبب كورونا لكثير من الواردات، لذلك قد يبدو النمو من تلك السنة أقوى من الاتجاه طويل المدى."
+      }
+    ]
+  }
+}

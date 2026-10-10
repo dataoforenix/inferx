@@ -22,6 +22,7 @@ REQUIRED = {
     "analyze_unsupported.json", "confirm_complete.json", "whatif.json", "categories.json", "health.json",
     "error_400_empty_input.json", "error_413_payload_too_large.json", "error_415_unsupported_image_type.json",
     "error_422_validation_error.json", "error_503_llm_unavailable.json", "error_404_demo_no_match.json",
+    "budget_partial.json", "methodology.json",
 }
 
 
@@ -59,4 +60,4 @@ def test_openapi_file_matches_the_app():
     on_disk = json.loads((DOCS / "openapi.json").read_text(encoding="utf-8"))
     assert on_disk == build_openapi(), "docs/openapi.json is stale: run python scripts/export_openapi.py"
     assert set(on_disk["paths"]) == {"/api/health", "/api/categories", "/api/whatif", "/api/analyze",
-                                     "/api/analyze/confirm"}
+                                     "/api/analyze/confirm", "/api/budget", "/api/methodology"}
