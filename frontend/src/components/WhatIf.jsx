@@ -128,7 +128,7 @@ export default function WhatIf({ whatIf, baseScore, verdicts }) {
               display={`${importJod.toFixed(2)} دينار`}
               ltr={false}
               min={0.05}
-              max={upTo(whatIf.importPriceJod, 2, 0.5)}
+              max={upTo(whatIf.importPriceJod, 3.5, 0.5)}
               step={0.01}
               onChange={(v) => setImportJod(round2(v))}
             />
