@@ -101,10 +101,38 @@ function breakEvenNote(be) {
   return `نقطة التعادل: بيع حوالي ${tons} طن (${pct(be.share_of_2024_imports, 1)} من واردات 2024) بسعر المستورد يسترد ثمن المعدات (تقديري: المعدات فقط، بدون المباني ورأس المال العامل).`;
 }
 
+// Which shown numbers are estimates, per the contract's "Data-quality badges" table.
+// Every input of the import/local cost comparison makes the margin (and the break-even) an estimate.
+const COST_INPUTS = [
+  'local_cost_per_kg_est_usd',
+  'import_price_per_kg_usd',
+  'customs_pct',
+  'shipping_pct',
+  'raw_material_price_usd_per_kg',
+  'material_kg_per_kg_product',
+  'conversion_cost_per_kg_usd',
+];
+const RATINGS = ['machinery_availability', 'raw_material_local', 'skills_availability'];
+const CAPEX = ['machine_cost_usd_min', 'machine_cost_usd_max', 'machine_cost_jod_min', 'machine_cost_jod_max'];
+
+function estimates(fields = []) {
+  const has = (...cols) => cols.some((c) => fields.includes(c));
+  const cost = has(...COST_INPUTS);
+  const capital = has(...CAPEX);
+  return {
+    market: { headline: has('imports_2024_usd'), body: has('imports_2020_usd', 'imports_2024_usd') },
+    cost: { headline: cost, caption: has('customs_pct'), body: cost },
+    readiness: { headline: has(...RATINGS), caption: has(...RATINGS), meta: has('local_factories') },
+    risk: {},
+    plan: { capital, breakEven: capital || cost, factories: has('local_factories') },
+  };
+}
+
 export function mapReport(body, inputName) {
   const r = body.report;
   const ex = body.explanation ?? {};
   const { market, cost, feasibility, competition, weights } = r;
+  const est = estimates(r.estimated_fields);
 
   const latestJod = market.latest_import_usd != null ? market.latest_import_usd * USD_TO_JOD : null;
   const trend = TRENDS[r.trend_label];
@@ -171,6 +199,7 @@ export function mapReport(body, inputName) {
     factors: [
       {
         id: 'market',
+        est: est.market,
         title: 'السوق',
         headline: latestJod != null ? formatJod(latestJod) : 'لا تتوفر بيانات كافية',
         caption: 'واردات الأردن في 2024',
@@ -179,6 +208,7 @@ export function mapReport(body, inputName) {
       },
       {
         id: 'cost',
+        est: est.cost,
         title: 'الكلفة',
         headline: costHeadline,
         caption: cost.customs_pct != null ? `الجمرك على المستورد: ${pct(cost.customs_pct)}` : '',
@@ -187,6 +217,7 @@ export function mapReport(body, inputName) {
       },
       {
         id: 'readiness',
+        est: est.readiness,
         title: 'جاهزية التصنيع',
         headline: readinessLabel(feasibility.score),
         caption: ratings,
@@ -196,6 +227,7 @@ export function mapReport(body, inputName) {
       },
       {
         id: 'risk',
+        est: est.risk,
         title: 'المراجع الناقد',
         headline: riskHeadline(concerns.length),
         caption: 'نقاط يجب الحذر منها',
@@ -203,7 +235,9 @@ export function mapReport(body, inputName) {
         source: 'مراجعة نقدية للبيانات',
       },
     ],
+    hasEstimates: (r.estimated_fields ?? []).length > 0,
     plan: {
+      est: est.plan,
       capital: capitalFromReport(r),
       capitalNote: 'المعدات فقط بأسعار الموردين، بدون الشحن والجمارك والتركيب والمباني.',
       breakEven: breakEvenNote(r.break_even),

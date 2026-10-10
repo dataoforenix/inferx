@@ -3,6 +3,8 @@
 // html2canvas can't parse color-mix(), so stick to solid colors here:
 // no Tailwind opacity modifiers (`/75`) and no backdrop blur.
 
+import EstimateTag from './EstimateTag';
+
 const VERDICT = {
   go: { label: 'صنّعها', badge: 'bg-brand text-white' },
   maybe: { label: 'ربما', badge: 'bg-[#fdf3dc] text-[#8a5a00]' },
@@ -33,12 +35,24 @@ function Page({ children, n, total, title = 'تقرير جدوى التصنيع 
 
 function SheetFactor({ factor }) {
   const risk = factor.id === 'risk';
+  const est = factor.est ?? {};
   return (
     <div className={`rounded-2xl border p-5 ${risk ? 'border-[#f6c8ad] bg-[#fff7f1]' : 'border-hairline bg-white'}`}>
       <p className={`text-[13px] font-semibold ${risk ? 'text-[#b4400e]' : 'text-brand'}`}>{factor.title}</p>
-      <p className="mt-2 font-display text-[16px] leading-[1.6] font-semibold">{factor.headline}</p>
-      <p className="mt-1 text-[11.5px] text-ink-muted">{factor.caption}</p>
-      {factor.body && <p className="mt-3 text-[12.5px] leading-[1.8]">{factor.body}</p>}
+      <p className="mt-2 font-display text-[16px] leading-[1.6] font-semibold">
+        {factor.headline}
+        <EstimateTag show={est.headline} plain />
+      </p>
+      <p className="mt-1 text-[11.5px] text-ink-muted">
+        {factor.caption}
+        <EstimateTag show={est.caption && !est.headline} plain />
+      </p>
+      {factor.body && (
+        <p className="mt-3 text-[12.5px] leading-[1.8]">
+          {factor.body}
+          <EstimateTag show={est.body} plain />
+        </p>
+      )}
       {factor.list && (
         <ul className="mt-3 space-y-1.5">
           {factor.list.map((item) => (
@@ -49,7 +63,12 @@ function SheetFactor({ factor }) {
           ))}
         </ul>
       )}
-      {factor.meta && <p className="mt-2 text-[11.5px] leading-[1.75] text-ink-muted">{factor.meta}</p>}
+      {factor.meta && (
+        <p className="mt-2 text-[11.5px] leading-[1.75] text-ink-muted">
+          {factor.meta}
+          <EstimateTag show={est.meta} plain />
+        </p>
+      )}
       <p className="mt-3 text-[11px] text-ink-muted">المصدر: {factor.source}</p>
     </div>
   );
@@ -163,6 +182,11 @@ export default function ReportSheet({ result }) {
             <SheetFactor key={f.id} factor={f} />
           ))}
         </div>
+        {result.hasEstimates && (
+          <p className="mt-3 text-[11.5px] text-ink-muted">
+            الأرقام المعلّمة بـ<EstimateTag show plain /> محسوبة تقريبياً، والباقي من مصادر رسمية.
+          </p>
+        )}
       </Page>
 
       <Page n={2} total={2}>
@@ -179,14 +203,25 @@ export default function ReportSheet({ result }) {
             <>
               <p className="mt-2 font-display text-[24px] font-semibold">
                 من {plan.capital.minK} إلى {plan.capital.maxK} ألف دينار أردني
+                <EstimateTag show={plan.est?.capital} plain />
               </p>
               <p className="mt-1 text-[12px] text-ink-muted">{plan.capitalNote ?? 'كلفة المكائن فقط، تقدير تقريبي.'}</p>
-              {plan.breakEven && <p className="mt-3 text-[13px] leading-[1.8]">{plan.breakEven}</p>}
+              {plan.breakEven && (
+                <p className="mt-3 text-[13px] leading-[1.8]">
+                  {plan.breakEven}
+                  <EstimateTag show={plan.est?.breakEven} plain />
+                </p>
+              )}
             </>
           ) : (
             <p className="mt-2 text-[13px] text-ink-muted">التقدير غير متوفر لهذا المنتج بعد.</p>
           )}
-          {plan.factories && <p className="mt-3 text-[13px]">{plan.factories}</p>}
+          {plan.factories && (
+            <p className="mt-3 text-[13px]">
+              {plan.factories}
+              <EstimateTag show={plan.est?.factories} plain />
+            </p>
+          )}
         </section>
 
         <section className="mt-4 rounded-2xl border border-hairline bg-white p-6">

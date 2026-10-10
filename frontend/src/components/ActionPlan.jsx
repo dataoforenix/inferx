@@ -1,4 +1,5 @@
 import { ListChecks, MapPin, Wallet, Wrench } from 'lucide-react';
+import EstimateTag from './EstimateTag';
 import ReportButton from './ReportButton';
 import ReportSheet from './ReportSheet';
 
@@ -47,12 +48,16 @@ export default function ActionPlan({ result }) {
             <>
               <p className="mt-3 font-display text-[1.375rem] leading-[1.4] font-semibold text-ink lg:mt-5">
                 من {plan.capital.minK} إلى {plan.capital.maxK} ألف دينار
+                <EstimateTag show={plan.est?.capital} />
               </p>
               <p className="mt-1.5 text-[12px] leading-[1.7] text-ink-muted lg:text-[12.5px]">
                 {plan.capitalNote ?? 'كلفة المكائن فقط، تقدير تقريبي'}
               </p>
               {plan.breakEven && (
-                <p className="mt-3 text-[12.5px] leading-[1.8] text-ink/80 lg:text-[13.5px]">{plan.breakEven}</p>
+                <p className="mt-3 text-[12.5px] leading-[1.8] text-ink/80 lg:text-[13.5px]">
+                  {plan.breakEven}
+                  <EstimateTag show={plan.est?.breakEven} />
+                </p>
               )}
             </>
           ) : (
@@ -62,6 +67,7 @@ export default function ActionPlan({ result }) {
             <div className="mt-auto pt-4 lg:pt-5">
               <p className="border-t border-hairline pt-3 text-[12.5px] leading-[1.75] text-ink/80 lg:text-[13.5px]">
                 {plan.factories}
+                <EstimateTag show={plan.est?.factories} />
               </p>
             </div>
           )}

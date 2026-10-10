@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, CircleHelp, Coins, Factory, ListChecks, Package, RotateCcw, ShieldAlert, TrendingUp } from 'lucide-react';
 import { ANALYSIS_MS, ANALYSIS_STEPS } from '../lib/analyzeProduct';
 import ActionPlan from './ActionPlan';
+import EstimateTag from './EstimateTag';
 import ReportButton from './ReportButton';
 import { PreviewSheet } from './ReportSheet';
 import WhatIf from './WhatIf';
@@ -155,6 +156,7 @@ function ScoreDial({ score, color }) {
 
 function FactorCard({ factor, i }) {
   const Icon = ICONS[factor.id];
+  const est = factor.est ?? {};
   const risk = factor.id === 'risk';
   const long = factor.headline.length > 28;
   return (
@@ -182,10 +184,19 @@ function FactorCard({ factor, i }) {
         }`}
       >
         {factor.headline}
+        <EstimateTag show={est.headline} />
       </p>
-      <p className="mt-1.5 text-[12px] leading-[1.7] text-ink-muted lg:text-[12.5px]">{factor.caption}</p>
+      <p className="mt-1.5 text-[12px] leading-[1.7] text-ink-muted lg:text-[12.5px]">
+        {factor.caption}
+        <EstimateTag show={est.caption && !est.headline} />
+      </p>
 
-      {factor.body && <p className="mt-3 text-[12.5px] leading-[1.8] text-ink/80 lg:mt-4 lg:text-[14px] lg:leading-[1.85]">{factor.body}</p>}
+      {factor.body && (
+        <p className="mt-3 text-[12.5px] leading-[1.8] text-ink/80 lg:mt-4 lg:text-[14px] lg:leading-[1.85]">
+          {factor.body}
+          <EstimateTag show={est.body} />
+        </p>
+      )}
       {factor.list && (
         <ul className="mt-3 space-y-2 lg:mt-4 lg:space-y-2.5">
           {factor.list.map((item) => (
@@ -196,7 +207,12 @@ function FactorCard({ factor, i }) {
           ))}
         </ul>
       )}
-      {factor.meta && <p className="mt-3 text-[12px] leading-[1.75] text-ink-muted lg:text-[12.5px] lg:leading-[1.8]">{factor.meta}</p>}
+      {factor.meta && (
+        <p className="mt-3 text-[12px] leading-[1.75] text-ink-muted lg:text-[12.5px] lg:leading-[1.8]">
+          {factor.meta}
+          <EstimateTag show={est.meta} />
+        </p>
+      )}
 
       <div className="mt-auto pt-4 lg:pt-5">
         <p className="border-t border-hairline pt-3 text-[11.5px] leading-[1.6] text-ink-muted lg:pt-3.5 lg:text-[12px]">المصدر: {factor.source}</p>
@@ -445,6 +461,11 @@ function ResultView({ result, onReset }) {
           <FactorCard key={f.id} factor={f} i={i} />
         ))}
       </div>
+      {result.hasEstimates && (
+        <p className="mt-3 text-[12.5px] text-ink-muted">
+          الأرقام المعلّمة بـ<EstimateTag show /> محسوبة تقريبياً، والباقي من مصادر رسمية.
+        </p>
+      )}
       {result.whatIf && <WhatIf whatIf={result.whatIf} baseScore={result.score} verdicts={VERDICT_UI} />}
 
       <ActionPlan result={result} />
