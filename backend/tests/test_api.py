@@ -166,3 +166,39 @@ def test_whatif_crosses_cost_gate_via_api(client):
     assert body.baseline.verdict == "MANUFACTURE" and body.baseline.verdict_capped_by is None
     assert body.scenario.verdict == "MAYBE" and body.scenario.score == 5.9
     assert body.scenario.verdict_capped_by == "cost_gate"
+
+
+# --- CORS on responses the request middleware returns early -----------------------------
+
+ORIGIN = "http://localhost:5173"
+
+
+def test_cors_headers_on_rate_limited_response(make_settings):
+    from tests.conftest import FakeLLM
+
+    c = TestClient(create_app(make_settings(cors_origins=[ORIGIN], rate_limit_per_minute=1), llm=FakeLLM()))
+    assert c.post("/api/analyze", data={"text": "cup"}, headers={"Origin": ORIGIN}).status_code == 200
+    r = c.post("/api/analyze", data={"text": "cup"}, headers={"Origin": ORIGIN})
+    assert r.status_code == 429
+    assert r.headers.get("access-control-allow-origin") == ORIGIN  # the browser can read the 429
+    assert "retry-after" in r.headers.get("access-control-expose-headers", "").lower()
+    assert r.headers["X-Request-ID"] == r.json()["error"]["request_id"]
+
+
+def test_cors_headers_on_payload_too_large_response(make_settings):
+    c = TestClient(create_app(make_settings(cors_origins=[ORIGIN], max_upload_bytes=1024)))
+    r = c.post("/api/analyze", files={"image": ("a.png", b"\0" * (400 * 1024), "image/png")},
+               headers={"Origin": ORIGIN})
+    assert r.status_code == 413
+    assert r.headers.get("access-control-allow-origin") == ORIGIN
+
+
+def test_cors_headers_on_length_required_response(make_settings):
+    def chunks():
+        yield b"--x\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\ncup\r\n--x--\r\n"
+
+    c = TestClient(create_app(make_settings(cors_origins=[ORIGIN])))
+    r = c.post("/api/analyze", content=chunks(),
+               headers={"Content-Type": "multipart/form-data; boundary=x", "Origin": ORIGIN})
+    assert r.status_code == 411
+    assert r.headers.get("access-control-allow-origin") == ORIGIN

@@ -62,16 +62,6 @@ def create_app(
     limiter = RateLimiter(settings.rate_limit_per_minute)
     app.state.rate_limiter = limiter
 
-    wildcard = "*" in settings.cors_origins
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"] if wildcard else settings.cors_origins,
-        allow_credentials=not wildcard,  # browsers reject credentials with a wildcard origin
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["*"],
-        expose_headers=["X-Request-ID"],
-    )
-
     @app.middleware("http")
     async def request_id_and_size_limit(request: Request, call_next):
         request.state.request_id = uuid.uuid4().hex
@@ -96,6 +86,18 @@ def create_app(
         logger.info("request_id=%s %s %s -> %s %.0fms", request.state.request_id, request.method,
                     request.url.path, response.status_code, (time.perf_counter() - started) * 1000)
         return response
+
+    # Added last, so CORS is the outermost middleware: the 411/413/429 responses returned above
+    # also carry the CORS headers, and the browser can read them (and Retry-After).
+    wildcard = "*" in settings.cors_origins
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"] if wildcard else settings.cors_origins,
+        allow_credentials=not wildcard,  # browsers reject credentials with a wildcard origin
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
+        expose_headers=["X-Request-ID", "Retry-After"],
+    )
 
     register_error_handlers(app)
     app.include_router(meta.router)
