@@ -19,7 +19,7 @@ function StudioLight() {
 export default function AssemblyCanvas({ progress, scroll, reduce, active, labelsRef, onReady }) {
   return (
     <Canvas
-      dpr={[1, 1.75]}
+      dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       camera={{ position: [0, 0.2, 8], fov: 30, near: 0.1, far: 40 }}
       frameloop={reduce ? 'demand' : active ? 'always' : 'never'}

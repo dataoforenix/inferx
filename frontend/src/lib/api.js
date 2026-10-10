@@ -198,6 +198,8 @@ export function mapReport(body, inputName) {
             categoryId: r.category_id,
             customsPct: cost.customs_pct,
             localCostJod: Math.round(cost.local_cost_per_kg_est_usd * USD_TO_JOD * 100) / 100,
+            importPriceJod:
+              cost.import_price_per_kg_usd != null ? Math.round(cost.import_price_per_kg_usd * USD_TO_JOD * 100) / 100 : null,
           }
         : null,
     factors: [

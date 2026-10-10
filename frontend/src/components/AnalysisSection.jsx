@@ -22,11 +22,11 @@ const STEP_MS = ANALYSIS_MS / ANALYSIS_STEPS.length;
 const ICONS = { market: TrendUp, cost: Coins, readiness: Factory, risk: ShieldWarning };
 const STATION_TITLES = { market: 'السوق', cost: 'الكلفة', readiness: 'الجاهزية', risk: 'المراجع الناقد' };
 
-// `badge` is shared with the what-if panel; `word` styles the large verdict.
+// `badge` on light surfaces, `badgeDark` on the graphite what-if result; `word` styles the large verdict.
 const VERDICT_UI = {
-  go: { label: 'صنّعها', badge: 'bg-accent text-ink', word: 'text-ink', mark: true },
-  maybe: { label: 'ربما', badge: 'border border-ink/30 text-ink', word: 'text-ink' },
-  no: { label: 'لا تصنّعها', badge: 'bg-signal text-white', word: 'text-signal' },
+  go: { label: 'صنّعها', badge: 'bg-accent text-ink', badgeDark: 'bg-accent text-ink', word: 'text-ink', mark: true },
+  maybe: { label: 'ربما', badge: 'border border-ink/30 text-ink', badgeDark: 'border border-white/40 text-white', word: 'text-ink' },
+  no: { label: 'لا تصنّعها', badge: 'bg-signal text-white', badgeDark: 'bg-signal text-white', word: 'text-signal' },
 };
 
 const SOURCE_NOTES = {
