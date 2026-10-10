@@ -10,6 +10,13 @@ This repository holds the **FastAPI backend** (`backend/`). Full documentation:
 [`backend/README.md`](backend/README.md); API contract for the frontend:
 [`backend/docs/api_contract.md`](backend/docs/api_contract.md).
 
+> **Demo mode vs real AI.** In demo mode (`DEMO_MODE=true`, no key) uploaded photos are **not** really analysed:
+> the app only recognises a fixed list of prepared inputs and returns prepared answers. To analyse your own text or photos,
+> run with the real AI (section 3).
+>
+> **وضع العرض مقابل الذكاء الاصطناعي الحقيقي:** في وضع العرض (`DEMO_MODE=true` بدون مفتاح) **لا يتم تحليل الصور المرفوعة فعلياً**؛
+> التطبيق يتعرّف فقط على قائمة ثابتة من المدخلات المجهّزة ويعيد إجابات مجهّزة. لتحليل نصك أو صورك شغّله مع الذكاء الاصطناعي الحقيقي (القسم 3).
+
 ## Quick start for judges
 
 Requires **Python 3.11**. All commands run from `backend/`.
@@ -75,22 +82,49 @@ Demo mode only recognises these prepared inputs (from `backend/data/demo_inputs.
 
 Any other input returns `404 demo_no_match`, and the error message lists the examples.
 
-### 3. Run with the live AI (Google Gemini)
+### 3. Run with the real AI (Google Gemini) / التشغيل مع الذكاء الاصطناعي الحقيقي
 
-The backend calls Gemini through its OpenAI-compatible endpoint using the OpenAI Python SDK.
+1. Get a free Gemini API key at https://aistudio.google.com/apikey.
+   **If the organisers gave you a judges' key, paste that one instead.**
+2. Copy `backend/.env.example` to `backend/.env` and paste the key as `OPENAI_API_KEY`. The name is kept for the
+   OpenAI SDK; the backend talks to Gemini's OpenAI-compatible endpoint. Make sure `DEMO_MODE=false`.
+3. Restart the backend.
 
-```bash
-cp .env.example .env        # Windows: copy .env.example .env
-# edit .env and set OPENAI_API_KEY=<your Gemini API key>
+Windows PowerShell, from the repository root:
+
+```powershell
+cd backend
+Copy-Item .env.example .env
+notepad .env        # set:  OPENAI_API_KEY=<your Gemini key>   and   DEMO_MODE=false   then save
+# stop the running backend with Ctrl+C in its window, then start it again:
 python -m uvicorn app.main:app --port 8000
 ```
 
-`GET /api/health` reports `"status": "ok"` and `"llm_configured": true` when the key is set. Text and photo
-uploads both work:
+Check it: `Invoke-RestMethod http://localhost:8000/api/health` must show `llm_configured : True` and
+`demo_mode : False`. Never commit `backend/.env` (it is gitignored).
 
-```bash
-curl -X POST http://localhost:8000/api/analyze -F "text=plastic plates and cups" -F "language=ar"
-curl -X POST http://localhost:8000/api/analyze -F "image=@photo.jpg" -F "language=en"
+**Limits:**
+- The free Gemini tier allows 15 AI requests per minute per model. Each analysis uses 2 of them, so expect
+  **about 7 analyses per minute**; above that the app answers "AI unavailable" for a moment.
+- **Repeated searches come from the cache:** the same text (or the same photo) in the same language within 24 hours is
+  answered instantly from a local SQLite cache, without using the AI quota (`"cache": "hit"`).
+
+بالعربية:
+1. احصل على مفتاح Gemini مجاني من https://aistudio.google.com/apikey.
+   **إذا أعطاكم المنظمون مفتاحاً خاصاً بالحكّام، استخدموه بدلاً منه.**
+2. انسخ `backend/.env.example` إلى `backend/.env`، والصق المفتاح في `OPENAI_API_KEY`، وتأكد أن `DEMO_MODE=false`.
+3. أعد تشغيل الباك بأوامر PowerShell أعلاه.
+
+الحد المجاني حوالي **7 تحليلات في الدقيقة** (15 طلب ذكاء اصطناعي في الدقيقة، وكل تحليل يستخدم طلبين). البحث المكرر
+(نفس النص أو نفس الصورة ونفس اللغة خلال 24 ساعة) يأتي من الذاكرة المؤقتة فوراً ولا يستهلك من الحد.
+
+### Frontend / الواجهة
+
+In a second terminal, from `frontend/` (Node.js 20.19 or newer):
+
+```powershell
+npm ci
+npm run dev        # http://localhost:5173  (talks to the backend on http://localhost:8000)
 ```
 
 ### 4. Run the tests
