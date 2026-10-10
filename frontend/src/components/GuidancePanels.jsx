@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpLeft, BookOpen, Buildings, Calculator, ListChecks, MagnifyingGlass } from '@phosphor-icons/react';
+import { ArrowUpLeft, BookOpen, Buildings, Calculator, MagnifyingGlass } from '@phosphor-icons/react';
 import { PANEL, TileHeader } from './ActionPlan';
 import { formatJod, getMethodology, postBudget } from '../lib/api';
+import { termAr } from '../lib/terms';
 
 // New backend guidance (FRONTEND_HANDOFF.md, sections 2-6). Built only from the existing tokens and the
 // ActionPlan panel/header so the theme is unchanged. Arabic fields only; mandatory captions always shown.
@@ -50,7 +51,7 @@ function BudgetBox({ categoryId }) {
   const body = state.body;
   const st = body && BUDGET_STATUS[body.status];
   return (
-    <article className={`rise-in ${PANEL} p-6 lg:col-span-6 lg:p-8`} style={{ '--i': 12 }}>
+    <article className={`rise-in ${PANEL} p-6 lg:col-span-5 lg:p-8`} style={{ '--i': 12 }}>
       <TileHeader icon={Calculator}>كم تقدر تستثمر؟ (دينار)</TileHeader>
       <form onSubmit={onSubmit} className="mt-5 flex flex-wrap items-center gap-3" noValidate>
         <label className="sr-only" htmlFor="budget-jod">
@@ -95,7 +96,8 @@ function BudgetBox({ categoryId }) {
   );
 }
 
-function Methodology() {
+/** The full scoring method (GET /api/methodology), shown under «كيف حسبنا التقييم؟» in the result. */
+export function Methodology() {
   const [state, setState] = useState({ status: 'idle' });
   const onToggle = async (e) => {
     if (!e.currentTarget.open || state.status !== 'idle') return;
@@ -107,10 +109,10 @@ function Methodology() {
     }
   };
   return (
-    <details className="group mt-8" onToggle={onToggle}>
+    <details className="group mt-4" onToggle={onToggle}>
       <summary className={`${LINK} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
         <BookOpen className="size-4" aria-hidden="true" />
-        كيف نحسب؟
+        طريقة الحساب بالتفصيل
       </summary>
       <div className="mt-4 max-w-[75ch]" aria-live="polite">
         {state.status === 'loading' && <p className="text-[14px] text-ink-muted">جارٍ التحميل…</p>}
@@ -128,8 +130,9 @@ function Methodology() {
 }
 
 export default function GuidancePanels({ guidance }) {
-  const { categoryId, hasCapex, nextSteps, advisors, suppliers } = guidance;
-  const supplierItems = suppliers?.items ?? [];
+  const { categoryId, hasCapex, advisors, suppliers } = guidance;
+  // Skip CSV fragments (e.g. the second half of the split potatoes entry); see lib/terms.js.
+  const supplierItems = (suppliers?.items ?? []).filter((it) => termAr(it.item) !== null);
 
   return (
     <section className="mt-16" aria-labelledby="guidance-heading">
@@ -137,26 +140,10 @@ export default function GuidancePanels({ guidance }) {
         ابدأ من هنا
       </h3>
       <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
-        {nextSteps.length > 0 && (
-          <article className={`rise-in ${PANEL} p-6 lg:col-span-6 lg:p-8`} style={{ '--i': 12 }}>
-            <TileHeader icon={ListChecks}>خطوات البدء</TileHeader>
-            <ol className="mt-6 space-y-4">
-              {nextSteps.map((step, n) => (
-                <li key={step} className="grid grid-cols-[2rem_1fr] gap-3 text-[14.5px] leading-[1.85] text-ink/85">
-                  <span className="font-display text-[1.5rem] leading-[1.15] font-bold text-ink/20 tabular-nums" dir="ltr">
-                    {n + 1}
-                  </span>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </article>
-        )}
-
         {hasCapex && <BudgetBox categoryId={categoryId} />}
 
         {advisors.length > 0 && (
-          <article className={`rise-in ${PANEL} p-6 lg:col-span-12 lg:p-8`} style={{ '--i': 13 }}>
+          <article className={`rise-in ${PANEL} p-6 lg:p-8 ${hasCapex ? 'lg:col-span-7' : 'lg:col-span-12'}`} style={{ '--i': 13 }}>
             <TileHeader icon={Buildings}>جهات تساعدك</TileHeader>
             <ul className="mt-5 grid gap-x-10 gap-y-5 md:grid-cols-2">
               {advisors.map((a) => (
@@ -179,7 +166,7 @@ export default function GuidancePanels({ guidance }) {
             <ul className="mt-5 gap-x-10 sm:columns-2 lg:columns-3">
               {supplierItems.map((it) => (
                 <li key={`${it.kind}-${it.item}`} className="flex break-inside-avoid flex-wrap items-baseline gap-x-2 py-1.5 text-[14px] leading-[1.75] text-ink/85">
-                  <span dir="ltr" className="font-medium text-ink">{it.item}</span>
+                  <span className="font-medium text-ink">{termAr(it.item)}</span>
                   <span aria-hidden="true" className="text-ink/40">·</span>
                   {it.links.map((l) => (
                     <ExternalLink key={l.url} href={l.url}>
@@ -198,7 +185,6 @@ export default function GuidancePanels({ guidance }) {
           </article>
         )}
       </div>
-      <Methodology />
     </section>
   );
 }
