@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import SiteBackdrop from './components/SiteBackdrop';
-import SiteCursor from './components/SiteCursor';
+import EngineeringCursor from './components/EngineeringCursor';
 import SiteHeader from './components/SiteHeader';
 import HeroStory from './components/hero/HeroStory';
 import ProductInput from './components/ProductInput';
@@ -40,7 +40,7 @@ export default function App() {
   return (
     <>
       <SiteBackdrop />
-      <SiteCursor />
+      <EngineeringCursor />
       <SiteHeader />
       <main>
         <HeroStory />
