@@ -145,6 +145,37 @@ Response (`backend/docs/examples/methodology.json`):
 
 ---
 
-## Frontend bugs found in testing (not fixed: for the frontend owner)
+## Browser test of the current frontend (2026-10-10, measured; no frontend file was changed)
 
-See the section added below after the browser test.
+**Setup:**
+- Frontend: `npm ci && npm run build` (build OK) and `npm run dev` on `http://localhost:5173`.
+- Backend: `DEMO_MODE=true` on port 8000, no key.
+- Browser: Microsoft Edge (installed), headless, driven by `playwright-core`. Viewport 1366×900, plus one 390×844 phone-size run.
+- Screenshots were taken, but they are not in the repo.
+
+| Flow | Result |
+|---|---|
+| Page load | Title OK, `<html dir="rtl" lang="ar">`, no API call on load, no 404 for any asset. |
+| Analyze «كرسي مكتب معدني منجد» | `POST /api/analyze` → 200 `complete`; verdict صنّعها, score 7.0 shown; Arabic AI summary; HS 9401.71. ✅ |
+| What-if sliders | 3 sliders (customs 0–1, local cost 0.05–5.3 JOD, import price 0.05–11 JOD). Local cost to max → `POST /api/whatif` → score 7.0→3.9 «لا تصنّعها» shown; customs to 0 → request sent, stays 3.9 (cost gate). ✅ |
+| needs_confirmation «plastic chair with metal legs» | 200 `needs_confirmation`; «أيّ هذه هو منتجك؟» with one choice «كرسي معدني منجّد»; click → `POST /api/analyze/confirm` → 200 `complete`, 7.0. ✅ (see bug 1 below) |
+| Arabic, DONT + cost gate «معجون بندورة» | 200 `complete`; «لا تصنّعها» 3.9, red verdict, «يحتاج رأس مال مرتفعاً» chip, Arabic summary quoting the cost gap. ✅ |
+| Unknown «محرك سفينة فضائية» | 404 `demo_no_match` → «تعذّر إكمال التحليل» + the Arabic prepared examples. ✅ The browser logs one console error for this 404 fetch; that is expected. |
+| English text «frozen french fries» | 200 `complete`, Arabic UI and Arabic summary. ✅ |
+| Phone size 390×844 «مروحة سقف» | 200 `complete`; no horizontal overflow (0 px). ✅ |
+
+Console/page errors during all flows: only the expected 404 above. No JavaScript exceptions.
+
+### Bugs and issues for the frontend owner (not fixed here)
+
+1. **Machinery and raw materials show in English inside the Arabic UI.** Examples: "Washer and sorter", "Vacuum evaporator", "Fresh tomatoes (grown in Jordan)". These come from the CSV, which has those lists in English only. Options:
+   - label the lists «(بالإنجليزية)»;
+   - or keep a small Arabic map in the UI.
+
+   The new `report.suppliers` items use the same English names, which works well for the marketplace searches.
+2. **The demo-no-match list hides the confirmation example.** The examples are filtered to Arabic only (`isArabic` in `analyzeProduct.js`), and the needs-confirmation demo input's example text is English ("plastic chair with metal legs"), so it is never suggested. The 4 suggestion buttons don't include it either. To show the confirmation step in the demo, add a suggestion button with «كرسي بلاستيك بأرجل معدنية», which is one of that entry's match keywords.
+3. **The custom gear cursor (`EngineeringCursor`) overlaps text at phone size.** Seen in the 390×844 run (headless desktop emulation, not a real touch device). Check on a real phone, and hide the cursor for `(pointer: coarse)`.
+4. **Offline fallback shows bundled sample products.** When the backend is unreachable (`BackendDown`), `toOutcome()` shows sample products from `legacy/sampleData.js` (e.g. solar panels, screws) with their own figures. The UI shows the notice «الخادم غير متاح الآن، هذه بيانات تجريبية» (in the code; not exercised in this test). Make sure the notice stays very visible during judging, or show an error instead.
+5. **USD→JOD rewriting of AI text (risk, not a bug).** `usdTextToJod()` rewrites the dollar amounts in the AI explanation into JOD with regexes. The amounts checked in this test were correct (2.63 and 3.90 JOD/kg = 3.713 and 5.505 USD × 0.709). However, the text the user sees is no longer the exact text that passed the backend's number check. Prefer the new numeric fields (`market.latest_import_jod`, `budget` JOD values) for new UI.
+6. **Not frontend, but visible in it (backend demo mode).** After confirming the needs-confirmation example in DEMO_MODE, the summary names «كرسي مكتب معدني منجد» while the product title is «كرسي بلاستيك بأرجل معدنية». Demo mode replays the recorded explanation of another input in the same category. Live mode writes a new explanation. Listed in SUMMARY.md as a known backend limitation.
+7. **The new backend features are not shown yet:** `next_steps`, `advisors`, `suppliers`, `/api/budget`, `/api/methodology` (sections 1–6 above). Expected, since they were just added.
