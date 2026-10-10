@@ -58,6 +58,16 @@ Two additive HTTP header changes only:
    - None of these is sent to the explanation model. 21 new offline tests.
 10. **Docs** (`56fb2b7`): `api_contract.md` section and `FRONTEND_HANDOFF.md`.
 
+11. **Optional SQLite cache merged** (`d259b2c`, fast-forward from `db-cache`; built-in sqlite3, no new dependency)
+    - `cache: hit|miss` on `/api/analyze`, plus `GET /api/searches/top`.
+    - Off with `DB_ENABLED=false` and never used in demo mode. With it off, responses are byte-identical to before (24,681 bytes compared, `cmp`-equal).
+    - Fail-open on a corrupt, locked or unwritable database. Stores only an image SHA-256, never the image.
+12. **Frontend: new backend guidance shown** (`3ecdad1`)
+    - Market tile: USD ≈ JOD.
+    - New «ابدأ من هنا» section: next steps, budget box (`/api/budget`), advisors, supplier links with `caption_ar`, and «كيف نحسب؟» (`/api/methodology`).
+    - Same theme: existing card, heading, colour tokens and Phosphor icons; no new colours, fonts, libraries or global CSS.
+13. **Judges' README in English and Arabic** (`9541040`), a suggestion button for the confirmation example (`bede596`), and **no more sample-data fallback** (`3e5e970`): when the backend is unreachable the UI shows «الخادم غير متاح. شغّل الـ backend أولاً كما في README».
+
 ## Tests (measured, Python 3.11.17, conda env `inferx`)
 | When | Command | Result |
 |---|---|---|
@@ -67,7 +77,10 @@ Two additive HTTP header changes only:
 | After recording, before replacing the folding-chair input | `python -m pytest` in `backend/` | 546 passed, **1 failed** (`test_demo_cache_matches_demo_inputs`: recorded `unsupported` ≠ expected `metal_chair`), 20 deselected. Not pushed in this state. |
 | After recording | `python -m pytest` in `backend/` | 547 passed, 0 failed, 20 deselected |
 | Before guidance features | `python -m pytest` in `backend/` | 549 passed, 0 failed, 20 deselected |
-| **Final (after guidance features)** | `python -m pytest` in `backend/` and in the repo root | **570 passed, 0 failed, 20 deselected** |
+| After guidance features | `python -m pytest` in `backend/` and in the repo root | 570 passed, 0 failed, 20 deselected |
+| Cache branch, `DB_ENABLED=false` and `=true` | `python -m pytest` | 587 passed, 0 failed, 20 deselected (each) |
+| **Final (after cache merge and frontend work)** | `python -m pytest -c backend/pytest.ini backend/tests` | **587 passed, 0 failed, 20 deselected** (after every commit) |
+| Frontend | `npm run build` | built with no errors after every frontend commit (Vite warns about chunks over 500 kB) |
 | Live suite, default config, before pacing | `python -m pytest -m llm -v` | 19 passed, **1 failed** (429 quota), 547 deselected, 18.9 s |
 | **Live suite, default config, with pacing** | `python -m pytest -m llm -v` | **20 passed, 0 failed**, 549 deselected, 98.7 s, no 429 |
 
@@ -207,6 +220,28 @@ Failed: `test_live_explain_is_grounded[ar]`.
   - sample-data fallback when the backend is down;
   - regex USD→JOD rewriting of AI text.
 - Afterwards the backend was restarted in **live mode** on port 8000 (user request); `/api/health` reports `llm_configured: true`, `demo_mode: false`. No live browser flows were run.
+
+## Live cache check (merged server, measured)
+"metal office chair" (`language=ar`) sent twice to the live server:
+- 1st: `cache: miss`, 3.25 s (normalize 1.25 s + explain 1.96 s).
+- 2nd: `cache: hit`, **0.035 s**, no AI call logged.
+
+The first attempt at this test went to a stale server process that still held port 8000. That process was stopped and the test repeated with your OK.
+
+Two image analyses from the frontend (not sent by me) took about 14 s each at the AI recognition step:
+- HS 420221: market preview, 25.1 s total;
+- HS 040310: unsupported, 16.5 s total, because Comtrade had no 2024 data.
+
+## Frontend guidance check (headless Edge against the live server, cached input: no AI call)
+- Shown:
+  - USD ≈ JOD note "2.2 مليون دولار ≈ 1.6 مليون دينار";
+  - 4 next steps;
+  - 6 advisors;
+  - supplier links with the caption;
+  - methodology sections.
+- Budget 15,000 JOD → «تكفي جزئياً» with the caption.
+- 17 external links, all `target=_blank rel=noopener`.
+- No horizontal overflow at 390 px. No console errors.
 
 ## Known risks (most serious first)
 1. **Flash-Lite latency was measured on 4 analyze requests (2.8–3.8 s) and 40 recorder calls (0.76–2.04 s each)**, all on 2026-10-10 between 04:00 and 04:20 Jordan time (UTC+3; the shell labels it JST, which is wrong). Gemini latency varied widely for gemini-3.8-flash (12 s to over 120 s per call), so Flash-Lite may vary too under load. If it does, the 15 s timeout turns a slow call into the template explanation (or a 503 at recognition) instead of a multi-minute wait.
