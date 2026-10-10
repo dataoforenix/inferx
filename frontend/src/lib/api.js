@@ -211,6 +211,8 @@ export function mapReport(body, inputName) {
         headline: latestJod != null ? formatJod(latestJod) : 'لا تتوفر بيانات كافية',
         caption: 'واردات الأردن في 2024',
         body: marketBody || null,
+        // Backend-derived JOD value (market.latest_import_jod = USD × 0.709), shown next to the USD figure.
+        meta: usdNote(market.latest_import_usd, market.latest_import_jod),
         source: 'UN Comtrade',
       },
       {
@@ -248,6 +250,14 @@ export function mapReport(body, inputName) {
       },
     ],
     hasEstimates: (r.estimated_fields ?? []).length > 0,
+    // New backend guidance (FRONTEND_HANDOFF.md): static, verified, no AI.
+    guidance: {
+      categoryId: r.category_id,
+      hasCapex: r.capex_usd_range?.min != null && r.capex_usd_range?.max != null,
+      nextSteps: r.next_steps?.ar ?? [],
+      advisors: r.advisors ?? [],
+      suppliers: r.suppliers ?? null,
+    },
     plan: {
       est: est.plan,
       capital: capitalFromReport(r),
@@ -300,6 +310,13 @@ export function mapUnsupported(body, inputName) {
   };
 }
 
+/** "2.2 مليون دولار ≈ 1.6 مليون دينار" from the backend's USD and derived JOD values. */
+function usdNote(usd, jod) {
+  if (usd == null || jod == null) return null;
+  const usdText = usd >= 1e6 ? `${(usd / 1e6).toFixed(1)} مليون دولار` : `${Math.round(usd).toLocaleString('en-US')} دولار`;
+  return `${usdText} ≈ ${formatJod(jod)}`;
+}
+
 /* ───────────── Requests ───────────── */
 
 async function call(path, init) {
@@ -350,4 +367,19 @@ export async function postWhatIf(categoryId, overrides, signal) {
     signal,
   });
   return { score: body.scenario.score ?? 0, verdict: VERDICTS[body.scenario.verdict] ?? 'maybe' };
+}
+
+/** Equipment budget check: POST /api/budget (pure Python, no AI). */
+export function postBudget(categoryId, budgetJod, signal) {
+  return call('/api/budget', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ category_id: categoryId, budget_jod: budgetJod }),
+    signal,
+  });
+}
+
+/** How the score is calculated: GET /api/methodology (static text, en/ar). */
+export function getMethodology() {
+  return call('/api/methodology', { method: 'GET' });
 }

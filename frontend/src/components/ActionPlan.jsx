@@ -3,9 +3,9 @@ import EstimateTag from './EstimateTag';
 import ReportButton from './ReportButton';
 import ReportSheet from './ReportSheet';
 
-const PANEL = 'rounded-[16px] border border-hairline bg-white';
+export const PANEL = 'rounded-[16px] border border-hairline bg-white';
 
-function TileHeader({ icon: Icon, children, tone = 'text-ink-muted' }) {
+export function TileHeader({ icon: Icon, children, tone = 'text-ink-muted' }) {
   return (
     <header className={`flex items-center gap-2 ${tone}`}>
       <Icon className="size-5 shrink-0" aria-hidden="true" />

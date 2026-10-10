@@ -13,6 +13,7 @@ import {
 import { ANALYSIS_MS, ANALYSIS_STEPS } from '../lib/analyzeProduct';
 import { formatJod } from '../lib/api';
 import ActionPlan from './ActionPlan';
+import GuidancePanels from './GuidancePanels';
 import EstimateTag from './EstimateTag';
 import ReportButton from './ReportButton';
 import { PreviewSheet } from './ReportSheet';
@@ -525,6 +526,7 @@ function ResultView({ result, onReset }) {
       {result.whatIf && <WhatIf whatIf={result.whatIf} baseScore={result.score} verdicts={VERDICT_UI} />}
 
       <ActionPlan result={result} />
+      {result.guidance && <GuidancePanels guidance={result.guidance} />}
 
       <div className="mt-14 flex flex-col items-start gap-4 border-t border-hairline pt-8 md:flex-row md:items-center md:justify-between">
         <p className="text-[13px] text-ink-muted">{SOURCE_NOTES[result.source] ?? ''}</p>
