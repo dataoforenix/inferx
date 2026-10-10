@@ -1,6 +1,6 @@
 // Arabic names for the machinery and raw materials in backend/data/categories.csv, which lists them in
-// English only. Unknown terms are shown as they come. `null` hides a fragment: the potatoes entry is split
-// in two by the CSV list separator (";" inside its parentheses), so its second half is folded into the first.
+// English only. Unknown terms are shown as they come. `null` hides a fragment: older data split the potatoes
+// entry in two (a ";" inside its parentheses), so its second half is folded into the first.
 const AR = {
   'Aseptic or can filler': 'ماكينة تعبئة معقّمة أو تعبئة علب',
   'Assembly line': 'خط تجميع',
@@ -37,7 +37,8 @@ const AR = {
   'Plastic parts': 'قطع بلاستيكية',
   'Polypropylene granules': 'حبيبات بولي بروبيلين',
   'Polystyrene granules': 'حبيبات بوليسترين',
-  'Potatoes (grown in Jordan': 'بطاطا (مزروعة في الأردن، والبذور مستوردة)',
+  'Potatoes (grown in Jordan from imported seed potatoes)': 'بطاطا (مزروعة في الأردن من بذور مستوردة)',
+  'Potatoes (grown in Jordan': 'بطاطا (مزروعة في الأردن من بذور مستوردة)',
   'seed potatoes imported)': null,
   'Powder paint': 'دهان بودرة',
   'Powder-coating booth and oven': 'كابينة وفرن دهان بودرة',
