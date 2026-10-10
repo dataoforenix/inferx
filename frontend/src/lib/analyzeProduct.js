@@ -1,11 +1,10 @@
-import { SAMPLE_PRODUCTS } from '../legacy/sampleData';
-import { BackendDown, factoriesNote, mapMarketPreview, mapReport, mapUnsupported, postAnalyze, postConfirm, riskHeadline, USD_TO_JOD, usdTextToJod } from './api';
+import { BackendDown, mapMarketPreview, mapReport, mapUnsupported, postAnalyze, postConfirm } from './api';
 
 // ─── Backend seam ────────────────────────────────────────────────
 // The UI depends on `analyzeProduct(input)` and `confirmProduct(...)`, which
 // resolve to an outcome: { kind: 'result' | 'confirm' | 'unsupported' | 'error' }.
-// Results come from the inferx backend (lib/api.js); if it can't be reached,
-// the sample data below stands in so the demo never breaks.
+// Results come from the inferx backend (lib/api.js). If it can't be reached, the UI shows a clear
+// error: it never shows sample figures in place of a real analysis.
 // ────────────────────────────────────────────────────────────────
 
 export const ANALYSIS_MS = 4800;
@@ -17,89 +16,7 @@ export const ANALYSIS_STEPS = [
   { id: 'risk', label: 'المراجع الناقد يبحث عن المخاطر', source: 'وكيل ذكاء اصطناعي' },
 ];
 
-const KEYWORDS = [
-  ['solar-panels', ['شمس', 'solar', 'كهروضوئي']],
-  ['plastic-cutlery', ['بلاستيك', 'ملاعق', 'أواني', 'cutlery']],
-  ['electrical-enclosures', ['لوح', 'كهرب', 'توزيع', 'enclosure']],
-  ['screws-bolts', ['براغي', 'برغ', 'مسامير', 'صواميل', 'bolt', 'screw']],
-  ['storage-racks', ['رف', 'مستودع', 'rack', 'shelf']],
-  ['chair', ['كرس', 'chair']],
-];
-
-function pickSample(name = '') {
-  const text = name.toLowerCase();
-  const hit = KEYWORDS.find(([, words]) => words.some((w) => text.includes(w)));
-  if (hit) return SAMPLE_PRODUCTS.find((p) => p.id === hit[0]);
-  // Unknown product: deterministic pick so the same input shows the same demo result.
-  let h = 0;
-  for (const ch of text) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return SAMPLE_PRODUCTS[h % SAMPLE_PRODUCTS.length];
-}
-
-function capitalRange([min, max]) {
-  const k = (usd) => Math.round((usd * USD_TO_JOD) / 1000);
-  return { minK: k(min), maxK: k(max) };
-}
-
-/** Maps a sample record (offline fallback) to the shape the UI renders. */
-function normalizeSample(p, inputName) {
-  return {
-    kind: 'result',
-    source: 'sample',
-    productName: p.productName,
-    inputName,
-    hsCode: p.hsCode,
-    score: p.score,
-    verdict: p.decision === 'صنّعها' ? 'go' : 'no',
-    recommend: p.decision === 'صنّعها',
-    summary: p.calculationBreakdown?.explanation ?? '',
-    formula: p.calculationBreakdown?.formula ?? '',
-    factors: [
-      {
-        id: 'market',
-        title: 'السوق',
-        headline: p.market.imports5Years,
-        caption: 'واردات آخر 5 سنوات',
-        body: p.market.sizeDescription,
-        meta: p.market.trend,
-        source: 'دائرة الإحصاءات العامة',
-      },
-      {
-        id: 'cost',
-        title: 'الكلفة',
-        headline: p.cost.customsDuty,
-        caption: usdTextToJod(`شحن المستورد: ${p.cost.shippingEstimate}`),
-        body: p.cost.savingsNote,
-        source: 'جدول التعرفة الجمركية',
-      },
-      {
-        id: 'readiness',
-        title: 'جاهزية التصنيع',
-        headline: p.manufacturing.workshopsStatus,
-        caption: 'الورش والمعدات',
-        body: `المعدات: ${p.manufacturing.machines}`,
-        meta: `المواد الخام: ${p.manufacturing.rawMaterials}`,
-        source: 'غرفة صناعة الأردن',
-      },
-      {
-        id: 'risk',
-        title: 'المراجع الناقد',
-        headline: riskHeadline(p.skeptic.reasons.length),
-        caption: p.skeptic.warningTitle,
-        list: p.skeptic.reasons,
-        source: 'مراجعة نقدية للبيانات',
-      },
-    ],
-    plan: {
-      capital: p.plan ? capitalRange(p.plan.machineCostUsd) : null,
-      machines: p.manufacturing.machines.split('،').map((m) => m.trim()).filter(Boolean),
-      rawMaterials: p.manufacturing.rawMaterials,
-      workshops: p.manufacturing.workshopsStatus,
-      steps: [],
-      factories: factoriesNote(p.plan?.localFactories),
-    },
-  };
-}
+const BACKEND_DOWN = 'الخادم غير متاح. شغّل الـ backend أولاً كما في README';
 
 const ERRORS = {
   demo_no_match: 'وضع العرض يعرف الأمثلة المجهّزة فقط. جرّب واحداً منها:',
@@ -130,7 +47,7 @@ async function toOutcome(request, inputName) {
     if (body.status === 'market_preview') return mapMarketPreview(body, inputName);
     return mapUnsupported(body, inputName);
   } catch (err) {
-    if (err instanceof BackendDown) return normalizeSample(pickSample(inputName), inputName);
+    if (err instanceof BackendDown) return { kind: 'error', message: BACKEND_DOWN, examples: [] };
     return {
       kind: 'error',
       message: ERRORS[err.code] ?? 'حدث خطأ أثناء التحليل، حاول مرة أخرى.',
