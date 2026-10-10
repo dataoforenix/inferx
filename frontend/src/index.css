@@ -59,6 +59,18 @@
   mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 35%, transparent 100%);
 }
 
+/* ---------- Precision cursor (mouse only; text fields keep the native I-beam) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none;
+  }
+  html.has-cursor textarea,
+  html.has-cursor input:not([type='range']):not([type='file']) {
+    cursor: text;
+  }
+}
+
 /* ---------- Opening sequence ---------- */
 html[data-phase='opening'] {
   overflow: hidden;
