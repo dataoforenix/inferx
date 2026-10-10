@@ -1,4 +1,4 @@
-"""Real OpenAI API integration tests. Excluded by default; run explicitly:
+"""Real LLM API integration tests (Gemini via the OpenAI-compatible endpoint). Excluded by default; run explicitly:
 
     pytest -m llm
 

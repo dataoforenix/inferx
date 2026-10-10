@@ -2,7 +2,8 @@
 
 FastAPI backend that helps Jordanian entrepreneurs judge whether an imported product could be
 manufactured locally. A user sends a photo and/or an Arabic or English description; the backend
-identifies the product with Claude, scores feasibility **in Python**, and has Claude explain the result.
+identifies the product with an LLM (Google Gemini, called through its OpenAI-compatible endpoint with the
+OpenAI Python SDK), scores feasibility **in Python**, and has the LLM explain the result.
 
 > **Data status:** `data/categories.csv` holds the real data for 6 categories (`data_status: ESTIMATE`):
 > trade figures from UN Comtrade / WITS, cost and feasibility figures partly estimated (each row lists its
@@ -15,11 +16,11 @@ response bodies in [`docs/examples/`](docs/examples/).
 
 ```
 photo / text ──► image_utils     validate, strip metadata, resize; memory only
-             ──► llm.normalize   Claude: product names + category (a CSV category or "unsupported")
+             ──► llm.normalize   LLM: product names + category (a CSV category or "unsupported")
              ──► pipeline        Python decides: unsupported / needs_confirmation (confidence < 0.7) / continue
                                  (unsupported but physical + AI HS6 guess: UN Comtrade market preview, live mode only)
              ──► scoring         Python only: 0–10 score + MANUFACTURE / MAYBE / DONT
-             ──► llm.explain     Claude explains the Python report (en / ar)
+             ──► llm.explain     LLM explains the Python report (en / ar)
              ──► grounding guard every number in the explanation must exist in the report (or the CSV notes);
                                  one retry with feedback, then a deterministic template explanation
 ```
@@ -34,7 +35,7 @@ photo / text ──► image_utils     validate, strip metadata, resize; memory 
 | `app/data_store.py` | CSV schema, validation (`inspect_categories` collects issues; `load_categories` fails fast) |
 | `app/scoring.py` | Pure scoring functions and the report (no I/O, no LLM) |
 | `app/image_utils.py` | Image validation and sanitising |
-| `app/llm.py` | OpenAI calls (structured JSON output, validation, retries, per-call logging) |
+| `app/llm.py` | LLM calls via the OpenAI SDK to Gemini's OpenAI-compatible endpoint (structured JSON output, validation, retries, error mapping, per-call logging) |
 | `app/explanation.py` | Key figures for the LLM, grounding guard, template explanation (en/ar) |
 | `app/demo.py` | Demo cache and demo inputs |
 | `app/pipeline.py` | Orchestration, grounding retry, timings |
@@ -71,10 +72,9 @@ Interactive API docs: http://localhost:8000/docs
 
 | Variable | Default | Notes |
 |---|---|---|
-| `OPENAI_API_KEY` | — | Required for live analysis. Never logged or returned. |
-| `NORMALIZE_MODEL` / `EXPLAIN_MODEL` | `claude-opus-5-5` | Any vision-capable Claude model (see [Speed and cost](#speed-and-cost)) |
-| `NORMALIZE_EFFORT` / `EXPLAIN_EFFORT` | `low` / `medium` | `low`…`max` |
-| `LLM_REFUSAL_FALLBACK` | `true` | Server-side `fallbacks: "default"` if a safety classifier declines a request |
+| `OPENAI_API_KEY` | — | The **Gemini** API key (name kept for the OpenAI SDK). Required for live analysis. Never logged or returned. |
+| `OPENAI_BASE_URL` | `https://generativelanguage.googleapis.com/v1beta/openai/` | Gemini's OpenAI-compatible endpoint; any OpenAI-compatible URL works |
+| `NORMALIZE_MODEL` / `EXPLAIN_MODEL` | `gemini-3.8-flash` | Must support vision and JSON structured outputs on that endpoint |
 | `LLM_TIMEOUT_SECONDS` / `LLM_MAX_RETRIES` | `60` / `2` | SDK retries 408/409/429/5xx/connection errors |
 | `DEMO_MODE` | `false` | Serve prepared examples, no LLM calls |
 | `CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Comma-separated, or `*` |
@@ -264,7 +264,7 @@ aren't cached. Turn the feature off with `MARKET_PREVIEW=false`.
 
 ## Demo mode
 
-`DEMO_MODE=true` serves `data/demo_cache/*.json` without calling Claude. Only LLM outputs are cached;
+`DEMO_MODE=true` serves `data/demo_cache/*.json` without calling the LLM. Only LLM outputs are cached;
 **scores are always recomputed live from the CSV**, and cached explanations still pass the grounding guard.
 
 The demo inputs live in [`data/demo_inputs.json`](data/demo_inputs.json) (text, match keywords, expected
@@ -281,25 +281,26 @@ containing only product recognition, so explanations come from the template. Rec
 .venv\Scripts\python.exe scripts\record_demo_cache.py --placeholders # offline placeholders
 ```
 
-In live mode, if Claude is unavailable and the input matches a cached example, that example is served with
+In live mode, if the LLM is unavailable and the input matches a cached example, that example is served with
 `source: "demo_cache"` and a warning; otherwise the API returns `503 llm_unavailable`.
 
 ## Speed and cost
 
-The defaults are `claude-opus-5-5` for both calls. On this model thinking is always on, and effort
-controls how deeply it reasons (`low` for recognition, `medium` for the explanation). For a faster,
-cheaper demo, switch models in `.env`:
+The default is `gemini-3.8-flash` for both calls, via `OPENAI_BASE_URL`. To use another model or any other
+OpenAI-compatible provider, change `.env`:
 
 ```
-NORMALIZE_MODEL=claude-sonnet-5-5
-EXPLAIN_MODEL=claude-haiku-5-5
+OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+NORMALIZE_MODEL=gemini-3.8-flash
+EXPLAIN_MODEL=gemini-3.8-flash
 ```
 
-If you switch to a model that rejects the server-side refusal fallback, also set `LLM_REFUSAL_FALLBACK=false`
-(Claude Haiku 5.5 has no server-side fallback).
+The model must accept images and `response_format` JSON-schema structured outputs. Any reply the SDK can't
+parse (cut off, invalid JSON, wrong shape) is retried once and then returned as `502 llm_invalid_output`; every
+other SDK failure maps to `llm_unavailable` / `llm_error` / `input_refused`, never a raw 500.
 
 To measure, read the logs and the response:
-- one log line per API call: `llm_call op=… model=… effort=… attempt=… latency_ms=… input_tokens=… output_tokens=… stop_reason=…`
+- one log line per API call: `llm_call op=… model=… attempt=… latency_ms=… input_tokens=… output_tokens=… finish_reason=…`
   (never prompt, image or reply content);
 - one line per HTTP request with status and duration;
 - `timings_ms` in every analyze/confirm response.
@@ -321,7 +322,7 @@ To measure, read the logs and the response:
 
 ```powershell
 .venv\Scripts\python.exe -m pytest            # all offline tests, no API key needed (LLM is mocked)
-.venv\Scripts\python.exe -m pytest -m llm -v  # real OpenAI API tests (needs OPENAI_API_KEY; skips cleanly without)
+.venv\Scripts\python.exe -m pytest -m llm -v  # real Gemini API tests (needs OPENAI_API_KEY; skips cleanly without)
 ```
 
 Offline tests never read `data/categories.csv` or `data/demo_cache/`: they use frozen copies in

@@ -17,7 +17,7 @@ from app.errors import AppError
 
 ALLOWED_FORMATS = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp"}
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp", "application/octet-stream", ""}
-MAX_SIDE_PX = 1568  # Claude's recommended long-edge size; larger images are downscaled server-side anyway
+MAX_SIDE_PX = 1568  # long edge sent to the vision model; keeps uploads small and fast
 MAX_PIXELS = 40_000_000  # refuse decompression bombs well before Pillow's own limit
 JPEG_QUALITY = 85
 

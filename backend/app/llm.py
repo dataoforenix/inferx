@@ -1,4 +1,5 @@
-"""OpenAI LLM calls: product normalisation and explanation.
+"""LLM calls (OpenAI SDK, by default against Google Gemini's OpenAI-compatible endpoint):
+product normalisation and explanation.
 
 Both calls use structured outputs (response_format) so the reply is
 schema-shaped JSON, and every reply is validated again with Pydantic.
@@ -51,6 +52,10 @@ class LLMInvalidOutput(LLMError):
 
 class LLMRefused(LLMError):
     code = "llm_refused"
+
+
+class _InvalidReply(Exception):
+    """Internal: the SDK rejected the reply (cut off or not matching the schema). Retried once."""
 
 
 class LLMClient(Protocol):
@@ -129,6 +134,7 @@ class OpenAILLM:
         # The key is passed straight to the SDK and never logged.
         self.client = client or openai.OpenAI(
             api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
             timeout=settings.llm_timeout_seconds,
             max_retries=settings.llm_max_retries,
         )
@@ -186,7 +192,7 @@ class OpenAILLM:
         if feedback:
             # Grounding retry: the pipeline found numbers that are not in the report.
             content.append({"type": "text", "text": feedback})
-            
+
         return self._call(
             op="explain",
             model=self.settings.explain_model,
@@ -202,7 +208,7 @@ class OpenAILLM:
     def _call(self, *, op, model, max_tokens, system, content, response_format, validate):
         messages = [
             {"role": "system", "content": system},
-            {"role": "user", "content": content}
+            {"role": "user", "content": content},
         ]
         params: dict[str, Any] = {
             "model": model,
@@ -216,22 +222,29 @@ class OpenAILLM:
             started = time.perf_counter()
             try:
                 response = self._send(op, params)
+            except _InvalidReply as exc:  # the SDK itself rejected the reply (cut off, bad JSON, wrong shape)
+                self._log_call(op, model, attempt, started, None)
+                last_problem = str(exc)
+                logger.warning("llm %s invalid output (attempt %d): %s", op, attempt, last_problem)
+                continue
             except LLMError:
                 self._log_call(op, model, attempt, started, None)
                 raise
             self._log_call(op, model, attempt, started, response)
-            
-            message = response.choices[0].message
+
+            choice = response.choices[0] if getattr(response, "choices", None) else None
+            message = getattr(choice, "message", None)
             if getattr(message, "refusal", None):
                 raise LLMRefused("The model declined to process this input.")
-            if response.choices[0].finish_reason == "length":
+            if choice is None or message is None:
+                last_problem = "reply had no message"
+            elif choice.finish_reason == "length":
                 last_problem = "reply was cut off (max_tokens)"
             else:
                 try:
-                    if message.parsed:
-                        return validate(message.parsed)
-                    else:
+                    if message.parsed is None:
                         raise ValueError("No parsed content")
+                    return validate(message.parsed)
                 except (ValidationError, ValueError) as exc:
                     last_problem = f"{type(exc).__name__}: {str(exc)[:200]}"
             logger.warning("llm %s invalid output (attempt %d): %s", op, attempt, last_problem)
@@ -244,16 +257,22 @@ class OpenAILLM:
         usage = getattr(response, "usage", None)
         input_tokens = getattr(usage, "prompt_tokens", None) if usage else None
         output_tokens = getattr(usage, "completion_tokens", None) if usage else None
-        finish_reason = getattr(response.choices[0], "finish_reason", "error") if response and hasattr(response, "choices") and len(response.choices) > 0 else "error"
+        choices = getattr(response, "choices", None)
+        finish_reason = getattr(choices[0], "finish_reason", "error") if choices else "error"
         logger.info(
             "llm_call op=%s model=%s attempt=%d latency_ms=%d input_tokens=%s output_tokens=%s "
             "finish_reason=%s", op, model, attempt, latency_ms, input_tokens, output_tokens, finish_reason
         )
 
     def _send(self, op: str, params: dict):
-        # The SDK already retries according to max_retries
+        """One API call. Every exception is mapped: transport/status errors to LLMError types (the SDK has
+        already retried per max_retries), unusable replies to _InvalidReply (retried once by _call)."""
         try:
-            return self.client.beta.chat.completions.parse(**params)
+            return self.client.chat.completions.parse(**params)
+        except openai.LengthFinishReasonError as exc:
+            raise _InvalidReply("reply was cut off (max_tokens)") from exc
+        except openai.ContentFilterFinishReasonError as exc:
+            raise LLMRefused(f"{op}: the model's content filter blocked the reply") from exc
         except openai.APITimeoutError as exc:
             raise LLMUnavailable(f"{op}: the model timed out") from exc
         except openai.APIConnectionError as exc:
@@ -267,3 +286,11 @@ class OpenAILLM:
                 raise LLMUnavailable(f"{op}: model API error {exc.status_code}") from exc
             logger.error("llm %s request rejected: status=%s", op, exc.status_code)
             raise LLMError(f"{op}: the model API rejected the request ({exc.status_code})") from exc
+        except (ValidationError, ValueError) as exc:  # parse() validates the JSON against the schema
+            raise _InvalidReply(f"{type(exc).__name__}: {str(exc)[:200]}") from exc
+        except openai.OpenAIError as exc:
+            logger.error("llm %s SDK error: %s", op, type(exc).__name__)
+            raise LLMError(f"{op}: the model API call failed ({type(exc).__name__})") from exc
+        except Exception as exc:  # never let an unexpected SDK/reply problem become a raw 500
+            logger.exception("llm %s unexpected error", op)
+            raise LLMError(f"{op}: unexpected error ({type(exc).__name__})") from exc

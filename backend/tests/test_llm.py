@@ -1,12 +1,13 @@
-"""OpenAILLM against a mocked SDK client: request shape, validation, retries and error mapping."""
+"""OpenAILLM (OpenAI SDK, Gemini-compatible endpoint) against a mocked SDK client: request shape,
+validation, retries and error mapping."""
 
 from __future__ import annotations
 
 import json
 from types import SimpleNamespace
 
+import httpx
 import openai
-import httpx2
 import pytest
 from pydantic import ValidationError
 
@@ -27,7 +28,7 @@ from tests.conftest import TEST_CSV
 
 CATEGORIES = load_categories(TEST_CSV).list()
 IDS = [c.category_id for c in CATEGORIES]
-REQ = httpx2.Request("POST", "https://api.openai.com/v1/chat/completions")
+REQ = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
 
 GOOD_NORM = {
     "is_physical_product": True, "product_name_en": "Lunch box", "product_name_ar": "علبة طعام",
@@ -63,19 +64,13 @@ class FakeSDK:
     def __init__(self, *results):
         self.results = list(results)
         self.calls = []
-        self.beta = SimpleNamespace(
-            chat=SimpleNamespace(
-                completions=SimpleNamespace(parse=self._parse)
-            )
-        )
+        self.chat = SimpleNamespace(completions=SimpleNamespace(parse=self._parse))
 
     def _parse(self, **params):
         self.calls.append(params)
         result = self.results.pop(0)
         if isinstance(result, Exception):
             raise result
-        if hasattr(result, "raise_validation_error") and result.raise_validation_error:
-            raise ValidationError.from_exception_data(title="test", line_errors=[])
         return result
 
 
@@ -93,9 +88,9 @@ def test_normalize_request_shape(make_settings):
 
     assert out.category_id == "plastic_kitchenware"
     params = sdk.calls[0]
-    assert params["model"] == "gpt-4o-mini"
+    assert params["model"] == llm.settings.normalize_model
     assert params["response_format"] == NormalizationLLMOutput
-    
+
     messages = params["messages"]
     assert messages[0]["role"] == "system"
     for cid in IDS:
@@ -158,10 +153,10 @@ def test_refusal(make_settings):
     [
         (openai.APIConnectionError(request=REQ), LLMUnavailable),
         (openai.APITimeoutError(request=REQ), LLMUnavailable),
-        (openai.RateLimitError("slow down", response=httpx2.Response(429, request=REQ), body=None), LLMUnavailable),
-        (openai.APIStatusError("boom", response=httpx2.Response(500, request=REQ), body=None), LLMUnavailable),
-        (openai.AuthenticationError("bad key", response=httpx2.Response(401, request=REQ), body=None), LLMUnavailable),
-        (openai.APIStatusError("bad", response=httpx2.Response(400, request=REQ), body=None), LLMError),
+        (openai.RateLimitError("slow down", response=httpx.Response(429, request=REQ), body=None), LLMUnavailable),
+        (openai.APIStatusError("boom", response=httpx.Response(500, request=REQ), body=None), LLMUnavailable),
+        (openai.AuthenticationError("bad key", response=httpx.Response(401, request=REQ), body=None), LLMUnavailable),
+        (openai.APIStatusError("bad", response=httpx.Response(400, request=REQ), body=None), LLMError),
     ],
 )
 def test_sdk_errors_are_mapped(make_settings, error, expected):
@@ -176,6 +171,98 @@ def test_sdk_client_gets_timeout_and_retries(make_settings):
     assert llm.client.timeout == 12.0
 
 
+def test_sdk_client_uses_configured_base_url(make_settings):
+    llm = OpenAILLM(make_settings(openai_api_key="test-key", openai_base_url="https://llm.example/v1/"))
+    assert str(llm.client.base_url) == "https://llm.example/v1/"
+
+
+def test_default_settings_point_at_gemini(monkeypatch):
+    from app.config import DEFAULT_BASE_URL, DEFAULT_MODEL, load_settings
+
+    for name in ("OPENAI_BASE_URL", "NORMALIZE_MODEL", "EXPLAIN_MODEL"):
+        monkeypatch.setenv(name, "")
+    settings = load_settings()
+    assert settings.openai_base_url == DEFAULT_BASE_URL == "https://generativelanguage.googleapis.com/v1beta/openai/"
+    assert settings.normalize_model == settings.explain_model == DEFAULT_MODEL == "gemini-3.8-flash"
+
+
+# --- exceptions raised by parse() itself -------------------------------------------------
+
+def _completion():
+    return openai.types.chat.ChatCompletion(id="x", choices=[], created=0, model="m", object="chat.completion")
+
+
+def _schema_error():
+    try:
+        NormalizationLLMOutput.model_validate({"category_id": "x"})
+    except ValidationError as exc:
+        return exc
+
+
+def test_parse_length_error_is_retried_then_succeeds(make_settings):
+    llm, sdk = make_llm(make_settings, openai.LengthFinishReasonError(completion=_completion()), reply(GOOD_NORM))
+    assert llm.normalize(None, "cup", CATEGORIES).category_id == "plastic_kitchenware"
+    assert len(sdk.calls) == 2
+
+
+def test_parse_length_error_twice_is_invalid_output(make_settings):
+    llm, sdk = make_llm(make_settings, openai.LengthFinishReasonError(completion=_completion()),
+                        openai.LengthFinishReasonError(completion=_completion()))
+    with pytest.raises(LLMInvalidOutput, match="cut off"):
+        llm.normalize(None, "cup", CATEGORIES)
+    assert len(sdk.calls) == 2
+
+
+@pytest.mark.parametrize("error", [_schema_error(), ValueError("Invalid JSON: EOF")])
+def test_parse_schema_errors_are_retried_then_invalid_output(make_settings, error):
+    llm, sdk = make_llm(make_settings, error, error)
+    with pytest.raises(LLMInvalidOutput):
+        llm.explain({}, llm_facts(compute_report(CATEGORIES[0])), "en")
+    assert len(sdk.calls) == 2
+
+
+def test_parse_content_filter_is_refusal(make_settings):
+    llm, sdk = make_llm(make_settings, openai.ContentFilterFinishReasonError())
+    with pytest.raises(LLMRefused):
+        llm.normalize(None, "cup", CATEGORIES)
+    assert len(sdk.calls) == 1
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        openai.APIResponseValidationError(response=httpx.Response(200, request=REQ), body=None),
+        openai.OpenAIError("something else"),
+        RuntimeError("unexpected"),
+        TypeError("bad reply shape"),
+    ],
+)
+def test_any_other_parse_exception_becomes_llm_error(make_settings, error):
+    llm, _ = make_llm(make_settings, error)
+    with pytest.raises(LLMError):
+        llm.normalize(None, "cup", CATEGORIES)
+
+
+def test_reply_without_choices_is_invalid_output(make_settings):
+    empty = SimpleNamespace(choices=[], usage=None)
+    llm, sdk = make_llm(make_settings, empty, empty)
+    with pytest.raises(LLMInvalidOutput):
+        llm.normalize(None, "cup", CATEGORIES)
+
+
+def test_llm_errors_from_parse_reach_the_api_as_clean_errors(make_settings):
+    """End to end: a parse() failure in normalize is a 502 with the error schema, never a raw 500."""
+    from fastapi.testclient import TestClient
+
+    from app.factory import create_app
+
+    sdk = FakeSDK(RuntimeError("boom"))
+    settings = make_settings(openai_api_key="test-key")
+    client = TestClient(create_app(settings, llm=OpenAILLM(settings, client=sdk)))
+    r = client.post("/api/analyze", data={"text": "cup"})
+    assert r.status_code == 502 and r.json()["error"]["code"] == "llm_error"
+
+
 # --- explanation ---------------------------------------------------------------------
 
 @pytest.mark.parametrize("language", ["en", "ar"])
@@ -185,11 +272,11 @@ def test_explain_request_and_validation(make_settings, language):
     out = llm.explain({"name_en": "Lunch box"}, llm_facts(report), language)
     assert out.reasons_for == ["a", "b", "c"]
     params = sdk.calls[0]
-    
+
     assert params["response_format"] == ExplanationLLMOutput
     system_text = params["messages"][0]["content"]
     assert ("Arabic" if language == "ar" else "English") in system_text
-    
+
     user_text = params["messages"][1]["content"][0]["text"]
     assert "<report>" in user_text and "<key_figures>" in user_text and f'"score": {report.score}' in user_text
 
@@ -241,7 +328,7 @@ def test_each_call_is_logged_without_content(make_settings, caplog):
     lines = [r.getMessage() for r in caplog.records if "llm_call" in r.getMessage()]
     assert len(lines) == 1
     line = lines[0]
-    for part in ("op=normalize", "model=gpt-4o-mini", "attempt=1", "latency_ms=",
+    for part in ("op=normalize", f"model={llm.settings.normalize_model}", "attempt=1", "latency_ms=",
                  "input_tokens=10", "output_tokens=20", "finish_reason=stop"):
         assert part in line
     assert "SECRET-USER-TEXT" not in caplog.text and "Lunch box" not in caplog.text
