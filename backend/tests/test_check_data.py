@@ -4,12 +4,16 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
 from app.data_store import inspect_categories, load_categories
 from scripts.check_data import build_report
 from tests.conftest import TEST_CSV
+
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+CHECK_DATA = str(BACKEND_DIR / "scripts" / "check_data.py")  # absolute: works from any working directory
 
 
 def run(path, **kw):
@@ -34,10 +38,11 @@ def test_good_file_passes_with_table_and_summary():
 
 
 def test_cli_exit_codes_and_arabic_safe_output(csv_frame, write_csv, tmp_path):
-    good = subprocess.run([sys.executable, "scripts/check_data.py", str(TEST_CSV)], capture_output=True)
+    good = subprocess.run([sys.executable, CHECK_DATA, str(TEST_CSV)], capture_output=True, cwd=BACKEND_DIR)
     assert good.returncode == 0 and b"RESULT: OK" in good.stdout
     csv_frame.loc[0, "hs6"] = "12"
-    bad = subprocess.run([sys.executable, "scripts/check_data.py", str(write_csv(csv_frame))], capture_output=True)
+    bad = subprocess.run([sys.executable, CHECK_DATA, str(write_csv(csv_frame))], capture_output=True,
+                         cwd=BACKEND_DIR)
     assert bad.returncode == 1 and b"RESULT: FAILED" in bad.stdout
 
 
