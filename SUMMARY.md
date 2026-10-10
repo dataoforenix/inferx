@@ -154,19 +154,33 @@ Failed: `test_live_explain_is_grounded[ar]`.
 - 3.8 s total: normalize 1.5 s, explain 2.3 s, no retries.
 - The explanation text had 1,054 Arabic letters and 0 Latin letters.
 
+## Final live verification (measured, real uvicorn, default config, 6 Gemini calls, no Gemini 429)
+| Check | Request | Result | Time |
+|---|---|---|---|
+| Real photo | `real_photo.jpg` (1000×1000 JPEG, white plastic cup on a white background), `language=en` | `complete`, plastic_tableware (correct), confidence 0.99, `explanation_source: llm` | 5.3 s |
+| Ambiguous input | "plastic chair with metal legs", `language=en` | `complete`, metal_chair, confidence **0.70**, `llm`. **Not** `needs_confirmation`: the threshold is "< 0.7". The same text was recorded at 0.60 earlier. | 2.7 s |
+| `/api/analyze/confirm` | `category_id: metal_chair` with the product from the previous response | `complete`, metal_chair 7.0 MANUFACTURE, `explanation_source: llm`, no normalize step | 1.8 s |
+| Market preview | "ceramic floor tiles", `language=en` | `market_preview`, `hs6_guess: 690721`, confidence 0.95, `explanation_source: template`, flag `market_preview_only`, score 9.5 MAYBE (market component only; checked by hand) | 11.7 s (UN Comtrade 10.6 s) |
+
+- The photo is not committed; `real_photo.jpg` is untracked.
+- One confirm attempt returned `422 validation_error` (empty body). That was my test script's console-encoding bug, not the API, and it made no LLM call. The retry above is the measured result.
+- No bug in our code was found in these checks.
+
 ## Known risks (most serious first)
 1. **Flash-Lite latency was measured on 4 analyze requests (2.8–3.8 s) and 40 recorder calls (0.76–2.04 s each)**, all on 2026-10-10 between 04:00 and 04:20 JST. Gemini latency varied widely for gemini-3.8-flash (12 s to over 120 s per call), so Flash-Lite may vary too under load. If it does, the 15 s timeout turns a slow call into the template explanation (or a 503 at recognition) instead of a multi-minute wait.
-2. **Flash-Lite classification was measured on 19 text inputs (15 recorder inputs, the replacement input, "plastic plates and cups" twice, 1 Arabic request) and 1 synthetic image.** It got 18 of 19 text inputs right, plus the image. The miss was the ambiguous "plastic folding chair" (→ `unsupported`). The 20 `-m llm` tests pass (with pacing). Still untested live: `/api/analyze/confirm`, the grounding *retry* path, `market_preview` (UN Comtrade), and a real camera photo.
+2. **Flash-Lite classification was measured on 19 text inputs (15 recorder inputs, the replacement input, "plastic plates and cups" twice, 1 Arabic request) and 1 synthetic image.** It got 18 of 19 text inputs right, plus the image. The miss was the ambiguous "plastic folding chair" (→ `unsupported`). The 20 `-m llm` tests pass (with pacing). `/api/analyze/confirm`, `market_preview` and a real product photo were each verified live once (above). Still untested live: the grounding *retry* path (it only runs when the model writes an ungrounded number, which didn't happen in any live call) and a phone-camera photo with a cluttered background (the photo used was a clean product shot).
 3. **Rate limit (most likely to bite during judging):** the key is on the Gemini **free tier: 15 requests per minute per model**, as stated in the API's 429 error. In the recording run, 30 calls went through in about 45 s before 429s started, so the quota appears to allow short bursts; the exact behaviour was not measured.
    - Each analyze request makes 2 calls, so expect about **7 analyze requests per minute** before failures.
    - A 429 that survives the SDK's one retry becomes `503 llm_unavailable` at recognition, or a template explanation at the explain step.
    - The SDK's retry came about 0.4 s later, well before the 19 s retry delay the API asked for.
    - Mitigations: use `DEMO_MODE=true` for heavy demo traffic, or move the key to a paid tier.
-4. Unhandled 500 responses still carry no CORS headers. Starlette's error middleware sits outside CORS; this was not changed.
-5. The tests still read the developer's `backend/.env` through `load_settings()` (hermetic-test work was skipped by request). A `.env` that changes models, limits or the confidence threshold can change test results.
-6. No lock file or CI. Direct dependencies are pinned, transitive ones are not. Tested only on Windows with Python 3.11.17.
-7. `gemini-3.5-flash-lite` and `gemini-3.8-flash` both existed on this key on 2026-10-10 (`models.list()`).
-8. Git commits used `zalhasani05 <zalhasani05@gmail.com>` as author through per-command `-c` flags. No git config was changed.
+4. **Live needs_confirmation is not reproducible.** Gemini's confidence for the ambiguous demo input sat on the 0.7 threshold (0.60 when recorded, 0.70 live), so live mode may answer `complete` where demo mode shows `needs_confirmation`. Demo mode is deterministic because it replays the recording.
+5. **Market preview is slow and often partial.** It took 11.7 s, about 10.6 s of it in UN Comtrade. Comtrade's public API rate-limited this request, so 2021–2023 came back `null`. Its `report.score` (9.5 here) is the market component only; the API contract tells the frontend not to show it as a feasibility score.
+6. Unhandled 500 responses still carry no CORS headers. Starlette's error middleware sits outside CORS; this was not changed.
+7. The tests still read the developer's `backend/.env` through `load_settings()` (hermetic-test work was skipped by request). A `.env` that changes models, limits or the confidence threshold can change test results.
+8. No lock file or CI. Direct dependencies are pinned, transitive ones are not. Tested only on Windows with Python 3.11.17.
+9. `gemini-3.5-flash-lite` and `gemini-3.8-flash` both existed on this key on 2026-10-10 (`models.list()`).
+10. Git commits used `zalhasani05 <zalhasani05@gmail.com>` as author through per-command `-c` flags. No git config was changed.
 
 ## Not done (out of scope by request)
 Hermetic test settings, lock file and CI, and the minor items from the audit: `round1` float edge case, COVID-year trend base, duplicate data files, `.gitignore` entry, BOM handling in `refresh_trade_data.py`, and the stale "offline tests never read data/" sentence in `backend/README.md`. `spec.pdf` in the repo root was left untracked and uncommitted.
