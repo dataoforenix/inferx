@@ -36,6 +36,9 @@ Two additive HTTP header changes only:
    - All 15 entries are now `generated_by: pipeline`; there are no hand-written placeholders left. The recorder script itself is unchanged.
    - One input was replaced, with your approval: see the recording section.
    - `docs/examples/health.json` and `error_404_demo_no_match.json` regenerated. The other examples differed only in timing values and were left as they were.
+7. **Live-test pacing and demo-input tables** (`f1b52a7`)
+   - `tests/test_llm_live.py` spaces live calls 60/14 s apart to stay under the free-tier quota. No assertion changed.
+   - Both READMEs list all 15 demo inputs with their demo result. A new offline test (`test_readmes_list_every_demo_input`) keeps the lists in sync with `data/demo_inputs.json`.
 
 ## Tests (measured, Python 3.11.17, conda env `inferx`)
 | When | Command | Result |
@@ -44,7 +47,9 @@ Two additive HTTP header changes only:
 | After step 4 | `python -m pytest` in `backend/` and in the repo root | 541 passed, 0 failed, 20 deselected |
 | After latency fix | `python -m pytest` in `backend/` and in the repo root | 547 passed, 0 failed, 20 deselected |
 | After recording, before replacing the folding-chair input | `python -m pytest` in `backend/` | 546 passed, **1 failed** (`test_demo_cache_matches_demo_inputs`: recorded `unsupported` ≠ expected `metal_chair`), 20 deselected. Not pushed in this state. |
-| **Final** | `python -m pytest` in `backend/` | **547 passed, 0 failed, 20 deselected** |
+| After recording | `python -m pytest` in `backend/` | 547 passed, 0 failed, 20 deselected |
+| **Final** | `python -m pytest` in `backend/` | **549 passed, 0 failed, 20 deselected** |
+| Live suite, once, default config (before pacing) | `python -m pytest -m llm -v` | **19 passed, 1 failed**, 547 deselected, 18.9 s |
 
 The 20 deselected tests are the live `-m llm` tests. They were **not run**.
 
@@ -123,6 +128,22 @@ failed and the template is used (none did). Times are per LLM call.
 - Demo mode checked offline afterwards (no key, no live calls): health `ok`, 15 entries, 0 placeholders, no warnings. "metal office chair" (en) and "معجون بندورة" (ar) return `complete` with `explanation_source: llm`; #13b returns `needs_confirmation`; "rooftop solar panel" returns `unsupported`.
 - Calls in this step: 30 + 9 + 1 = 40 successful LLM calls for recording, 10 rejected with 429, plus 2 for the Arabic test.
 
+## Live test suite (`pytest -m llm`, run once, gemini-3.5-flash-lite / low), measured
+**19 passed, 1 failed.**
+
+Passed:
+- `test_demo_inputs_match_real_categories`;
+- all 15 `test_live_normalize_demo_inputs[...]`, including the new `plastic_chair_metal_legs_uncertain`;
+- `test_live_unsupported`;
+- `test_live_prompt_injection_is_ignored`;
+- `test_live_explain_is_grounded[en]`.
+
+Failed: `test_live_explain_is_grounded[ar]`.
+- **Real cause: the API quota, not the model or our code.** Gemini returned HTTP 429 `RESOURCE_EXHAUSTED`: "Quota exceeded for metric `generate_content_free_tier_requests`, limit: 15, model: gemini-3.5-flash-lite" (quota id `GenerateRequestsPerMinutePerProjectPerModel-FreeTier`, retry delay 19 s).
+- It was the suite's 19th call in about 19 s. The SDK's single retry, about 0.4 s later, was rejected too.
+- Fix: the live tests are now paced to at most 14 calls per minute, with no assertion changed. **The re-run with pacing has not been done** (one run was approved). The Arabic explanation itself was verified separately through the full pipeline (next section).
+- No failure was caused by model behaviour, so no model limitation was added from this run.
+
 ## Live Arabic request (measured, real uvicorn, default config)
 "صحون وكاسات بلاستيك" with `language=ar`:
 - `complete`, plastic_tableware (correct), **`explanation_source: llm`**, `explanation.language: ar`.
@@ -132,7 +153,11 @@ failed and the template is used (none did). Times are per LLM call.
 ## Known risks (most serious first)
 1. **Flash-Lite latency was measured on 4 analyze requests (2.8–3.8 s) and 40 recorder calls (0.76–2.04 s each)**, all on 2026-10-10 between 04:00 and 04:20 JST. Gemini latency varied widely for gemini-3.8-flash (12 s to over 120 s per call), so Flash-Lite may vary too under load. If it does, the 15 s timeout turns a slow call into the template explanation (or a 503 at recognition) instead of a multi-minute wait.
 2. **Flash-Lite classification was measured on 19 text inputs (15 recorder inputs, the replacement input, "plastic plates and cups" twice, 1 Arabic request) and 1 synthetic image.** It got 18 of 19 text inputs right, plus the image. The miss was the ambiguous "plastic folding chair" (→ `unsupported`). Still untested live: `/api/analyze/confirm`, the grounding *retry* path, `market_preview` (UN Comtrade), a real camera photo, and the 20 `-m llm` tests.
-3. **Rate limit:** about 30 calls in 45 s triggered 429s on this key. Each analyze request makes 2 calls, so a burst of about 15 requests per minute can hit it. A 429 that survives the SDK retry becomes `503 llm_unavailable` at recognition, or a template explanation at the explain step.
+3. **Rate limit (most likely to bite during judging):** the key is on the Gemini **free tier: 15 requests per minute per model**, as stated in the API's 429 error. In the recording run, 30 calls went through in about 45 s before 429s started, so the quota appears to allow short bursts; the exact behaviour was not measured.
+   - Each analyze request makes 2 calls, so expect about **7 analyze requests per minute** before failures.
+   - A 429 that survives the SDK's one retry becomes `503 llm_unavailable` at recognition, or a template explanation at the explain step.
+   - The SDK's retry came about 0.4 s later, well before the 19 s retry delay the API asked for.
+   - Mitigations: use `DEMO_MODE=true` for heavy demo traffic, or move the key to a paid tier.
 4. Unhandled 500 responses still carry no CORS headers. Starlette's error middleware sits outside CORS; this was not changed.
 5. The tests still read the developer's `backend/.env` through `load_settings()` (hermetic-test work was skipped by request). A `.env` that changes models, limits or the confidence threshold can change test results.
 6. No lock file or CI. Direct dependencies are pinned, transitive ones are not. Tested only on Windows with Python 3.11.17.
