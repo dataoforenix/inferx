@@ -7,7 +7,8 @@ const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const IMAGE_EXT = /\.(jpe?g|jfif|png|webp)$/i;
 const isSupportedImage = (f) => IMAGE_TYPES.includes(f.type) || (!f.type && IMAGE_EXT.test(f.name));
 // Each matches a prepared example, so they also work while the backend runs in demo mode.
-const SUGGESTIONS = ['كرسي مكتب معدني منجد', 'رفوف مستودعات', 'صحون بلاستيك للمطبخ', 'مروحة سقف'];
+// The last one is the ambiguous example: it shows the «أيّ هذه هو منتجك؟» confirmation step in demo mode.
+const SUGGESTIONS = ['كرسي مكتب معدني منجد', 'رفوف مستودعات', 'صحون بلاستيك للمطبخ', 'مروحة سقف', 'كرسي بلاستيك بأرجل معدنية'];
 
 function formatSize(bytes) {
   return bytes > 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
